@@ -105,7 +105,8 @@ const props = defineProps({});
 
 const label = ref("");
 
-// Asnyc created lifecycle hook
+// Async components are not supported in Vue 2, so we use
+// a self-invoking async function as `created` replacement
 (async () => {
   const { load } = useSection();
   const response = await load({
