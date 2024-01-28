@@ -1,0 +1,44 @@
+{
+  "name": "use-kirby",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@8.15.0",
+  "description": "Collection of Vue Composition utilities for Kirby CMS",
+  "author": "Johann Schopplich <pkg@johannschopplich.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/johannschopplich/use-kirby#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johannschopplich/use-kirby.git"
+  },
+  "bugs": "https://github.com/johannschopplich/use-kirby/issues",
+  "keywords": [
+    "composition-api",
+    "getkirby",
+    "kirby-cms",
+    "kirby",
+    "vue"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "composables",
+    "index.js"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier \"**/*.{css,html,js,json,md,mjs,ts,vue,yml}\" --write",
+    "format:check": "prettier \"**/*.{css,html,js,json,md,mjs,ts,vue,yml}\" --check",
+    "release": "bumpp --commit --push --tag"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.6.3",
+    "bumpp": "^9.3.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "vue": "2.7.16"
+  }
+}
