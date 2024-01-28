@@ -36,7 +36,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier \"**/*.{css,html,js,json,md,mjs,ts,vue,yml}\" --write",
     "format:check": "prettier \"**/*.{css,html,js,json,md,mjs,ts,vue,yml}\" --check",
-    "release": "bumpp --commit --push --tag"
+    "release": "bumpp --commit --push --tag",
+    "test:types": "tsc --noEmit"
   },
   "dependencies": {
     "vue": "^2.7.16"
