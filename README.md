@@ -1,12 +1,12 @@
-# use-kirby
+# kirbyuse
 
-[![NPM version](https://img.shields.io/npm/v/use-kirby?color=a1b858&label=)](https://www.npmjs.com/package/use-kirby)
+[![NPM version](https://img.shields.io/npm/v/kirbyuse?color=a1b858&label=)](https://www.npmjs.com/package/kirbyuse)
 
 A collection of Vue Composition utilities to ease working with the Composition API in Kirby CMS v4:
 
 ```vue
 <script setup>
-import { computed, ref, usePanel, useStore, watch } from "use-kirby";
+import { computed, ref, usePanel, useStore, watch } from "kirbyuse";
 
 const panel = usePanel();
 const store = useStore();
@@ -34,13 +34,13 @@ panel.notification.success("Composition API is awesome!");
 
 ```bash
 # pnpm
-pnpm add -D use-kirby
+pnpm add -D kirbyuse
 
 # npm
-npm i -D use-kirby
+npm i -D kirbyuse
 
 # yarn
-yarn add -D use-kirby
+yarn add -D kirbyuse
 ```
 
 ## Background
@@ -77,7 +77,7 @@ This is where this package comes in. It provides aliases to the Composition API 
 
 ```js
 // Inside `<script setup>`
-import { computed, ref, usePanel } from "use-kirby";
+import { computed, ref, usePanel } from "kirbyuse";
 
 const label = ref("");
 
@@ -89,7 +89,7 @@ panel.notification.success("Composition API is awesome!");
 
 ```vue
 <script>
-import { ref, sectionProps, useSection, watch } from "use-kirby";
+import { ref, sectionProps, useSection, watch } from "kirbyuse";
 
 export default defineComponent({
   props: {
