@@ -43,6 +43,9 @@ npm i -D kirbyuse
 yarn add -D kirbyuse
 ```
 
+> [!NOTE]
+> If Kirby migrates to Vue 3, this package will adapt accordingly.
+
 ## Background
 
 Kirby CMS uses Vue 2 and provides the `Vue` constructor via the UMD build in the global scope. The main Kirby Panel instance is accessible at `window.panel.app`.

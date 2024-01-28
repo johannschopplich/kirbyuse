@@ -21,24 +21,32 @@
   ],
   "sideEffects": false,
   "exports": {
-    ".": "./index.js"
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
   },
+  "types": "./dist/index.d.ts",
   "files": [
-    "composables",
-    "index.js"
+    "dist"
   ],
   "scripts": {
+    "build": "unbuild",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier \"**/*.{css,html,js,json,md,mjs,ts,vue,yml}\" --write",
     "format:check": "prettier \"**/*.{css,html,js,json,md,mjs,ts,vue,yml}\" --check",
     "release": "bumpp --commit --push --tag"
   },
+  "dependencies": {
+    "vue": "^2.7.16"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.3",
     "bumpp": "^9.3.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.4",
-    "vue": "2.7.16"
+    "typescript": "^5.3.3",
+    "unbuild": "3.0.0-rc.1"
   }
 }
