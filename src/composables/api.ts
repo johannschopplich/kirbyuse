@@ -1,3 +1,5 @@
+import { usePanel } from "./panel";
+
 export function useApi() {
-  return window.panel.api;
+  return usePanel().api;
 }

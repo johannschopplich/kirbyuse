@@ -1,3 +1,5 @@
+import { usePanel } from "./panel";
+
 export function useApp() {
-  return window.panel.app;
+  return usePanel().app;
 }
