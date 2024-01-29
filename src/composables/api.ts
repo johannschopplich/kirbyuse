@@ -1,3 +1,3 @@
 export function useApi() {
-  return (window as any).panel.api;
+  return window.panel.api;
 }

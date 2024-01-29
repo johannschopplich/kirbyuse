@@ -1,5 +1,6 @@
 import { globalVue } from "../vue";
 
 export function useStore() {
-  return (globalVue.getCurrentInstance()?.proxy as any).$store;
+  const proxy = globalVue.getCurrentInstance()?.proxy as Record<string, any>;
+  return proxy.$store;
 }

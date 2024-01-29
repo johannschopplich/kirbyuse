@@ -1,3 +1,3 @@
 export function useApp() {
-  return (window as any).panel.app;
+  return window.panel.app;
 }
