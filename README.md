@@ -92,12 +92,13 @@ panel.notification.success("Composition API is awesome!");
 
 ```vue
 <script>
-import { ref, sectionProps, useSection, watch } from "kirbyuse";
+import { ref, useSection, watch } from "kirbyuse";
+import { section } from "kirbyuse/props";
 
 export default defineComponent({
   props: {
     // Reuse the section props
-    ...sectionProps,
+    ...section,
   },
 });
 </script>
