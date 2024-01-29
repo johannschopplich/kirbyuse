@@ -53,3 +53,5 @@ export const watchPostEffect = globalVue.watchPostEffect;
 export const watchSyncEffect = globalVue.watchSyncEffect;
 
 export * from "./composables";
+export * from "./props";
+export { globalVue } from "./vue";
