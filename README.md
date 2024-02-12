@@ -132,6 +132,13 @@ const label = ref("");
 </template>
 ```
 
+## Composition API in Panel Plugins
+
+The following open source plugins are written with the Vue Composition API:
+
+- [Kirby Content Translator](https://github.com/johannschopplich/kirby-content-translator)
+- [Kirby SERP Preview](https://github.com/johannschopplich/kirby-serp-preview)
+
 ## License
 
 [MIT](./LICENSE) License © 2024-PRESENT [Johann Schopplich](https://github.com/johannschopplich)
