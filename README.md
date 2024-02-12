@@ -95,17 +95,18 @@ panel.notification.success("Composition API is awesome!");
 import { ref, useSection, watch } from "kirbyuse";
 import { section } from "kirbyuse/props";
 
-export default defineComponent({
-  props: {
-    // Reuse the section props
-    ...section,
-  },
-});
+// Define the component props
+const propsDefinition = {
+  ...section,
+};
+
+export default {
+  inheritAttrs: false,
+};
 </script>
 
 <script setup>
-// Don't define new props here, just access them
-const props = defineProps({});
+const props = defineProps(propsDefinition);
 
 const label = ref("");
 
