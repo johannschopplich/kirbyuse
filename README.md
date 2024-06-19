@@ -64,7 +64,7 @@ export default {
 
 ### Augmenting the `window.panel` Object
 
-Instead of the explicit `usePanel` import, you can also augment the `window.panel` object directly. In this case, you have to import the `kirbyup` package in your main entry file:
+Instead of the explicit `usePanel` import, you can also augment the `window.panel` object directly. In this case, you have to import the `kirbyup` package **once** in your main entry file:
 
 ```js
 import "kirbyuse";
