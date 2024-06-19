@@ -29,7 +29,9 @@ yarn add -D kirbyuse
 > [!NOTE]
 > This works for Vue components written in the Options API as well as the Composition API. TypeScript is not required. The type hints are provided by the package itself.
 
-Kirby's `window.panel` global object provides the main Panel instance, including all helper methods and services. This package augments the `window.panel` object to provide type hints out of the box.
+![Type Hints for `window.panel`](./.github/kirby-intellisense-preview.png)
+
+Kirby's `window.panel` global object provides the main Panel instance, including all methods and props. This package augments the `window.panel` object to provide type hints out of the box.
 
 Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments and return types cannot be inferred. But for working with the Panel API, this should be sufficient.
 
