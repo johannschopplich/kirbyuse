@@ -1,6 +1,6 @@
 # kirbyuse
 
-A collection of Vue Composition utilities and other helpers to improve the DX when writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
+A collection of Vue Composition utilities and type hints to improve the DX for writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
 > [!NOTE]
 > When Kirby migrates to Vue 3, this package will adapt accordingly.
@@ -27,11 +27,17 @@ yarn add -D kirbyuse
 ## Kirby Panel Type Augmentation
 
 > [!NOTE]
-> This works for Vue components written in the Options API as well as the Composition API! TypeScript is not required. The type hints are provided by the package itself.
+> This works for Vue components written in the Options API as well as the Composition API. TypeScript is not required. The type hints are provided by the package itself.
 
 Kirby's `window.panel` global object provides the main Panel instance, including all helper methods and services. This package augments the `window.panel` object to provide type hints out of the box.
 
-In order to use the type hints, you have to import the `usePanel` function from this package. This function returns the augmented `window.panel` object. This works both in the Options API and the Composition API.
+Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments and return types cannot be inferred. But for working with the Panel API, this should be sufficient.
+
+Depending on the component type, you can choose how to import the type hints:
+
+### Panel Access with `usePanel`
+
+In order to benefit from type completions, you can import the `usePanel` function from this package. This function returns a typed `window.panel` object. This works both in the Options API and the Composition API.
 
 For example, the `notification` service is available on the `panel` object. With each method call, you get IntelliSense support in your editor:
 
@@ -56,8 +62,18 @@ export default {
 };
 ```
 
-> [!NOTE]
-> Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments and return types cannot be inferred. But for working with the Panel API, this should be sufficient.
+### Augmenting the `window.panel` Object
+
+Instead of the explicit `usePanel` import, you can also augment the `window.panel` object directly. In this case, you have to import the `kirbyup` package in your main entry file:
+
+```js
+import "kirbyuse";
+
+window.panel.notification.success("Kirby is awesome!");
+//                        ^? (property) PanelNotification.success: (arg1: any) => any
+```
+
+The import will provide global type augmentations for the `window.panel` object. Every time you access the `panel` object, you get IntelliSense support for all available methods and services.
 
 ## Examples
 
