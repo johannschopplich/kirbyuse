@@ -6,6 +6,11 @@ interface Store<S> {
 }
 
 export function useStore() {
-  const proxy = globalVue.getCurrentInstance()?.proxy as Record<string, any>;
-  return proxy.$store as Store<any>;
+  const instance = globalVue.getCurrentInstance();
+
+  if (!instance) {
+    throw new Error(`"useStore" must be called within a component`);
+  }
+
+  return (instance.proxy as any).$store as Store<any>;
 }
