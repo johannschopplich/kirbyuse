@@ -24,9 +24,7 @@ npm i -D kirbyuse
 yarn add -D kirbyuse
 ```
 
-## Examples
-
-### Kirby Panel Type Augmentation
+## Kirby Panel Type Augmentation
 
 > [!NOTE]
 > This works for Vue components written in the Options API as well as the Composition API! TypeScript is not required. The type hints are provided by the package itself.
@@ -60,6 +58,8 @@ export default {
 
 > [!NOTE]
 > Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments and return types cannot be inferred. But for working with the Panel API, this should be sufficient.
+
+## Examples
 
 ### Panel Section
 
