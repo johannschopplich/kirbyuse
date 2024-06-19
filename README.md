@@ -47,10 +47,15 @@ panel.notification.success("…");
 
 If you are writing a Vue component in the Options API, you can use the `panel` instance in methods like `created`:
 
-```vue
-import { usePanel } from "kirbyuse"; export default { data() { return { label:
-"", }; }, created() { const panel = usePanel();
-panel.notification.success("Guten Tag!"); }, };
+```js
+import { usePanel } from "kirbyuse";
+
+export default {
+  mounted() {
+    const panel = usePanel();
+    panel.notification.success("Guten Tag!");
+  },
+};
 ```
 
 > [INFO]
