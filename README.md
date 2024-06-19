@@ -2,6 +2,9 @@
 
 A collection of Vue Composition utilities and other helpers to improve the DX when writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
+> [!NOTE]
+> When Kirby migrates to Vue 3, this package will adapt accordingly.
+
 ## Features
 
 - 🧃 IntelliSense support for Kirby's global `window.panel` object
@@ -20,9 +23,6 @@ npm i -D kirbyuse
 # yarn
 yarn add -D kirbyuse
 ```
-
-> [!NOTE]
-> When Kirby migrates to Vue 3, this package will adapt accordingly.
 
 ## Examples
 
