@@ -41,8 +41,8 @@ For example, the `notification` service is available on the `panel` object. With
 import { usePanel } from "kirbyuse";
 
 const panel = usePanel();
-panel.notification.success("…");
-//                        ^? (property) PanelNotification.success: (arg1: any) => any
+panel.notification.success("Kirby is awesome!");
+//                 ^? (property) PanelNotification.success: (arg1: any) => any
 ```
 
 If you are writing a Vue component in the Options API, you can use the `panel` instance in methods like `created`:
