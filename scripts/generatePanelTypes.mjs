@@ -140,8 +140,8 @@ function sanitizeKey(key) {
   }
 }
 
-function toPascalCase(str) {
-  return str
+function toPascalCase(value) {
+  return value
     .split(/[^a-z0-9]/i)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join("");

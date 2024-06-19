@@ -1,5 +1,5 @@
 import type { Panel } from "../types/panel";
 
 export function usePanel(): Panel {
-  return (window as any).panel;
+  return window.panel;
 }
