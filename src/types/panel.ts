@@ -1,7 +1,4 @@
-import type { VueConstructor } from "vue";
-
 export interface Panel {
-  app: InstanceType<VueConstructor>;
   create: (arg1?: any) => any;
   context: string;
   debug: boolean;
@@ -39,13 +36,14 @@ export interface Panel {
   t: (...args: any[]) => any;
   plugins: PanelPlugins;
   config: PanelConfig;
-  languages: any[];
-  license: boolean;
+  languages: Record<string, any>[];
+  license: string;
   multilang: boolean;
   permissions: PanelPermissions;
   searches: PanelSearches;
   urls: PanelUrls;
   api: PanelApi;
+  app: InstanceType<(typeof import("vue"))["default"]>;
 }
 export interface PanelActivation {
   close: (...args: any[]) => any;
@@ -132,11 +130,11 @@ export interface PanelUpload {
 export interface PanelUploadAttributes {}
 export interface PanelUploadOn {}
 export interface PanelLanguage {
-  code: any;
+  code: string;
   default: boolean;
   direction: string;
-  name: any;
-  rules: any;
+  name: string;
+  rules: any[];
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
   reset: (...args: any[]) => any;
@@ -146,7 +144,7 @@ export interface PanelLanguage {
   isDefault: boolean;
 }
 export interface PanelMenu {
-  entries: (any | string)[];
+  entries: (Record<string, any> | string)[];
   hover: boolean;
   isOpen: boolean;
   key: (...args: any[]) => any;
@@ -311,7 +309,7 @@ export interface PanelView {
   query: any[];
   referrer: string;
   timestamp: number;
-  breadcrumb: any[];
+  breadcrumb: Record<string, any>[];
   breadcrumbLabel: string;
   icon: string;
   id: string;
@@ -339,9 +337,64 @@ export interface PanelView {
 }
 export interface PanelViewOn {}
 export interface PanelViewProps {
-  categories: any[];
-  info: any;
-  tab: string;
+  lock: PanelViewPropsLock;
+  permissions: PanelViewPropsPermissions;
+  tabs: Record<string, any>[];
+  tab: PanelViewPropsTab;
+  next: PanelViewPropsNext;
+  prev: PanelViewPropsPrev;
+  blueprint: string;
+  model: PanelViewPropsModel;
+  status: PanelViewPropsStatus;
+}
+export interface PanelViewPropsLock {
+  state: any;
+  data: boolean;
+}
+export interface PanelViewPropsPermissions {
+  access: boolean;
+  changeSlug: boolean;
+  changeStatus: boolean;
+  changeTemplate: boolean;
+  changeTitle: boolean;
+  create: boolean;
+  delete: boolean;
+  duplicate: boolean;
+  list: boolean;
+  move: boolean;
+  preview: boolean;
+  read: boolean;
+  sort: boolean;
+  update: boolean;
+}
+export interface PanelViewPropsTab {
+  label: string;
+  icon: string;
+  columns: Record<string, any>[];
+  link: string;
+  name: string;
+}
+export interface PanelViewPropsNext {
+  link: string;
+  title: string;
+}
+export interface PanelViewPropsPrev {
+  link: string;
+  title: string;
+}
+export interface PanelViewPropsModel {
+  content: PanelViewPropsModelContent;
+  id: string;
+  link: string;
+  parent: string;
+  previewUrl: string;
+  status: string;
+  title: string;
+}
+export interface PanelViewPropsModelContent {}
+export interface PanelViewPropsStatus {
+  label: string;
+  text: string;
 }
 export interface PanelDrawer {
   component: any;
@@ -453,9 +506,9 @@ export interface PanelDialogProps {}
 export interface PanelDialogQuery {}
 export interface PanelPlugins {
   components: PanelPluginsComponents;
-  created: (...args: any[]) => any[];
+  created: any[];
   icons: PanelPluginsIcons;
-  login: PanelPluginsLogin;
+  login: any;
   textareaButtons: PanelPluginsTextareaButtons;
   use: any[];
   thirdParty: PanelPluginsThirdParty;
@@ -466,10 +519,6 @@ export interface PanelPlugins {
 }
 export interface PanelPluginsComponents {}
 export interface PanelPluginsIcons {}
-export interface PanelPluginsLogin {
-  created: (...args: any[]) => Promise<any>;
-  template: string;
-}
 export interface PanelPluginsTextareaButtons {}
 export interface PanelPluginsThirdParty {}
 export interface PanelPluginsWriterMarks {}
@@ -554,6 +603,7 @@ export interface PanelPermissionsUser {
 export interface PanelSearches {
   pages: PanelSearchesPages;
   files: PanelSearchesFiles;
+  users: PanelSearchesUsers;
 }
 export interface PanelSearchesPages {
   icon: string;
@@ -561,6 +611,11 @@ export interface PanelSearchesPages {
   id: string;
 }
 export interface PanelSearchesFiles {
+  icon: string;
+  label: string;
+  id: string;
+}
+export interface PanelSearchesUsers {
   icon: string;
   label: string;
   id: string;
@@ -596,6 +651,7 @@ export interface PanelApi {
   site: PanelApiSite;
   translations: PanelApiTranslations;
   users: PanelApiUsers;
+  language: string;
 }
 export interface PanelApiAuth {
   login: (arg1?: any) => Promise<any>;

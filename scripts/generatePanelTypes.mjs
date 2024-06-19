@@ -1,3 +1,10 @@
+const SKIPPED_PANEL_INTERFACES = [
+  // Panel plugin components
+  "PanelPluginsComponents",
+  // Model content
+  "PanelViewPropsModelContent",
+];
+
 const observedObjects = new WeakSet();
 
 if (typeof window !== "undefined" && window.panel) {
@@ -20,17 +27,27 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
   for (const key in obj) {
     if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
 
-    // Ignore deprecated Vue properties
-    if (level === 0 && (key.startsWith("$") || key === "app")) {
+    // Ignore deprecated aliases
+    if (level === 0 && key.startsWith("$")) {
       continue;
     }
 
-    const value = obj[key];
+    let value = obj[key];
     const valueType = inferValueType(value);
     const nestedInterfaceName = toPascalCase(`${interfaceName}_${key}`);
-    let typeValue = generateTypeDefinition(value, valueType);
+    let typeValue = generateTypeDefinition(valueType, value);
 
-    if (
+    // Skip parsing some values that contain specific data
+    if (SKIPPED_PANEL_INTERFACES.includes(nestedInterfaceName)) {
+      value = {};
+    }
+
+    // Handle the Vue app instance separately
+    if (level === 0 && key === "app") {
+      typeValue = 'InstanceType<(typeof import("vue"))["default"]>';
+    }
+    // Simplify interfaces for string-based enums
+    else if (
       nestedInterfaceName === "PanelTranslationData" ||
       nestedInterfaceName === "PanelSystemAscii"
     ) {
@@ -51,14 +68,15 @@ ${indent}[key: string]: string;
   }
 
   return `
-${level === 0 ? `import type { VueConstructor } from "vue";\n` : ""}
 export interface ${interfaceName} {
-${level === 0 ? `${indent}app: InstanceType<VueConstructor>;\n` : ""}${_interface}}
+${_interface}}
 ${_nestedInterfaces}`.trimStart();
 }
 
-function generateTypeDefinition(value, valueType) {
-  if (valueType === "array") {
+function generateTypeDefinition(valueType, value) {
+  if (valueType === "object") {
+    return "Record<string, any>";
+  } else if (valueType === "array") {
     return inferArrayType(value);
   } else if (valueType === "asyncfunction" || valueType === "function") {
     return inferFunctionType(value, valueType === "asyncfunction");
@@ -89,10 +107,10 @@ function inferArrayType(array) {
 
   if (types.size === 1) {
     const type = [...types][0];
-    return `${generateTypeDefinition(array[0], type)}[]`;
+    return `${generateTypeDefinition(type, array[0])}[]`;
   }
 
-  return `(${[...types].map((type, index) => generateTypeDefinition(array[index], type)).join(" | ")})[]`;
+  return `(${[...types].map((type, index) => generateTypeDefinition(type, array[index])).join(" | ")})[]`;
 }
 
 function inferFunctionType(fn, isAsync) {
@@ -122,8 +140,9 @@ function sanitizeKey(key) {
   }
 }
 
-function toPascalCase(value) {
-  return value.replace(/(^\w|_\w)/g, (match) =>
-    match.replace("_", "").toUpperCase(),
-  );
+function toPascalCase(str) {
+  return str
+    .split(/[^a-z0-9]/i)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
 }
