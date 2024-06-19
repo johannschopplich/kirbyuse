@@ -1,6 +1,6 @@
 # kirbyuse
 
-A collection of Vue Composition utilities to ease working with the Composition API in Kirby CMS.
+A collection of Vue Composition utilities and other helpers to improve the DX when writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
 ## Features
 
