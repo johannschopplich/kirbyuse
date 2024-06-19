@@ -146,7 +146,7 @@ export interface PanelLanguage {
   isDefault: boolean;
 }
 export interface PanelMenu {
-  entries: (object | string)[];
+  entries: (any | string)[];
   hover: boolean;
   isOpen: boolean;
   key: (...args: any[]) => any;
@@ -339,7 +339,7 @@ export interface PanelView {
 }
 export interface PanelViewOn {}
 export interface PanelViewProps {
-  categories: object[];
+  categories: any[];
   info: any;
   tab: string;
 }

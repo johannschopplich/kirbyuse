@@ -26,7 +26,7 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
     }
 
     const value = obj[key];
-    const valueType = getTypeFromValue(value);
+    const valueType = inferValueType(value);
     const nestedInterfaceName = toPascalCase(`${interfaceName}_${key}`);
     let typeValue = generateTypeDefinition(value, valueType);
 
@@ -62,14 +62,18 @@ function generateTypeDefinition(value, valueType) {
     return inferArrayType(value);
   } else if (valueType === "asyncfunction" || valueType === "function") {
     return inferFunctionType(value, valueType === "asyncfunction");
-  } else if (valueType === "null" || valueType === "undefined") {
-    return "any";
   } else if (valueType === "date") {
     return "Date";
   } else if (valueType === "regexp") {
     return "RegExp";
-  } else {
+  } else if (
+    valueType === "boolean" ||
+    valueType === "number" ||
+    valueType === "string"
+  ) {
     return valueType;
+  } else {
+    return "any";
   }
 }
 
@@ -80,7 +84,7 @@ function inferArrayType(array) {
 
   const types = new Set();
   for (const item of array) {
-    types.add(getTypeFromValue(item));
+    types.add(inferValueType(item));
   }
 
   if (types.size === 1) {
@@ -106,11 +110,8 @@ function inferFunctionType(fn, isAsync) {
   }) => ${isAsync ? "Promise<any>" : "any"}`;
 }
 
-function getTypeFromValue(value) {
-  return Object.prototype.toString
-    .call(value)
-    .replace(/^\[object\s+([a-z]+)\]$/i, "$1")
-    .toLowerCase();
+function inferValueType(value) {
+  return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 }
 
 function sanitizeKey(key) {
