@@ -101,7 +101,7 @@ function inferFunctionType(fn, isAsync) {
 
   return `(${
     parameters.length > 0 && !parameters.includes("...")
-      ? parameters.map((_, index) => `arg${index + 1}: any`).join(", ")
+      ? parameters.map((_, index) => `arg${index + 1}?: any`).join(", ")
       : "...args: any[]"
   }) => ${isAsync ? "Promise<any>" : "any"}`;
 }
