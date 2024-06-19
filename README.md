@@ -54,7 +54,7 @@ panel.notification.success("Guten Tag!"); }, };
 ```
 
 > [INFO]
-> Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments cannot be inferred correctly. But for working with the Panel API, this should be sufficient.
+> Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments and return types cannot be inferred. But for working with the Panel API, this should be sufficient.
 
 ### Panel Section
 
