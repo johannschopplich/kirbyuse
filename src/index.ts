@@ -1,4 +1,13 @@
+import type * as Vue from "vue";
+import type { Panel } from "./types/panel";
 import { globalVue } from "./vue";
+
+declare global {
+  interface Window {
+    Vue: typeof Vue;
+    panel: Panel;
+  }
+}
 
 export const computed = globalVue.computed;
 export const customRef = globalVue.customRef;

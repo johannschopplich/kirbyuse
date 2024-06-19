@@ -1,3 +1,5 @@
-export function usePanel() {
-  return window.panel;
+import type { Panel } from "../types/panel";
+
+export function usePanel(): Panel {
+  return (window as any).panel;
 }
