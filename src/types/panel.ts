@@ -51,7 +51,7 @@ export interface Panel {
   searches: PanelSearches;
   urls: PanelUrls;
   api: PanelApi;
-  app: InstanceType<VueConstructor>;
+  app: InstanceType<VueConstructor> & { $store: PanelAppStore };
 }
 export interface PanelActivation {
   close: (...args: any[]) => any;
@@ -71,7 +71,7 @@ export interface PanelDrag {
   start: (arg1?: any, arg2?: any) => any;
   stop: (...args: any[]) => any;
 }
-export interface PanelDragData {}
+export type PanelDragData = Record<string, any>;
 export interface PanelEvents {
   blur: (arg1?: any) => any;
   click: (arg1?: any) => any;
@@ -135,8 +135,8 @@ export interface PanelUpload {
   submit: (...args: any[]) => Promise<any>;
   upload: (arg1?: any, arg2?: any) => Promise<any>;
 }
-export interface PanelUploadAttributes {}
-export interface PanelUploadOn {}
+export type PanelUploadAttributes = Record<string, any>;
+export type PanelUploadOn = Record<string, any>;
 export interface PanelLanguage {
   code: string;
   default: boolean;
@@ -302,9 +302,9 @@ export interface PanelDropdown {
   openAsync: (arg1?: any, arg2?: any) => any;
   options: (...args: any[]) => any;
 }
-export interface PanelDropdownOn {}
-export interface PanelDropdownProps {}
-export interface PanelDropdownQuery {}
+export type PanelDropdownOn = Record<string, any>;
+export type PanelDropdownProps = Record<string, any>;
+export type PanelDropdownQuery = Record<string, any>;
 export interface PanelView {
   component: string;
   isLoading: boolean;
@@ -340,7 +340,7 @@ export interface PanelView {
   url: (...args: any[]) => any;
   submit: (...args: any[]) => Promise<any>;
 }
-export interface PanelViewOn {}
+export type PanelViewOn = Record<string, any>;
 export interface PanelViewProps {
   lock: PanelViewPropsLock;
   permissions: PanelViewPropsPermissions;
@@ -445,9 +445,9 @@ export interface PanelDrawer {
   icon: string;
   tab: (arg1?: any) => any;
 }
-export interface PanelDrawerOn {}
-export interface PanelDrawerProps {}
-export interface PanelDrawerQuery {}
+export type PanelDrawerOn = Record<string, any>;
+export type PanelDrawerProps = Record<string, any>;
+export type PanelDrawerQuery = Record<string, any>;
 export interface PanelDrawerHistory {
   add: (arg1?: any) => any;
   at: (arg1?: any) => any;
@@ -505,9 +505,9 @@ export interface PanelDialog {
   value?: any;
   openComponent: (arg1?: any) => Promise<any>;
 }
-export interface PanelDialogOn {}
-export interface PanelDialogProps {}
-export interface PanelDialogQuery {}
+export type PanelDialogOn = Record<string, any>;
+export type PanelDialogProps = Record<string, any>;
+export type PanelDialogQuery = Record<string, any>;
 export interface PanelPlugins {
   components: Record<string, ComponentPublicInstance>;
   created: any[];
@@ -521,12 +521,12 @@ export interface PanelPlugins {
   routes: any[];
   views: PanelPluginsViews;
 }
-export interface PanelPluginsIcons {}
-export interface PanelPluginsTextareaButtons {}
-export interface PanelPluginsThirdParty {}
-export interface PanelPluginsWriterMarks {}
-export interface PanelPluginsWriterNodes {}
-export interface PanelPluginsViews {}
+export type PanelPluginsIcons = Record<string, any>;
+export type PanelPluginsTextareaButtons = Record<string, any>;
+export type PanelPluginsThirdParty = Record<string, any>;
+export type PanelPluginsWriterMarks = Record<string, any>;
+export type PanelPluginsWriterNodes = Record<string, any>;
+export type PanelPluginsViews = Record<string, any>;
 export interface PanelConfig {
   debug: boolean;
   kirbytext: boolean;
@@ -738,4 +738,19 @@ export interface PanelApiUsers {
   search: (arg1?: any, arg2?: any) => Promise<any>;
   update: (arg1?: any, arg2?: any) => Promise<any>;
   url: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelAppStore {
+  state: PanelAppStoreState;
+  getters: PanelAppStoreGetters;
+}
+export type PanelAppStoreState = Record<string, any>;
+export interface PanelAppStoreGetters {
+  "content/exists": (arg1?: any, arg2?: any) => any;
+  "content/hasChanges": (arg1?: any) => any;
+  "content/isCurrent": () => any;
+  "content/id": (arg1?: any) => any;
+  "content/model": (arg1?: any) => any;
+  "content/originals": (arg1?: any) => any;
+  "content/values": (arg1?: any) => any;
+  "content/changes": (arg1?: any) => any;
 }

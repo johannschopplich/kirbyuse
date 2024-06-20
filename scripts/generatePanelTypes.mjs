@@ -19,6 +19,11 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
 
   observedObjects.add(obj);
 
+  // Return early for empty objects
+  if (Object.keys(obj).length === 0) {
+    return `export type ${interfaceName} = Record<string, any>;`;
+  }
+
   let _interface = "";
   let _nestedInterfaces = "";
 
@@ -37,7 +42,19 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
 
     // Handle top-level definitions
     if (level === 0 && key === "app") {
-      typeValue = "InstanceType<VueConstructor>";
+      // Use correct Vue type and generate only the store types
+      typeValue = "InstanceType<VueConstructor> & { $store: PanelAppStore }";
+      _nestedInterfaces += generateTypeScriptInterface(
+        {
+          // Use plain object for state
+          state: {},
+          // Extract getters from the store
+          getters: value.$store.getters,
+        },
+        `${interfaceName}AppStore`,
+        level + 1,
+      );
+      // Make language rules generic by overwriting the type
     } else if (level === 0 && key === "languages") {
       typeValue = `
 {
@@ -52,14 +69,14 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
     else if (nestedInterfaceName === "PanelPluginsComponents") {
       typeValue = "Record<string, ComponentPublicInstance>";
     }
-    // Handle view props
+    // Overwrite view props, since they are specific to each view
     else if (
       (interfaceName === "PanelViewProps" && key === "tabs") ||
       (interfaceName === "PanelViewPropsTab" && key === "columns")
     ) {
       typeValue = "Record<string, any>[]";
     }
-    // Handle model content
+    // Overwrite model content, since it's a dynamic object
     else if (nestedInterfaceName === "PanelViewPropsModelContent") {
       typeValue = "Record<string, any>";
     }
@@ -158,11 +175,16 @@ function inferArrayType(array) {
 
 function inferFunctionType(fn, isAsync) {
   const match = fn.toString().match(/\(([^)]*)\)/);
-  const parameters = match?.[1]
-    ?.trim()
-    ?.split(",")
-    ?.map((param) => param.trim())
-    ?.filter(Boolean);
+
+  if (!match) {
+    return `() => ${isAsync ? "Promise<any>" : "any"}`;
+  }
+
+  const parameters = match[1]
+    .trim()
+    .split(",")
+    .map((param) => param.trim())
+    .filter(Boolean);
 
   return `(${
     parameters.length > 0 && !parameters.includes("...")
