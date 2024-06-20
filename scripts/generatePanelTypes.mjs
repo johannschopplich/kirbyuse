@@ -10,7 +10,11 @@ ${tsInterface}`.trimStart(),
   );
 }
 
-function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
+function generateTypeScriptInterface(
+  obj,
+  interfaceName = "Root",
+  { level = 0 } = {},
+) {
   const indent = "  ";
 
   if (observedObjects.has(obj)) {
@@ -43,7 +47,8 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
     // Handle top-level definitions
     if (level === 0 && key === "app") {
       // Use correct Vue type and generate only the store types
-      typeValue = "InstanceType<VueConstructor> & { $store: PanelAppStore }";
+      typeValue =
+        "InstanceType<VueConstructor> & { $store: Readonly<PanelAppStore> }";
       _nestedInterfaces += generateTypeScriptInterface(
         {
           // Use plain object for state
@@ -52,7 +57,7 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
           getters: value.$store.getters,
         },
         `${interfaceName}AppStore`,
-        level + 1,
+        { level: level + 1 },
       );
       // Make language rules generic by overwriting the type
     } else if (level === 0 && key === "languages") {
@@ -91,7 +96,7 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
       _nestedInterfaces += generateTypeScriptInterface(
         value,
         nestedInterfaceName,
-        level + 1,
+        { level: level + 1 },
       );
     }
 
