@@ -1,15 +1,13 @@
-const SKIPPED_PANEL_INTERFACES = [
-  // Panel plugin components
-  "PanelPluginsComponents",
-  // Model content
-  "PanelViewPropsModelContent",
-];
-
 const observedObjects = new WeakSet();
 
 if (typeof window !== "undefined" && window.panel) {
   const tsInterface = generateTypeScriptInterface(window.panel, "Panel");
-  console.log(tsInterface);
+  console.log(
+    `
+import type { VueConstructor, ComponentPublicInstance } from "vue";
+
+${tsInterface}`.trimStart(),
+  );
 }
 
 function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
@@ -27,34 +25,50 @@ function generateTypeScriptInterface(obj, interfaceName = "Root", level = 0) {
   for (const key in obj) {
     if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
 
-    // Ignore deprecated aliases
+    // Ignore deprecated Panel aliases
     if (level === 0 && key.startsWith("$")) {
       continue;
     }
 
-    let value = obj[key];
+    const value = obj[key];
     const valueType = inferValueType(value);
     const nestedInterfaceName = toPascalCase(`${interfaceName}_${key}`);
     let typeValue = generateTypeDefinition(valueType, value);
 
-    // Skip parsing some values that contain specific data
-    if (SKIPPED_PANEL_INTERFACES.includes(nestedInterfaceName)) {
-      value = {};
-    }
-
-    // Handle the Vue app instance separately
+    // Handle top-level definitions
     if (level === 0 && key === "app") {
-      typeValue = 'InstanceType<(typeof import("vue"))["default"]>';
+      typeValue = "InstanceType<VueConstructor>";
+    } else if (level === 0 && key === "languages") {
+      typeValue = `
+{
+  code: string;
+  default: boolean;
+  direction: string;
+  name: string;
+  rules: Record<string, string>;
+}[]`.trimStart();
+    }
+    // Handle Panel components
+    else if (nestedInterfaceName === "PanelPluginsComponents") {
+      typeValue = "Record<string, ComponentPublicInstance>";
+    }
+    // Handle view props
+    else if (
+      (interfaceName === "PanelViewProps" && key === "tabs") ||
+      (interfaceName === "PanelViewPropsTab" && key === "columns")
+    ) {
+      typeValue = "Record<string, any>[]";
+    }
+    // Handle model content
+    else if (nestedInterfaceName === "PanelViewPropsModelContent") {
+      typeValue = "Record<string, any>";
     }
     // Simplify interfaces for string-based enums
     else if (
       nestedInterfaceName === "PanelTranslationData" ||
       nestedInterfaceName === "PanelSystemAscii"
     ) {
-      typeValue = nestedInterfaceName;
-      _nestedInterfaces += `export interface ${nestedInterfaceName} {
-${indent}[key: string]: string;
-}\n`;
+      typeValue = "Record<string, string>";
     } else if (valueType === "object") {
       typeValue = nestedInterfaceName;
       _nestedInterfaces += generateTypeScriptInterface(
@@ -75,7 +89,7 @@ ${_nestedInterfaces}`.trimStart();
 
 function generateTypeDefinition(valueType, value) {
   if (valueType === "object") {
-    return "Record<string, any>";
+    return inferObjectType(value);
   } else if (valueType === "array") {
     return inferArrayType(value);
   } else if (valueType === "asyncfunction" || valueType === "function") {
@@ -93,6 +107,35 @@ function generateTypeDefinition(valueType, value) {
   } else {
     return "any";
   }
+}
+
+function inferObjectType(obj) {
+  const keys = Object.keys(obj);
+  if (keys.length === 0) {
+    return "Record<string, any>";
+  }
+
+  const types = new Set();
+  for (const key of keys) {
+    types.add(inferValueType(obj[key]));
+  }
+
+  if (types.size === 1) {
+    const type = [...types][0];
+    return `{ ${keys.map((key) => `${sanitizeKey(key)}: ${generateTypeDefinition(type, obj[key])}`).join(", ")} }`;
+  }
+
+  // Skip components
+  if (obj._isVue) {
+    return "CreateComponentPublicInstance";
+  }
+
+  return `{ ${Object.entries(obj)
+    .map(
+      ([key, value]) =>
+        `${sanitizeKey(key)}: ${generateTypeDefinition(inferValueType(value), value)}`,
+    )
+    .join(", ")} }`;
 }
 
 function inferArrayType(array) {

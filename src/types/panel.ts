@@ -1,3 +1,5 @@
+import type { ComponentPublicInstance, VueConstructor } from "vue";
+
 export interface Panel {
   create: (arg1?: any) => any;
   context: string;
@@ -36,14 +38,20 @@ export interface Panel {
   t: (...args: any[]) => any;
   plugins: PanelPlugins;
   config: PanelConfig;
-  languages: Record<string, any>[];
+  languages: {
+    code: string;
+    default: boolean;
+    direction: string;
+    name: string;
+    rules: Record<string, string>;
+  }[];
   license: string;
   multilang: boolean;
   permissions: PanelPermissions;
   searches: PanelSearches;
   urls: PanelUrls;
   api: PanelApi;
-  app: InstanceType<(typeof import("vue"))["default"]>;
+  app: InstanceType<VueConstructor>;
 }
 export interface PanelActivation {
   close: (...args: any[]) => any;
@@ -144,7 +152,10 @@ export interface PanelLanguage {
   isDefault: boolean;
 }
 export interface PanelMenu {
-  entries: (Record<string, any> | string)[];
+  entries: (
+    | { current: boolean; icon: string; link: string; text: string }
+    | string
+  )[];
   hover: boolean;
   isOpen: boolean;
   key: (...args: any[]) => any;
@@ -191,7 +202,7 @@ export interface PanelNotificationTimer {
   stop: (...args: any[]) => any;
 }
 export interface PanelSystem {
-  ascii: PanelSystemAscii;
+  ascii: Record<string, string>;
   csrf: string;
   isLocal: boolean;
   locales: PanelSystemLocales;
@@ -203,9 +214,6 @@ export interface PanelSystem {
   set: (arg1?: any) => any;
   state: (...args: any[]) => any;
   validateState: (arg1?: any) => any;
-}
-export interface PanelSystemAscii {
-  [key: string]: string;
 }
 export interface PanelSystemLocales {
   bg: string;
@@ -240,7 +248,7 @@ export interface PanelSystemLocales {
 }
 export interface PanelTranslation {
   code: string;
-  data: PanelTranslationData;
+  data: Record<string, string>;
   direction: string;
   name: string;
   key: (...args: any[]) => any;
@@ -250,9 +258,6 @@ export interface PanelTranslation {
   state: (...args: any[]) => any;
   validateState: (arg1?: any) => any;
   translate: (arg1?: any, arg2?: any, arg3?: any) => any;
-}
-export interface PanelTranslationData {
-  [key: string]: string;
 }
 export interface PanelUser {
   email: string;
@@ -309,7 +314,7 @@ export interface PanelView {
   query: any[];
   referrer: string;
   timestamp: number;
-  breadcrumb: Record<string, any>[];
+  breadcrumb: { label: string; link: string }[];
   breadcrumbLabel: string;
   icon: string;
   id: string;
@@ -383,7 +388,7 @@ export interface PanelViewPropsPrev {
   title: string;
 }
 export interface PanelViewPropsModel {
-  content: PanelViewPropsModelContent;
+  content: Record<string, any>;
   id: string;
   link: string;
   parent: string;
@@ -391,7 +396,6 @@ export interface PanelViewPropsModel {
   status: string;
   title: string;
 }
-export interface PanelViewPropsModelContent {}
 export interface PanelViewPropsStatus {
   label: string;
   text: string;
@@ -505,7 +509,7 @@ export interface PanelDialogOn {}
 export interface PanelDialogProps {}
 export interface PanelDialogQuery {}
 export interface PanelPlugins {
-  components: PanelPluginsComponents;
+  components: Record<string, ComponentPublicInstance>;
   created: any[];
   icons: PanelPluginsIcons;
   login: any;
@@ -517,7 +521,6 @@ export interface PanelPlugins {
   routes: any[];
   views: PanelPluginsViews;
 }
-export interface PanelPluginsComponents {}
 export interface PanelPluginsIcons {}
 export interface PanelPluginsTextareaButtons {}
 export interface PanelPluginsThirdParty {}
