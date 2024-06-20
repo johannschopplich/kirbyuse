@@ -52,6 +52,7 @@ export interface Panel {
   urls: PanelUrls;
   api: PanelApi;
   app: InstanceType<VueConstructor> & { $store: Readonly<PanelAppStore> };
+  plugin: (...args: any[]) => any;
 }
 export interface PanelActivation {
   close: (...args: any[]) => any;

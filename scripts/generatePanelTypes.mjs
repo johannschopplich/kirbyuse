@@ -1,7 +1,15 @@
+const CODE_INDENT = "  ";
 const observedObjects = new WeakSet();
 
 if (typeof window !== "undefined" && window.panel) {
-  const tsInterface = generateTypeScriptInterface(window.panel, "Panel");
+  const tsInterface = generateTypeScriptInterface(
+    {
+      ...window.panel,
+      // Removed after Panel initialization, but added again for type generation
+      plugin: () => {},
+    },
+    "Panel",
+  );
   console.log(
     `
 import type { VueConstructor, ComponentPublicInstance } from "vue";
@@ -15,10 +23,8 @@ function generateTypeScriptInterface(
   interfaceName = "Root",
   { level = 0 } = {},
 ) {
-  const indent = "  ";
-
   if (observedObjects.has(obj)) {
-    return `${indent}// Circular reference detected\n`;
+    return `// Circular reference detected\n`;
   }
 
   observedObjects.add(obj);
@@ -100,7 +106,7 @@ function generateTypeScriptInterface(
       );
     }
 
-    _interface += `${indent}${sanitizeKey(key)}${valueType === "undefined" ? "?" : ""}: ${typeValue};\n`;
+    _interface += `${CODE_INDENT}${sanitizeKey(key)}${valueType === "undefined" ? "?" : ""}: ${typeValue};\n`;
   }
 
   return `
