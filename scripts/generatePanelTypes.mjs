@@ -110,6 +110,11 @@ function generateTypeDefinition(valueType, value) {
 }
 
 function inferObjectType(obj) {
+  // Skip Vue components
+  if (obj._isVue) {
+    return "ComponentPublicInstance";
+  }
+
   const keys = Object.keys(obj);
   if (keys.length === 0) {
     return "Record<string, any>";
@@ -123,11 +128,6 @@ function inferObjectType(obj) {
   if (types.size === 1) {
     const type = [...types][0];
     return `{ ${keys.map((key) => `${sanitizeKey(key)}: ${generateTypeDefinition(type, obj[key])}`).join(", ")} }`;
-  }
-
-  // Skip components
-  if (obj._isVue) {
-    return "CreateComponentPublicInstance";
   }
 
   return `{ ${Object.entries(obj)
