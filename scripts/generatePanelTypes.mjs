@@ -9,7 +9,69 @@ if (typeof window !== "undefined" && window.panel) {
       plugin: () => {},
     },
     "Panel",
+    {
+      typeResolver: (
+        key,
+        value,
+        { level, interfaceName, currentKeyInterfaceName },
+      ) => {
+        let typeValue;
+        let generatedInterfaces;
+
+        // Handle top-level definitions
+        if (level === 0 && key === "app") {
+          // Use correct Vue type and generate only the store types
+          typeValue =
+            "InstanceType<VueConstructor> & { $store: Readonly<PanelAppStore> }";
+          generatedInterfaces = generateTypeScriptInterface(
+            {
+              // Use plain object for state
+              state: {},
+              // Extract getters from the store
+              getters: value.$store.getters,
+            },
+            `${interfaceName}AppStore`,
+            { level: level + 1 },
+          );
+          // Make language rules generic by overwriting the type
+        } else if (level === 0 && key === "languages") {
+          typeValue = `
+{
+code: string;
+default: boolean;
+direction: string;
+name: string;
+rules: Record<string, string>;
+}[]`.trimStart();
+        }
+        // Handle Panel components
+        else if (currentKeyInterfaceName === "PanelPluginsComponents") {
+          typeValue = "Record<string, ComponentPublicInstance>";
+        }
+        // Overwrite view props, since they are specific to each view
+        else if (
+          (interfaceName === "PanelViewProps" && key === "tabs") ||
+          (interfaceName === "PanelViewPropsTab" && key === "columns")
+        ) {
+          typeValue = "Record<string, any>[]";
+        }
+        // Overwrite model content, since it's a dynamic object
+        else if (currentKeyInterfaceName === "PanelViewPropsModelContent") {
+          typeValue = "Record<string, any>";
+        }
+        // Simplify interfaces for string-based enums
+        else if (
+          currentKeyInterfaceName === "PanelTranslationData" ||
+          currentKeyInterfaceName === "PanelSystemAscii"
+        ) {
+          typeValue = "Record<string, string>";
+        }
+
+        return { typeValue, generatedInterfaces };
+      },
+    },
   );
+
   console.log(
     `
 import type { VueConstructor, ComponentPublicInstance } from "vue";
@@ -21,7 +83,7 @@ ${tsInterface}`.trimStart(),
 function generateTypeScriptInterface(
   obj,
   interfaceName = "Root",
-  { level = 0 } = {},
+  { level = 0, typeResolver = () => ({}) } = {},
 ) {
   if (observedObjects.has(obj)) {
     return `// Circular reference detected\n`;
@@ -34,8 +96,8 @@ function generateTypeScriptInterface(
     return `export type ${interfaceName} = Record<string, any>;`;
   }
 
-  let _interface = "";
-  let _nestedInterfaces = "";
+  let interfaceBody = "";
+  let generatedInterfaces = "";
 
   for (const key in obj) {
     if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
@@ -47,72 +109,40 @@ function generateTypeScriptInterface(
 
     const value = obj[key];
     const valueType = inferValueType(value);
-    const nestedInterfaceName = toPascalCase(`${interfaceName}_${key}`);
+    const currentKeyInterfaceName = toPascalCase(`${interfaceName}_${key}`);
     let typeValue = generateTypeDefinition(valueType, value);
 
-    // Handle top-level definitions
-    if (level === 0 && key === "app") {
-      // Use correct Vue type and generate only the store types
-      typeValue =
-        "InstanceType<VueConstructor> & { $store: Readonly<PanelAppStore> }";
-      _nestedInterfaces += generateTypeScriptInterface(
-        {
-          // Use plain object for state
-          state: {},
-          // Extract getters from the store
-          getters: value.$store.getters,
-        },
-        `${interfaceName}AppStore`,
-        { level: level + 1 },
-      );
-      // Make language rules generic by overwriting the type
-    } else if (level === 0 && key === "languages") {
-      typeValue = `
-{
-  code: string;
-  default: boolean;
-  direction: string;
-  name: string;
-  rules: Record<string, string>;
-}[]`.trimStart();
+    const {
+      typeValue: customTypeValue,
+      generatedInterfaces: customGeneratedInterfaces,
+    } = typeResolver(key, value, {
+      level,
+      interfaceName,
+      currentKeyInterfaceName,
+    });
+
+    if (customGeneratedInterfaces) {
+      generatedInterfaces += customGeneratedInterfaces;
     }
-    // Handle Panel components
-    else if (nestedInterfaceName === "PanelPluginsComponents") {
-      typeValue = "Record<string, ComponentPublicInstance>";
-    }
-    // Overwrite view props, since they are specific to each view
-    else if (
-      (interfaceName === "PanelViewProps" && key === "tabs") ||
-      (interfaceName === "PanelViewPropsTab" && key === "columns")
-    ) {
-      typeValue = "Record<string, any>[]";
-    }
-    // Overwrite model content, since it's a dynamic object
-    else if (nestedInterfaceName === "PanelViewPropsModelContent") {
-      typeValue = "Record<string, any>";
-    }
-    // Simplify interfaces for string-based enums
-    else if (
-      nestedInterfaceName === "PanelTranslationData" ||
-      nestedInterfaceName === "PanelSystemAscii"
-    ) {
-      typeValue = "Record<string, string>";
+
+    if (customTypeValue) {
+      typeValue = customTypeValue;
     } else if (valueType === "object") {
-      typeValue = nestedInterfaceName;
-      _nestedInterfaces += generateTypeScriptInterface(
+      typeValue = currentKeyInterfaceName;
+      generatedInterfaces += generateTypeScriptInterface(
         value,
-        nestedInterfaceName,
-        { level: level + 1 },
+        currentKeyInterfaceName,
+        { level: level + 1, typeResolver },
       );
     }
 
-    _interface += `${CODE_INDENT}${sanitizeKey(key)}${valueType === "undefined" ? "?" : ""}: ${typeValue};\n`;
+    interfaceBody += `${CODE_INDENT}${sanitizeKey(key)}${valueType === "undefined" ? "?" : ""}: ${typeValue};\n`;
   }
 
   return `
 export interface ${interfaceName} {
-${_interface}}
-${_nestedInterfaces}`.trimStart();
+${interfaceBody}}
+${generatedInterfaces}`.trimStart();
 }
 
 function generateTypeDefinition(valueType, value) {
