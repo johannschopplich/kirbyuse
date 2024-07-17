@@ -11,7 +11,7 @@
  *
  * // Will inherit props from extended default block
  * const props = defineProps({});
- * const emit = defineEmits();
+ * const emit = defineEmits([]);
  *
  * const { field, open, update } = useBlock(props, emit);
  * ```
