@@ -21,27 +21,16 @@ if (typeof window !== "undefined" && window.panel) {
         // Handle top-level definitions
         if (level === 0 && key === "app") {
           // Use correct Vue type and generate only the store types
-          typeValue =
-            "InstanceType<VueConstructor> & { $store: Readonly<PanelAppStore> }";
-          generatedInterfaces = generateTypeScriptInterface(
-            {
-              // Use plain object for state
-              state: {},
-              // Extract getters from the store
-              getters: value.$store.getters,
-            },
-            `${interfaceName}AppStore`,
-            { level: level + 1 },
-          );
+          typeValue = "InstanceType<VueConstructor>";
           // Make language rules generic by overwriting the type
         } else if (level === 0 && key === "languages") {
           typeValue = `
 {
-code: string;
-default: boolean;
-direction: string;
-name: string;
-rules: Record<string, string>;
+  code: string;
+  default: boolean;
+  direction: string;
+  name: string;
+  rules: Record<string, string>;
 }[]`.trimStart();
         }
         // Handle Panel components
@@ -61,7 +50,10 @@ rules: Record<string, string>;
         }
         // Simplify interfaces for string-based enums
         else if (
+          currentKeyInterfaceName === "PanelLanguageRules" ||
           currentKeyInterfaceName === "PanelTranslationData" ||
+          currentKeyInterfaceName === "PanelPluginsIcons" ||
+          currentKeyInterfaceName === "PanelSystemSlugs" ||
           currentKeyInterfaceName === "PanelSystemAscii"
         ) {
           typeValue = "Record<string, string>";

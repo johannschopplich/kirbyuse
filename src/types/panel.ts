@@ -22,6 +22,7 @@ export interface Panel {
   activation: PanelActivation;
   drag: PanelDrag;
   events: PanelEvents;
+  searcher: PanelSearcher;
   upload: PanelUpload;
   language: PanelLanguage;
   menu: PanelMenu;
@@ -51,7 +52,7 @@ export interface Panel {
   searches: PanelSearches;
   urls: PanelUrls;
   api: PanelApi;
-  app: InstanceType<VueConstructor> & { $store: Readonly<PanelAppStore> };
+  app: InstanceType<VueConstructor>;
   plugin: (...args: any[]) => any;
 }
 export interface PanelActivation {
@@ -101,12 +102,20 @@ export interface PanelEvents {
   $emit: (arg1?: any) => any;
   $off: (arg1?: any) => any;
 }
+export interface PanelSearcher {
+  controller: any;
+  requests: number;
+  isLoading: boolean;
+  open: (arg1?: any) => any;
+  query: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
+}
 export interface PanelUpload {
   accept: string;
   attributes: PanelUploadAttributes;
   files: any[];
   max: any;
   multiple: boolean;
+  preview: PanelUploadPreview;
   replacing: any;
   url: any;
   key: (...args: any[]) => any;
@@ -137,13 +146,14 @@ export interface PanelUpload {
   upload: (arg1?: any, arg2?: any) => Promise<any>;
 }
 export type PanelUploadAttributes = Record<string, any>;
+export type PanelUploadPreview = Record<string, any>;
 export type PanelUploadOn = Record<string, any>;
 export interface PanelLanguage {
   code: string;
   default: boolean;
   direction: string;
   name: string;
-  rules: any[];
+  rules: Record<string, string>;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
   reset: (...args: any[]) => any;
@@ -207,7 +217,7 @@ export interface PanelSystem {
   csrf: string;
   isLocal: boolean;
   locales: PanelSystemLocales;
-  slugs: any[];
+  slugs: Record<string, string>;
   title: string;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
@@ -396,6 +406,7 @@ export interface PanelViewPropsModel {
   previewUrl: string;
   status: string;
   title: string;
+  uuid: string;
 }
 export interface PanelViewPropsStatus {
   label: string;
@@ -512,7 +523,7 @@ export type PanelDialogQuery = Record<string, any>;
 export interface PanelPlugins {
   components: Record<string, ComponentPublicInstance>;
   created: any[];
-  icons: PanelPluginsIcons;
+  icons: Record<string, string>;
   login: any;
   textareaButtons: PanelPluginsTextareaButtons;
   use: any[];
@@ -522,7 +533,6 @@ export interface PanelPlugins {
   routes: any[];
   views: PanelPluginsViews;
 }
-export type PanelPluginsIcons = Record<string, any>;
 export type PanelPluginsTextareaButtons = Record<string, any>;
 export type PanelPluginsThirdParty = Record<string, any>;
 export type PanelPluginsWriterMarks = Record<string, any>;
@@ -564,6 +574,7 @@ export interface PanelPermissionsFiles {
 export interface PanelPermissionsLanguages {
   create: boolean;
   delete: boolean;
+  update: boolean;
 }
 export interface PanelPermissionsPages {
   access: boolean;
@@ -739,19 +750,4 @@ export interface PanelApiUsers {
   search: (arg1?: any, arg2?: any) => Promise<any>;
   update: (arg1?: any, arg2?: any) => Promise<any>;
   url: (arg1?: any, arg2?: any) => any;
-}
-export interface PanelAppStore {
-  state: PanelAppStoreState;
-  getters: PanelAppStoreGetters;
-}
-export type PanelAppStoreState = Record<string, any>;
-export interface PanelAppStoreGetters {
-  "content/exists": (arg1?: any, arg2?: any) => any;
-  "content/hasChanges": (arg1?: any) => any;
-  "content/isCurrent": () => any;
-  "content/id": (arg1?: any) => any;
-  "content/model": (arg1?: any) => any;
-  "content/originals": (arg1?: any) => any;
-  "content/values": (arg1?: any) => any;
-  "content/changes": (arg1?: any) => any;
 }
