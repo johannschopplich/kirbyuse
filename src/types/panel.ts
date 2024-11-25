@@ -23,6 +23,7 @@ export interface Panel {
   drag: PanelDrag;
   events: PanelEvents;
   searcher: PanelSearcher;
+  theme: PanelTheme;
   upload: PanelUpload;
   language: PanelLanguage;
   menu: PanelMenu;
@@ -32,6 +33,7 @@ export interface Panel {
   user: PanelUser;
   dropdown: PanelDropdown;
   view: PanelView;
+  content: PanelContent;
   drawer: PanelDrawer;
   dialog: PanelDialog;
   redirect: (...args: any[]) => any;
@@ -56,8 +58,14 @@ export interface Panel {
   plugin: (...args: any[]) => any;
 }
 export interface PanelActivation {
-  close: (...args: any[]) => any;
   isOpen: boolean;
+  key: (...args: any[]) => any;
+  defaults: (...args: any[]) => any;
+  reset: (...args: any[]) => any;
+  set: (arg1?: any) => any;
+  state: (...args: any[]) => any;
+  validateState: (arg1?: any) => any;
+  close: (...args: any[]) => any;
   open: (...args: any[]) => any;
 }
 export interface PanelDrag {
@@ -75,6 +83,7 @@ export interface PanelDrag {
 }
 export type PanelDragData = Record<string, any>;
 export interface PanelEvents {
+  beforeunload: (arg1?: any) => any;
   blur: (arg1?: any) => any;
   click: (arg1?: any) => any;
   copy: (arg1?: any) => any;
@@ -98,9 +107,6 @@ export interface PanelEvents {
   prevent: (arg1?: any) => any;
   subscribe: (...args: any[]) => any;
   unsubscribe: (...args: any[]) => any;
-  $on: (arg1?: any) => any;
-  $emit: (arg1?: any) => any;
-  $off: (arg1?: any) => any;
 }
 export interface PanelSearcher {
   controller: any;
@@ -109,7 +115,19 @@ export interface PanelSearcher {
   open: (arg1?: any) => any;
   query: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
 }
+export interface PanelTheme {
+  setting: any;
+  key: (...args: any[]) => any;
+  defaults: (...args: any[]) => any;
+  reset: (...args: any[]) => any;
+  set: (arg1?: any) => any;
+  state: (...args: any[]) => any;
+  validateState: (arg1?: any) => any;
+  current: string;
+  system: string;
+}
 export interface PanelUpload {
+  abort: any;
   accept: string;
   attributes: PanelUploadAttributes;
   files: any[];
@@ -262,6 +280,7 @@ export interface PanelTranslation {
   data: Record<string, string>;
   direction: string;
   name: string;
+  weekday: number;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
   reset: (...args: any[]) => any;
@@ -353,19 +372,47 @@ export interface PanelView {
 }
 export type PanelViewOn = Record<string, any>;
 export interface PanelViewProps {
+  api: string;
+  buttons: {
+    component: string;
+    key: string;
+    props: {
+      class: string;
+      icon: string;
+      responsive: boolean;
+      size: string;
+      title: string;
+      type: string;
+      variant: string;
+      options: (
+        | { text: string; icon: string; link: string; target: string }
+        | string
+      )[];
+    };
+  }[];
+  content: Record<string, any>;
+  id: string;
+  link: string;
   lock: PanelViewPropsLock;
+  originals: Record<string, any>;
   permissions: PanelViewPropsPermissions;
   tabs: Record<string, any>[];
+  uuid: string;
   tab: PanelViewPropsTab;
   next: PanelViewPropsNext;
   prev: PanelViewPropsPrev;
   blueprint: string;
   model: PanelViewPropsModel;
-  status: PanelViewPropsStatus;
+  title: string;
 }
 export interface PanelViewPropsLock {
-  state: any;
-  data: boolean;
+  isLocked: boolean;
+  modified: any;
+  user: PanelViewPropsLockUser;
+}
+export interface PanelViewPropsLockUser {
+  id: string;
+  email: string;
 }
 export interface PanelViewPropsPermissions {
   access: boolean;
@@ -408,9 +455,18 @@ export interface PanelViewPropsModel {
   title: string;
   uuid: string;
 }
-export interface PanelViewPropsStatus {
-  label: string;
-  text: string;
+export interface PanelContent {
+  changes: (arg1?: any) => any;
+  discard: (arg1?: any) => Promise<any>;
+  isCurrent: () => any;
+  isLocked: (arg1?: any) => any;
+  isProcessing: boolean;
+  lock: (arg1?: any) => any;
+  publish: (arg1?: any, arg2?: any) => Promise<any>;
+  save: (arg1?: any, arg2?: any) => Promise<any>;
+  saveAbortController: any;
+  update: (arg1?: any, arg2?: any) => any;
+  saveLazy: (arg1?: any) => any;
 }
 export interface PanelDrawer {
   component: any;
@@ -446,7 +502,6 @@ export interface PanelDrawer {
   isOpen: boolean;
   submit: (arg1?: any, arg2?: any) => Promise<any>;
   success: (arg1?: any) => any;
-  successDispatch: (arg1?: any) => any;
   successEvents: (arg1?: any) => any;
   successNotification: (arg1?: any) => any;
   successRedirect: (arg1?: any) => any;
@@ -510,7 +565,6 @@ export interface PanelDialog {
   isOpen: boolean;
   submit: (arg1?: any, arg2?: any) => Promise<any>;
   success: (arg1?: any) => any;
-  successDispatch: (arg1?: any) => any;
   successEvents: (arg1?: any) => any;
   successNotification: (arg1?: any) => any;
   successRedirect: (arg1?: any) => any;
@@ -526,8 +580,9 @@ export interface PanelPlugins {
   icons: Record<string, string>;
   login: any;
   textareaButtons: PanelPluginsTextareaButtons;
-  use: any[];
   thirdParty: PanelPluginsThirdParty;
+  use: any[];
+  viewButtons: PanelPluginsViewButtons;
   writerMarks: PanelPluginsWriterMarks;
   writerNodes: PanelPluginsWriterNodes;
   routes: any[];
@@ -535,13 +590,19 @@ export interface PanelPlugins {
 }
 export type PanelPluginsTextareaButtons = Record<string, any>;
 export type PanelPluginsThirdParty = Record<string, any>;
+export type PanelPluginsViewButtons = Record<string, any>;
 export type PanelPluginsWriterMarks = Record<string, any>;
 export type PanelPluginsWriterNodes = Record<string, any>;
 export type PanelPluginsViews = Record<string, any>;
 export interface PanelConfig {
+  api: PanelConfigApi;
   debug: boolean;
   kirbytext: boolean;
   translation: string;
+  upload: number;
+}
+export interface PanelConfigApi {
+  methodOverwrite: boolean;
 }
 export interface PanelPermissions {
   access: PanelPermissionsAccess;
@@ -569,6 +630,7 @@ export interface PanelPermissionsFiles {
   list: boolean;
   read: boolean;
   replace: boolean;
+  sort: boolean;
   update: boolean;
 }
 export interface PanelPermissionsLanguages {

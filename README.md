@@ -10,6 +10,7 @@ A collection of Vue Composition utilities and type hints to improve the DX for w
 - 🧃 IntelliSense support for Kirby's global `window.panel` object
 - 🍿 Helpers like `usePanel` to write future-proof Kirby plugins
 - 🚀 Aliases for Composition API functions like `ref` and `computed`
+- 📇 Supports Kirby 5 & Kirby 6
 
 ## Setup
 
@@ -83,13 +84,18 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ```vue
 <script setup>
-import { computed, ref, usePanel, useStore, watch } from "kirbyuse";
+import { computed, ref, useContent, usePanel, useStore, watch } from "kirbyuse";
 
 const panel = usePanel();
-const store = useStore();
 
 const label = ref("");
-const currentContent = computed(() => store.getters["content/values"]());
+// For Kirby 4, use the Vuex store directly:
+const store = useStore();
+const currentContent = computed(() => panel.view.props.content);
+
+// In Kirby 5, the Vuex store has been removed. Use the
+// `useContent` composable and its computed getter instead:
+const { currentContent, contentChanges } = useContent();
 
 watch(currentContent, (content) => {
   console.log("Content changed:", content);

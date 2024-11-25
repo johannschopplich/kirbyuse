@@ -17,5 +17,13 @@ interface PanelAppStore {
 /** @deprecated The Vuex store is removed in Kirby 5 */
 export function useStore() {
   // @ts-expect-error: Removed in Kirby 5
-  return usePanel().app.$store as Readonly<PanelAppStore>;
+  const store = usePanel().app.$store as Readonly<PanelAppStore>;
+
+  if (!store) {
+    throw new Error(
+      "The Vuex store is not available. Are you using Kirby 5? Use the `useContent` composable instead.",
+    );
+  }
+
+  return store;
 }
