@@ -45,7 +45,11 @@ if (typeof window !== "undefined" && window.panel) {
           typeValue = "Record<string, any>[]";
         }
         // Overwrite model content, since it's a dynamic object
-        else if (currentKeyInterfaceName === "PanelViewPropsModelContent") {
+        else if (
+          currentKeyInterfaceName === "PanelViewPropsModelContent" ||
+          currentKeyInterfaceName === "PanelViewPropsOriginals" ||
+          currentKeyInterfaceName === "PanelViewPropsContent"
+        ) {
           typeValue = "Record<string, any>";
         }
         // Simplify interfaces for string-based enums
@@ -66,7 +70,7 @@ if (typeof window !== "undefined" && window.panel) {
 
   console.log(
     `
-import type { VueConstructor, ComponentPublicInstance } from "vue";
+import type { ComponentPublicInstance, VueConstructor } from "vue";
 
 ${tsInterface}`.trimStart(),
   );
