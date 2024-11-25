@@ -84,19 +84,22 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ```vue
 <script setup>
-import { computed, ref, usePanel, watch } from "kirbyuse";
+import { computed, ref, useContent, usePanel, useStore, watch } from "kirbyuse";
 
 const panel = usePanel();
 
 const label = ref("");
+// For Kirby 4, use the Vuex store directly:
+const store = useStore();
 const currentContent = computed(() => panel.view.props.content);
 
-watch(
-  () => currentContent,
-  (content) => {
-    console.log("Content changed:", content);
-  },
-);
+// In Kirby 5, the Vuex store has been removed. Use the
+// `useContent` composable and its computed getter instead:
+const { currentContent, contentChanges } = useContent();
+
+watch(currentContent, (content) => {
+  console.log("Content changed:", content);
+});
 
 function handleClick() {
   panel.notification.success("Composition API is awesome!");

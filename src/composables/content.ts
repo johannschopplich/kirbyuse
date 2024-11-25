@@ -12,7 +12,7 @@ export function useContent() {
   }
 
   const currentContent = computed(() => panel.view.props.content);
-  const changedContent = computed(() => content.changes());
+  const contentChanges = computed(() => content.changes());
 
   /**
    * Updates the form values of the current view without saving.
@@ -35,7 +35,7 @@ export function useContent() {
     // Reactive objects
     content,
     currentContent,
-    changedContent,
+    contentChanges,
     // Methods
     update,
   };
