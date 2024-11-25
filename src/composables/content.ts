@@ -3,7 +3,6 @@ import { usePanel } from "./panel";
 
 export function useContent() {
   const panel = usePanel();
-  const content = panel.content;
 
   if (!panel.content) {
     throw new Error(
@@ -12,7 +11,7 @@ export function useContent() {
   }
 
   const currentContent = computed(() => panel.view.props.content);
-  const contentChanges = computed(() => content.changes());
+  const contentChanges = computed(() => panel.content.changes());
 
   /**
    * Updates the form values of the current view without saving.
@@ -33,7 +32,7 @@ export function useContent() {
 
   return {
     // Reactive objects
-    content,
+    content: panel.content,
     currentContent,
     contentChanges,
     // Methods
