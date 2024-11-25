@@ -10,7 +10,7 @@ A collection of Vue Composition utilities and type hints to improve the DX for w
 - 🧃 IntelliSense support for Kirby's global `window.panel` object
 - 🍿 Helpers like `usePanel` to write future-proof Kirby plugins
 - 🚀 Aliases for Composition API functions like `ref` and `computed`
-- 📇 Supports Kirby 5 & Kirby 6
+- 📇 Ready for Kirby 4 & Kirby 5
 
 ## Setup
 
