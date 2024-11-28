@@ -8,8 +8,6 @@ export * from "./font";
 export * from "./help";
 export * from "./icon";
 export * from "./id";
-export * from "./index";
-export * from "./invalid";
 export * from "./label";
 export * from "./layout";
 export * from "./maxlength";
