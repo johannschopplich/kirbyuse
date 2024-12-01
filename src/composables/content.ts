@@ -6,7 +6,7 @@ export function useContent() {
 
   if (!panel.content) {
     throw new Error(
-      "The content object is not available. Are you using Kirby 4?",
+      "The content object is not available. It requires Kirby 5 or higher.",
     );
   }
 
