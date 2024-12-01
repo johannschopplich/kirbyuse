@@ -12,6 +12,9 @@ export function useContent() {
 
   const currentContent = computed(() => panel.view.props.content);
   const contentChanges = computed(() => panel.content.changes());
+  const hasChanges = computed(
+    () => Object.keys(contentChanges.value).length > 0,
+  );
 
   /**
    * Updates the form values of the current view without saving.
@@ -35,6 +38,7 @@ export function useContent() {
     content: panel.content,
     currentContent,
     contentChanges,
+    hasChanges,
     // Methods
     update,
   };
