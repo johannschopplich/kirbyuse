@@ -11,8 +11,8 @@ export interface Panel {
   open: (arg1?: any, arg2?: any) => Promise<any>;
   overlays: (...args: any[]) => any;
   post: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
-  request: (...args: any[]) => Promise<any>;
-  search: (...args: any[]) => Promise<any>;
+  request: (arg1?: any, arg2?: any) => Promise<any>;
+  search: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
   set: (arg1?: any) => any;
   state: (...args: any[]) => any;
   title: string;
@@ -36,7 +36,7 @@ export interface Panel {
   content: PanelContent;
   drawer: PanelDrawer;
   dialog: PanelDialog;
-  redirect: (...args: any[]) => any;
+  redirect: (arg1?: any) => any;
   reload: (...args: any[]) => Promise<any>;
   t: (...args: any[]) => any;
   plugins: PanelPlugins;
@@ -117,6 +117,7 @@ export interface PanelSearcher {
 }
 export interface PanelTheme {
   setting: any;
+  system: string;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
   reset: (...args: any[]) => any;
@@ -124,7 +125,6 @@ export interface PanelTheme {
   state: (...args: any[]) => any;
   validateState: (arg1?: any) => any;
   current: string;
-  system: string;
 }
 export interface PanelUpload {
   abort: any;
@@ -149,9 +149,9 @@ export interface PanelUpload {
   listeners: (...args: any[]) => any;
   on: PanelUploadOn;
   input: any;
-  cancel: (...args: any[]) => any;
+  cancel: (...args: any[]) => Promise<any>;
   completed: any[];
-  done: (...args: any[]) => any;
+  done: (...args: any[]) => Promise<any>;
   findDuplicate: (arg1?: any) => any;
   hasUniqueName: (arg1?: any) => any;
   file: (arg1?: any) => any;
@@ -234,7 +234,7 @@ export interface PanelSystem {
   ascii: Record<string, string>;
   csrf: string;
   isLocal: boolean;
-  locales: PanelSystemLocales;
+  locales: Record<string, string>;
   slugs: Record<string, string>;
   title: string;
   key: (...args: any[]) => any;
@@ -243,37 +243,6 @@ export interface PanelSystem {
   set: (arg1?: any) => any;
   state: (...args: any[]) => any;
   validateState: (arg1?: any) => any;
-}
-export interface PanelSystemLocales {
-  bg: string;
-  ca: string;
-  cs: string;
-  da: string;
-  de: string;
-  el: string;
-  en: string;
-  eo: string;
-  es_419: string;
-  es_ES: string;
-  fa: string;
-  fi: string;
-  fr: string;
-  hu: string;
-  id: string;
-  is_IS: string;
-  it: string;
-  ko: string;
-  lt: string;
-  nb: string;
-  nl: string;
-  pl: string;
-  pt_BR: string;
-  pt_PT: string;
-  ro: string;
-  ru: string;
-  sk: string;
-  sv_SE: string;
-  tr: string;
 }
 export interface PanelTranslation {
   code: string;
@@ -406,6 +375,7 @@ export interface PanelViewProps {
   title: string;
 }
 export interface PanelViewPropsLock {
+  isLegacy: boolean;
   isLocked: boolean;
   modified: any;
   user: PanelViewPropsLockUser;
@@ -457,15 +427,22 @@ export interface PanelViewPropsModel {
 }
 export interface PanelContent {
   changes: (arg1?: any) => any;
+  dialog: any;
   discard: (arg1?: any) => Promise<any>;
-  isCurrent: () => any;
+  emit: (arg1?: any, arg2?: any, arg3?: any) => any;
+  env: (arg1?: any) => any;
+  isCurrent: (arg1?: any) => any;
   isLocked: (arg1?: any) => any;
   isProcessing: boolean;
   lock: (arg1?: any) => any;
+  lockDialog: (arg1?: any) => any;
+  merge: (arg1?: any, arg2?: any) => any;
   publish: (arg1?: any, arg2?: any) => Promise<any>;
+  request: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
   save: (arg1?: any, arg2?: any) => Promise<any>;
   saveAbortController: any;
-  update: (arg1?: any, arg2?: any) => any;
+  update: (arg1?: any, arg2?: any) => Promise<any>;
+  updateLazy: (arg1?: any, arg2?: any) => any;
   saveLazy: (arg1?: any) => any;
 }
 export interface PanelDrawer {
@@ -579,19 +556,17 @@ export interface PanelPlugins {
   created: any[];
   icons: Record<string, string>;
   login: any;
-  textareaButtons: PanelPluginsTextareaButtons;
+  textareaButtons: Record<string, any>;
   thirdParty: PanelPluginsThirdParty;
-  use: any[];
+  use: (...args: any[]) => any[];
   viewButtons: PanelPluginsViewButtons;
-  writerMarks: PanelPluginsWriterMarks;
+  writerMarks: Record<string, any>;
   writerNodes: PanelPluginsWriterNodes;
   routes: any[];
   views: PanelPluginsViews;
 }
-export type PanelPluginsTextareaButtons = Record<string, any>;
 export type PanelPluginsThirdParty = Record<string, any>;
 export type PanelPluginsViewButtons = Record<string, any>;
-export type PanelPluginsWriterMarks = Record<string, any>;
 export type PanelPluginsWriterNodes = Record<string, any>;
 export type PanelPluginsViews = Record<string, any>;
 export interface PanelConfig {

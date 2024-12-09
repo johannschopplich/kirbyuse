@@ -46,6 +46,8 @@ if (typeof window !== "undefined" && window.panel) {
         }
         // Overwrite model content, since it's a dynamic object
         else if (
+          currentKeyInterfaceName === "PanelPluginsTextareaButtons" ||
+          currentKeyInterfaceName === "PanelPluginsWriterMarks" ||
           currentKeyInterfaceName === "PanelViewPropsModelContent" ||
           currentKeyInterfaceName === "PanelViewPropsOriginals" ||
           currentKeyInterfaceName === "PanelViewPropsContent"
@@ -57,6 +59,7 @@ if (typeof window !== "undefined" && window.panel) {
           currentKeyInterfaceName === "PanelLanguageRules" ||
           currentKeyInterfaceName === "PanelTranslationData" ||
           currentKeyInterfaceName === "PanelPluginsIcons" ||
+          currentKeyInterfaceName === "PanelSystemLocales" ||
           currentKeyInterfaceName === "PanelSystemSlugs" ||
           currentKeyInterfaceName === "PanelSystemAscii"
         ) {
