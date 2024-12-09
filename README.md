@@ -109,7 +109,9 @@ function handleClick() {
 <template>
   <k-section :label="label">
     <k-text>
-      <h1 @click="handleClick()">My Section</h1>
+      <h1 @click="handleClick()">
+        My Section
+      </h1>
     </k-text>
   </k-section>
 </template>
