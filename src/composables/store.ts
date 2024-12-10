@@ -15,12 +15,17 @@ interface PanelAppStoreGetters {
 interface PanelAppStore {
   state: PanelAppStoreState;
   getters: PanelAppStoreGetters;
+  commit: (arg1: any, arg2: any, arg3: any) => any;
+  dispatch: (arg1: any, arg2: any) => any;
 }
 
-/** @deprecated The Vuex store is removed in Kirby 5 */
+/**
+ * Returns the Vuex store of the Panel app.
+ *
+ * @deprecated The Vuex store is removed in Kirby 5. Use the `useContent` composable instead.
+ */
 export function useStore() {
-  // @ts-expect-error: Removed in Kirby 5
-  const store = usePanel().app.$store as Readonly<PanelAppStore>;
+  const store = (usePanel() as any).app.$store as Readonly<PanelAppStore>;
 
   if (!store) {
     throw new Error(
