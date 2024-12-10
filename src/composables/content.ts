@@ -30,9 +30,7 @@ export function useContent() {
     : new Proxy({} as PanelContent, {
         get() {
           return () => {
-            throw new Error(
-              'The "window.panel.content" API is not available in Kirby 4.',
-            );
+            // `window.panel.content` is not available in Kirby 4
           };
         },
       });
