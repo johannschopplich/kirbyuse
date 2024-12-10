@@ -41,16 +41,10 @@ export function useContent() {
   const update = (
     values?: Record<string, any>,
   ): Record<string, any> | undefined => {
-    if (!values || Object.keys(values).length === 0) {
-      return;
-    }
-
-    if (!_isKirby5) {
+    if (!_isKirby5 && values) {
       for (const [key, value] of Object.entries(values)) {
         store.dispatch("content/update", [key, value]);
       }
-
-      return contentChanges.value;
     }
 
     return content.merge(values);
