@@ -17,21 +17,32 @@ export function useContent() {
   const _isKirby5 = isKirby5();
 
   const currentContent = _isKirby5
-    ? computed(() => panel.view.props.content)
-    : computed(() => store.getters["content/values"]());
+    ? computed<Record<string, any>>(() => panel.view.props.content)
+    : computed<Record<string, any>>(() => store.getters["content/values"]());
   const contentChanges = _isKirby5
-    ? computed(() => panel.content.changes())
-    : computed(() => store.getters["content/changes"]());
+    ? computed<Record<string, any>>(() => panel.content.changes())
+    : computed<Record<string, any>>(() => store.getters["content/changes"]());
   const hasChanges = _isKirby5
-    ? computed(() => store.getters["content/hasChanges"]())
-    : computed(() => Object.keys(contentChanges.value).length > 0);
-
-  const content = _isKirby5 ? panel.content : ({} as PanelContent);
+    ? computed<boolean>(() => Object.keys(contentChanges.value).length > 0)
+    : computed<boolean>(() => store.getters["content/hasChanges"]());
+  const content = _isKirby5
+    ? panel.content
+    : new Proxy({} as PanelContent, {
+        get() {
+          return () => {
+            throw new Error(
+              'The "window.panel.content" API is not available in Kirby 4.',
+            );
+          };
+        },
+      });
 
   /**
    * Updates the form values of the current view without saving them.
    */
-  const update = (values?: Record<string, any>) => {
+  const update = (
+    values?: Record<string, any>,
+  ): Record<string, any> | undefined => {
     if (!values || Object.keys(values).length === 0) {
       return;
     }

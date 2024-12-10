@@ -80,10 +80,6 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ## API
 
-Da der Arbeitsbereich-Index noch erstellt wird, kann die Antwort weniger genau sein.
-
-Here's the documentation for the composables in your workspace:
-
 ### useApi
 
 Returns Kirby's Panel API for making HTTP requests to the backend.
