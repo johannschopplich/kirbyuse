@@ -78,6 +78,112 @@ window.panel.notification.success("Kirby is awesome!");
 
 The import will provide global type augmentations for the `window.panel` object. Every time you access the `panel` object, you get IntelliSense support for all available methods and services.
 
+## API
+
+Da der Arbeitsbereich-Index noch erstellt wird, kann die Antwort weniger genau sein.
+
+Here's the documentation for the composables in your workspace:
+
+### useApi
+
+Returns Kirby's Panel API for making HTTP requests to the backend.
+
+This composable is a simple shortcut to `window.panel.api`.
+
+```ts
+import { useApi } from "kirbyuse";
+
+const api = useApi();
+// Make API calls
+await api.get("pages/my-page");
+```
+
+### useApp
+
+Returns the main Panel Vue instance.
+
+This composable is a simple shortcut to `window.panel.app`.
+
+```ts
+import { useApp } from "kirbyuse";
+
+const app = useApp();
+// Access Vue instance methods and properties
+console.log(app.$root);
+```
+
+### useBlock
+
+Provides block methods for custom block components, including field access and updates.
+
+```ts
+import { computed, ref, useApi, useBlock, usePanel, watch } from "kirbyuse";
+
+// Will inherit props from extended default block
+const props = defineProps({});
+const emit = defineEmits([]);
+const { field } = useBlock(props, emit);
+
+const source = computed(() => props.content?.source?.[0]);
+const captionMarks = computed(() => field("caption", { marks: true }).marks);
+```
+
+### useContent
+
+Provides reactive getters and methods to work with content of the current view.
+
+> [!TIP]
+> Compatible with both Kirby 4 and 5. The returned getters and methods are shimmed for Kirby 4 in a Kirby 4 environment.
+
+```ts
+import { useContent } from "kirbyuse";
+
+const { currentContent, contentChanges, hasChanges, update } = useContent();
+
+// Watch for content changes
+watch(currentContent, (newContent) => {
+  console.log("Content changed:", newContent);
+});
+
+// Update content of the current view
+update({ excerpt: "Hello, Kirby!" });
+```
+
+### usePanel
+
+Returns the reactive Kirby Panel object with type hints.
+
+This composable is a simple shortcut to `window.panel`.
+
+```ts
+import { usePanel } from "kirbyuse";
+
+const panel = usePanel();
+// Access panel services
+panel.notification.success("Success!");
+```
+
+### useSection
+
+Provides methods for loading section data.
+
+See the [section example](#panel-section) for a usage example.
+
+### useStore
+
+Returns the Vuex store of the Panel app (Kirby 4 only, will not work in Kirby 5).
+
+```ts
+import { useStore } from "kirbyuse";
+
+const store = useStore();
+// Access store
+const content = comptued(() => store.getters["content/values"]());
+```
+
+> [!TIP]
+> Use the `useContent` composable instead for common use cases, such as getting the current content, content changes, and updating content.
+
 ## Examples
 
 ### Panel Section

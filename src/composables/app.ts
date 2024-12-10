@@ -1,7 +1,7 @@
 import { usePanel } from "./panel";
 
 /**
- * Returns the Panel Vue instance.
+ * Returns the main Panel Vue instance.
  *
  * @remarks
  * This composable is a simple shortcut to `window.panel.app`.
