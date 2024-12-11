@@ -40,7 +40,7 @@ class BrowserReporter {
   private readonly levelColorMap: Partial<ColorMap> = {
     0: "#c0392b", // Red
     1: "#f39c12", // Yellow
-    2: "#00BCD4", // Cyan
+    3: "#00BCD4", // Cyan
   };
   private readonly typeColorMap: Partial<TypeColorMap> = {
     success: "#2ecc71", // Green
@@ -48,19 +48,19 @@ class BrowserReporter {
 
   constructor() {}
 
-  log(logObj: LogEvent) {
-    const consoleLogFn = resolveLogFn(logObj.level);
+  log(logEvent: LogEvent) {
+    const consoleLogFn = resolveLogFn(logEvent.level);
 
     // Type
-    const type = logObj.type === "log" ? "" : logObj.type;
+    const type = logEvent.type === "log" ? "" : logEvent.type;
 
     // Tag
-    const tag = logObj.tag || "";
+    const tag = logEvent.tag || "";
 
     // Styles
     const color =
-      this.typeColorMap[logObj.type as keyof typeof this.typeColorMap] ||
-      this.levelColorMap[logObj.level as keyof typeof this.levelColorMap] ||
+      this.typeColorMap[logEvent.type as keyof typeof this.typeColorMap] ||
+      this.levelColorMap[logEvent.level as keyof typeof this.levelColorMap] ||
       this.defaultColor;
     const style = `
 background: ${color};
@@ -73,16 +73,16 @@ padding: 2px 0.5em;
     const badge = `%c${[tag, type].filter(Boolean).join(":")}`;
 
     // Log to the console
-    if (typeof logObj.args[0] === "string") {
+    if (typeof logEvent.args[0] === "string") {
       consoleLogFn(
-        `${badge}%c ${logObj.args[0]}`,
+        `${badge}%c ${logEvent.args[0]}`,
         style,
         // Empty string as style resets to default console style
         "",
-        ...logObj.args.slice(1),
+        ...logEvent.args.slice(1),
       );
     } else {
-      consoleLogFn(badge, style, ...logObj.args);
+      consoleLogFn(badge, style, ...logEvent.args);
     }
   }
 }
