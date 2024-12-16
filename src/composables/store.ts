@@ -1,3 +1,4 @@
+import { isKirby5 } from "./compatibility";
 import { usePanel } from "./panel";
 
 type PanelAppStoreState = Record<string, any>;
@@ -25,10 +26,7 @@ interface PanelAppStore {
  * @deprecated The Vuex store is removed in Kirby 5. Use the `useContent` composable instead.
  */
 export function useStore() {
-  // `window.panel.app.$store` is not available in Kirby 5
-  const store = (usePanel() as any).app.$store as Readonly<PanelAppStore>;
-
-  if (!store) {
+  if (isKirby5()) {
     return new Proxy({} as Readonly<PanelAppStore>, {
       get() {
         throw new Error(
@@ -37,6 +35,9 @@ export function useStore() {
       },
     });
   }
+
+  // @ts-expect-error: `window.panel.app.$store` is not available in Kirby 5
+  const store = usePanel().app.$store as Readonly<PanelAppStore>;
 
   return store;
 }
