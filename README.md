@@ -86,6 +86,8 @@ Returns Kirby's Panel API for making HTTP requests to the backend.
 
 This composable is a simple shortcut to `window.panel.api`.
 
+**Example:**
+
 ```ts
 import { useApi } from "kirbyuse";
 
@@ -100,6 +102,8 @@ Returns the main Panel Vue instance.
 
 This composable is a simple shortcut to `window.panel.app`.
 
+**Example:**
+
 ```ts
 import { useApp } from "kirbyuse";
 
@@ -111,6 +115,8 @@ console.log(app.$root);
 ### useBlock
 
 Provides block methods for custom block components, including field access and updates.
+
+**Example:**
 
 ```ts
 import { computed, ref, useApi, useBlock, usePanel, watch } from "kirbyuse";
@@ -131,6 +137,8 @@ Provides reactive getters and methods to work with content of the current view.
 > [!TIP]
 > Compatible with both Kirby 4 and 5. The returned getters and methods are shimmed for Kirby 4 in a Kirby 4 environment.
 
+**Example:**
+
 ```ts
 import { useContent } from "kirbyuse";
 
@@ -145,11 +153,32 @@ watch(currentContent, (newContent) => {
 update({ excerpt: "Hello, Kirby!" });
 ```
 
+### useI18n
+
+Returns translation utility functions.
+
+> [!NOTE]
+> In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects, such as those returned by a section's `label` property.
+
+**Example:**
+
+```ts
+const { t } = useI18n();
+
+// Simple string
+t("Hello"); // -> "Hello"
+
+// Translation object
+t({ en: "Hello", de: "Hallo" }); // -> Returns value based on current Panel language
+```
+
 ### usePanel
 
 Returns the reactive Kirby Panel object with type hints.
 
 This composable is a simple shortcut to `window.panel`.
+
+**Example:**
 
 ```ts
 import { usePanel } from "kirbyuse";
@@ -168,6 +197,8 @@ See the [section example](#panel-section) for a usage example.
 ### useStore
 
 Returns the Vuex store of the Panel app (Kirby 4 only, will not work in Kirby 5).
+
+**Example:**
 
 ```ts
 import { useStore } from "kirbyuse";

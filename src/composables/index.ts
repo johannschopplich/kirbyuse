@@ -3,6 +3,7 @@ export * from "./app";
 export * from "./block";
 export * from "./compatibility";
 export * from "./content";
+export * from "./i18n";
 export * from "./panel";
 export * from "./section";
 export * from "./store";
