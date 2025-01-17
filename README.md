@@ -164,15 +164,18 @@ import { useDialog } from "kirbyuse";
 
 const { openTextDialog, openFieldsDialog } = useDialog();
 
-const result = await openTextDialog("Are you sure?");
-console.log(result); // -> true or false
+const isOk = await openTextDialog("Are you sure?");
+console.log(isOk); // -> true or false
 
-await openFieldsDialog({
-  info: {
-    type: "info",
-    text: "An info message",
+const fields = {
+  email: {
+    type: "email",
+    label: "Email",
   },
-});
+};
+
+const result = await openFieldsDialog(fields);
+console.log(result); // -> { email: "..." }
 ```
 
 ### useI18n

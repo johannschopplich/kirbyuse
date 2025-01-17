@@ -2,18 +2,18 @@ import { usePanel } from "./panel";
 
 /**
  * Provides methods to open different types of dialogs.
- *
- * @example
- * ```ts
- * const { openTextDialog } = useDialog()
- *
- * const result = await openTextDialog("Are you sure?")
- * console.log(result) // -> true or false
- * ```
  */
 export function useDialog() {
   /**
    * Returns a promise that resolves when the dialog is closed.
+   *
+   * @example
+   * ```ts
+   * const { openTextDialog } = useDialog()
+   *
+   * const result = await openTextDialog("Are you sure?")
+   * console.log(result) // -> true or false
+   * ```
    */
   function openTextDialog(text: string) {
     let result = false;
@@ -42,11 +42,26 @@ export function useDialog() {
 
   /**
    * Returns a promise that resolves when the dialog is closed.
+   *
+   * @example
+   * ```ts
+   * const { openFieldsDialog } = useDialog()
+   *
+   * const fields = {
+   *   email: {
+   *     type: "email",
+   *     label: "Email",
+   *   }
+   * }
+   *
+   * const result = await openFieldsDialog(fields)
+   * console.log(result) // -> { email: "..." }
+   * ```
    */
   function openFieldsDialog(fields: Record<string, any>) {
-    let result = false;
+    let result: any;
 
-    return new Promise<boolean>((resolve) => {
+    return new Promise<any>((resolve) => {
       const panel = usePanel();
 
       panel.dialog.open({
@@ -61,8 +76,8 @@ export function useDialog() {
               resolve(result);
             }, 25);
           },
-          submit: () => {
-            result = true;
+          submit: (event: any) => {
+            result = event;
             panel.dialog.close();
           },
         },
