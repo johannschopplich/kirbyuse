@@ -7,6 +7,7 @@ import { usePanel } from "./panel";
  * In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects, such as those returned by a section's `label` property.
  *
  * @example
+ * ```ts
  * const { t } = useI18n()
  *
  * // Simple string
@@ -14,6 +15,7 @@ import { usePanel } from "./panel";
  *
  * // Translation object
  * t({ en: "Hello", de: "Hallo" }) // -> Returns value based on current Panel language
+ * ```
  */
 export function useI18n() {
   const panel = usePanel();

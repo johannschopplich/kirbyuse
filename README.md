@@ -153,6 +153,28 @@ watch(currentContent, (newContent) => {
 update({ excerpt: "Hello, Kirby!" });
 ```
 
+### useDialog
+
+Provides methods to open different types of dialogs.
+
+**Example:**
+
+```ts
+import { useDialog } from "kirbyuse";
+
+const { openTextDialog, openFieldsDialog } = useDialog();
+
+const result = await openTextDialog("Are you sure?");
+console.log(result); // -> true or false
+
+await openFieldsDialog({
+  info: {
+    type: "info",
+    text: "An info message",
+  },
+});
+```
+
 ### useI18n
 
 Returns translation utility functions.
