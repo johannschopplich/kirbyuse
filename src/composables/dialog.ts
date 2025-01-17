@@ -1,4 +1,4 @@
-import { usePanel } from "kirbyuse";
+import { usePanel } from "./panel";
 
 /**
  * Provides methods to open different types of dialogs.
