@@ -54,11 +54,28 @@ export function useDialog() {
    *   }
    * }
    *
-   * const result = await openFieldsDialog(fields)
+   * const result = await openFieldsDialog({ fields })
    * console.log(result) // -> { email: "..." }
    * ```
    */
-  function openFieldsDialog(fields: Record<string, any>) {
+  function openFieldsDialog(props: {
+    /** @default "medium" */
+    size?: string;
+    submitButton?: string | Record<string, any>;
+    text?: string;
+    /**
+     * Empty state message if no fields are defined
+     */
+    empty?: string;
+    /**
+     * An array or object with all available fields
+     */
+    fields?: Record<string, any> | Record<string, any>[];
+    /**
+     * An object with all values for the fields
+     */
+    value?: Record<string, any>;
+  }) {
     let result: any;
 
     return new Promise<any>((resolve) => {
@@ -66,9 +83,7 @@ export function useDialog() {
 
       panel.dialog.open({
         component: "k-form-dialog",
-        props: {
-          fields,
-        },
+        props,
         on: {
           // Close event will always be triggered, even on submit
           close: () => {

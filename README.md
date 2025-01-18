@@ -174,7 +174,7 @@ const fields = {
   },
 };
 
-const result = await openFieldsDialog(fields);
+const result = await openFieldsDialog({ fields });
 console.log(result); // -> { email: "..." }
 ```
 
