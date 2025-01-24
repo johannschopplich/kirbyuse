@@ -116,7 +116,7 @@ export interface PanelSearcher {
   query: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
 }
 export interface PanelTheme {
-  setting: any;
+  setting: string;
   system: string;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
@@ -558,7 +558,7 @@ export interface PanelPlugins {
   login: any;
   textareaButtons: Record<string, any>;
   thirdParty: PanelPluginsThirdParty;
-  use: (...args: any[]) => any[];
+  use: (arg1?: any) => any[];
   viewButtons: PanelPluginsViewButtons;
   writerMarks: Record<string, any>;
   writerNodes: PanelPluginsWriterNodes;
