@@ -367,6 +367,7 @@ panel.notification.success("Composition API is awesome!");
 The following open source plugins are written with the Vue Composition API:
 
 - [Kirby Content Translator](https://github.com/kirby-tools/kirby-content-translator)
+- [Kirby Minimap](https://github.com/johannschopplich/kirby-minimap)
 - [Kirby SERP Preview](https://github.com/johannschopplich/kirby-serp-preview)
 
 ## License
