@@ -426,6 +426,7 @@ export interface PanelViewPropsModel {
   uuid: string;
 }
 export interface PanelContent {
+  cancelSaving: (...args: any[]) => any;
   changes: (arg1?: any) => any;
   dialog: any;
   discard: (arg1?: any) => Promise<any>;
@@ -577,7 +578,7 @@ export interface PanelConfig {
   upload: number;
 }
 export interface PanelConfigApi {
-  methodOverwrite: boolean;
+  methodOverride: boolean;
 }
 export interface PanelPermissions {
   access: PanelPermissionsAccess;
@@ -679,7 +680,7 @@ export interface PanelUrls {
 export interface PanelApi {
   csrf: string;
   endpoint: string;
-  methodOverwrite: boolean;
+  methodOverride: boolean;
   ping: number;
   requests: any[];
   running: number;
