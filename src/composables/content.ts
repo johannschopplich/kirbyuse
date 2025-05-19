@@ -16,6 +16,12 @@ export function useContent() {
   const store = useStore();
   const _isKirby5 = isKirby5();
 
+  if (_isKirby5 && !("diff" in panel.content)) {
+    throw new Error(
+      "This plugin requires Kirby 5.0.0-rc.1 or higher. Please update your Kirby installation.",
+    );
+  }
+
   const currentContent = _isKirby5
     ? computed<Record<string, any>>(() => panel.content.version("changes"))
     : computed<Record<string, any>>(() => store.getters["content/values"]());
