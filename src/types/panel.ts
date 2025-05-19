@@ -182,7 +182,13 @@ export interface PanelLanguage {
 }
 export interface PanelMenu {
   entries: (
-    | { current: boolean; icon: string; link: string; text: string }
+    | {
+        current: boolean;
+        icon: string;
+        link: string;
+        text: string;
+        title: string;
+      }
     | string
   )[];
   hover: boolean;
@@ -348,25 +354,22 @@ export interface PanelViewProps {
     props: {
       class: string;
       icon: string;
+      link: string;
       responsive: boolean;
       size: string;
+      target: string;
       title: string;
       type: string;
       variant: string;
-      options: (
-        | { text: string; icon: string; link: string; target: string }
-        | string
-      )[];
     };
   }[];
-  content: Record<string, any>;
   id: string;
   link: string;
   lock: PanelViewPropsLock;
-  originals: Record<string, any>;
   permissions: PanelViewPropsPermissions;
   tabs: Record<string, any>[];
   uuid: string;
+  versions: PanelViewPropsVersions;
   tab: PanelViewPropsTab;
   next: PanelViewPropsNext;
   prev: PanelViewPropsPrev;
@@ -400,6 +403,10 @@ export interface PanelViewPropsPermissions {
   sort: boolean;
   update: boolean;
 }
+export interface PanelViewPropsVersions {
+  latest: Record<string, any>;
+  changes: Record<string, any>;
+}
 export interface PanelViewPropsTab {
   label: string;
   icon: string;
@@ -416,7 +423,6 @@ export interface PanelViewPropsPrev {
   title: string;
 }
 export interface PanelViewPropsModel {
-  content: Record<string, any>;
   id: string;
   link: string;
   parent: string;
@@ -427,11 +433,12 @@ export interface PanelViewPropsModel {
 }
 export interface PanelContent {
   cancelSaving: (...args: any[]) => any;
-  changes: (arg1?: any) => any;
   dialog: any;
+  diff: (arg1?: any) => any;
   discard: (arg1?: any) => Promise<any>;
   emit: (arg1?: any, arg2?: any, arg3?: any) => any;
   env: (arg1?: any) => any;
+  hasDiff: (arg1?: any) => any;
   isCurrent: (arg1?: any) => any;
   isLocked: (arg1?: any) => any;
   isProcessing: boolean;
@@ -444,6 +451,8 @@ export interface PanelContent {
   saveAbortController: any;
   update: (arg1?: any, arg2?: any) => Promise<any>;
   updateLazy: (arg1?: any, arg2?: any) => any;
+  version: (arg1?: any) => any;
+  versions: (...args: any[]) => any;
   saveLazy: (arg1?: any) => any;
 }
 export interface PanelDrawer {
@@ -553,6 +562,9 @@ export type PanelDialogOn = Record<string, any>;
 export type PanelDialogProps = Record<string, any>;
 export type PanelDialogQuery = Record<string, any>;
 export interface PanelPlugins {
+  resolveComponentExtension: (arg1?: any, arg2?: any, arg3?: any) => any;
+  resolveComponentMixins: (arg1?: any) => any;
+  resolveComponentRender: (arg1?: any) => any;
   components: Record<string, ComponentPublicInstance>;
   created: any[];
   icons: Record<string, string>;
@@ -776,7 +788,7 @@ export interface PanelApiUsers {
   changeEmail: (arg1?: any, arg2?: any) => Promise<any>;
   changeLanguage: (arg1?: any, arg2?: any) => Promise<any>;
   changeName: (arg1?: any, arg2?: any) => Promise<any>;
-  changePassword: (arg1?: any, arg2?: any) => Promise<any>;
+  changePassword: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
   changeRole: (arg1?: any, arg2?: any) => Promise<any>;
   create: (arg1?: any, arg2?: any) => Promise<any>;
   delete: (arg1?: any) => Promise<any>;

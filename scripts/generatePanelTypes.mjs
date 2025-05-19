@@ -48,9 +48,8 @@ if (typeof window !== "undefined" && window.panel) {
         else if (
           currentKeyInterfaceName === "PanelPluginsTextareaButtons" ||
           currentKeyInterfaceName === "PanelPluginsWriterMarks" ||
-          currentKeyInterfaceName === "PanelViewPropsModelContent" ||
-          currentKeyInterfaceName === "PanelViewPropsOriginals" ||
-          currentKeyInterfaceName === "PanelViewPropsContent"
+          currentKeyInterfaceName === "PanelViewPropsVersionsLatest" ||
+          currentKeyInterfaceName === "PanelViewPropsVersionsChanges"
         ) {
           typeValue = "Record<string, any>";
         }
