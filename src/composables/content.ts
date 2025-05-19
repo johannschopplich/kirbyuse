@@ -17,13 +17,13 @@ export function useContent() {
   const _isKirby5 = isKirby5();
 
   const currentContent = _isKirby5
-    ? computed<Record<string, any>>(() => panel.view.props.content)
+    ? computed<Record<string, any>>(() => panel.content.version("changes"))
     : computed<Record<string, any>>(() => store.getters["content/values"]());
   const contentChanges = _isKirby5
-    ? computed<Record<string, any>>(() => panel.content.changes())
+    ? computed<Record<string, any>>(() => panel.content.diff())
     : computed<Record<string, any>>(() => store.getters["content/changes"]());
   const hasChanges = _isKirby5
-    ? computed<boolean>(() => Object.keys(contentChanges.value).length > 0)
+    ? computed<boolean>(() => panel.content.hasDiff())
     : computed<boolean>(() => store.getters["content/hasChanges"]());
   const content = _isKirby5
     ? panel.content
