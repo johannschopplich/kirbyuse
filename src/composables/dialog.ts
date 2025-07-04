@@ -25,7 +25,6 @@ export function useDialog() {
         component: "k-text-dialog",
         props: { text },
         on: {
-          // Close event will always be triggered, even on submit
           close: () => {
             setTimeout(() => {
               resolve(result);
@@ -85,7 +84,6 @@ export function useDialog() {
         component: "k-form-dialog",
         props,
         on: {
-          // Close event will always be triggered, even on submit
           close: () => {
             setTimeout(() => {
               resolve(result);
