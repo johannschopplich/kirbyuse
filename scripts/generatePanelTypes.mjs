@@ -154,6 +154,27 @@ function generateTypeDefinition(valueType, value) {
     return "Date";
   } else if (valueType === "regexp") {
     return "RegExp";
+  } else if (valueType === "map") {
+    return "Map<any, any>";
+  } else if (valueType === "set") {
+    return "Set<any>";
+  } else if (valueType === "weakmap") {
+    return "WeakMap<object, any>";
+  } else if (valueType === "weakset") {
+    return "WeakSet<object>";
+  } else if (valueType === "promise") {
+    return "Promise<any>";
+  } else if (valueType === "symbol") {
+    return "symbol";
+  } else if (valueType === "bigint") {
+    return "bigint";
+  } else if (valueType === "arraybuffer") {
+    return "ArrayBuffer";
+  } else if (valueType === "dataview") {
+    return "DataView";
+  } else if (valueType.includes("array")) {
+    // Handle typed arrays
+    return valueType.charAt(0).toUpperCase() + valueType.slice(1);
   } else if (
     valueType === "boolean" ||
     valueType === "number" ||
@@ -166,9 +187,42 @@ function generateTypeDefinition(valueType, value) {
 }
 
 function inferObjectType(obj) {
-  // Skip Vue components
-  if (obj._isVue) {
+  // Enhanced Vue component detection
+  if (obj._isVue || obj.__vue__ || obj.$el || obj.$options) {
     return "ComponentPublicInstance";
+  }
+
+  // Check for DOM elements
+  if (obj.nodeType && obj.nodeName) {
+    return "HTMLElement";
+  }
+
+  // Check for event objects
+  if (obj.type && obj.target && obj.preventDefault) {
+    return "Event";
+  }
+
+  // Check for error objects
+  if (obj instanceof Error) {
+    return "Error";
+  }
+
+  // Check for URL objects
+  if (obj instanceof URL) {
+    return "URL";
+  }
+
+  // Check for FormData
+  if (obj instanceof FormData) {
+    return "FormData";
+  }
+
+  // Check for class instances with constructors
+  if (obj.constructor && obj.constructor.name !== "Object") {
+    const constructorName = obj.constructor.name;
+    if (constructorName && constructorName !== "Object") {
+      return constructorName;
+    }
   }
 
   const keys = Object.keys(obj);
@@ -233,6 +287,9 @@ function inferFunctionType(fn, isAsync) {
 }
 
 function inferValueType(value) {
+  if (value === null) return "null";
+  if (value === undefined) return "undefined";
+
   return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 }
 
