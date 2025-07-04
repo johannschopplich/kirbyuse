@@ -149,6 +149,7 @@ export interface PanelUpload {
   listeners: (...args: any[]) => any;
   on: PanelUploadOn;
   input: any;
+  announce: (...args: any[]) => any;
   cancel: (...args: any[]) => Promise<any>;
   completed: any[];
   done: (...args: any[]) => Promise<any>;
