@@ -22,19 +22,19 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./composables": {
-      "types": "./dist/composables.d.mts",
-      "default": "./dist/composables.mjs"
+      "types": "./dist/composables.d.ts",
+      "default": "./dist/composables.js"
     },
     "./props": {
-      "types": "./dist/props.d.mts",
-      "default": "./dist/props.mjs"
+      "types": "./dist/props.d.ts",
+      "default": "./dist/props.js"
     }
   },
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
