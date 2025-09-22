@@ -116,7 +116,7 @@ export interface PanelSearcher {
   query: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
 }
 export interface PanelTheme {
-  setting: string;
+  setting: any;
   system: string;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
@@ -124,6 +124,7 @@ export interface PanelTheme {
   set: (arg1?: any) => any;
   state: (...args: any[]) => any;
   validateState: (arg1?: any) => any;
+  config: string;
   current: string;
 }
 export interface PanelUpload {
@@ -279,6 +280,7 @@ export interface PanelUser {
   validateState: (arg1?: any) => any;
 }
 export interface PanelDropdown {
+  abortController: any;
   component: any;
   isLoading: boolean;
   on: PanelDropdownOn;
@@ -298,6 +300,7 @@ export interface PanelDropdown {
   emit: (arg1?: any, arg2?: any) => any;
   hasEventListener: (arg1?: any) => any;
   listeners: (...args: any[]) => any;
+  get: (arg1?: any, arg2?: any) => Promise<any>;
   load: (arg1?: any, arg2?: any) => Promise<any>;
   open: (arg1?: any, arg2?: any) => any;
   post: (arg1?: any, arg2?: any) => Promise<any>;
@@ -312,6 +315,7 @@ export type PanelDropdownOn = Record<string, any>;
 export type PanelDropdownProps = Record<string, any>;
 export type PanelDropdownQuery = Record<string, any>;
 export interface PanelView {
+  abortController: any;
   component: string;
   isLoading: boolean;
   on: PanelViewOn;
@@ -338,6 +342,7 @@ export interface PanelView {
   emit: (arg1?: any, arg2?: any) => any;
   hasEventListener: (arg1?: any) => any;
   listeners: (...args: any[]) => any;
+  get: (arg1?: any, arg2?: any) => Promise<any>;
   load: (arg1?: any, arg2?: any) => Promise<any>;
   open: (arg1?: any, arg2?: any) => Promise<any>;
   post: (arg1?: any, arg2?: any) => Promise<any>;
@@ -353,13 +358,9 @@ export interface PanelViewProps {
     component: string;
     key: string;
     props: {
-      class: string;
-      icon: string;
-      link: string;
+      disabled: boolean;
       responsive: boolean;
       size: string;
-      target: string;
-      title: string;
       type: string;
       variant: string;
     };
@@ -457,6 +458,7 @@ export interface PanelContent {
   saveLazy: (arg1?: any) => any;
 }
 export interface PanelDrawer {
+  abortController: any;
   component: any;
   isLoading: boolean;
   on: PanelDrawerOn;
@@ -477,6 +479,7 @@ export interface PanelDrawer {
   emit: (arg1?: any, arg2?: any) => any;
   hasEventListener: (arg1?: any) => any;
   listeners: (...args: any[]) => any;
+  get: (arg1?: any, arg2?: any) => Promise<any>;
   load: (arg1?: any, arg2?: any) => Promise<any>;
   open: (arg1?: any, arg2?: any) => Promise<any>;
   post: (arg1?: any, arg2?: any) => Promise<any>;
@@ -486,6 +489,8 @@ export interface PanelDrawer {
   cancel: (...args: any[]) => Promise<any>;
   close: (arg1?: any) => Promise<any>;
   focus: (arg1?: any) => any;
+  goTo: (arg1?: any) => any;
+  history: PanelDrawerHistory;
   input: (arg1?: any) => any;
   isOpen: boolean;
   submit: (arg1?: any, arg2?: any) => Promise<any>;
@@ -495,8 +500,6 @@ export interface PanelDrawer {
   successRedirect: (arg1?: any) => any;
   value?: any;
   breadcrumb: any[];
-  goTo: (arg1?: any) => any;
-  history: PanelDrawerHistory;
   icon: string;
   tab: (arg1?: any) => any;
 }
@@ -504,7 +507,7 @@ export type PanelDrawerOn = Record<string, any>;
 export type PanelDrawerProps = Record<string, any>;
 export type PanelDrawerQuery = Record<string, any>;
 export interface PanelDrawerHistory {
-  add: (arg1?: any) => any;
+  add: (arg1?: any, arg2?: any) => any;
   at: (arg1?: any) => any;
   clear: (...args: any[]) => any;
   get: (arg1?: any) => any;
@@ -519,6 +522,7 @@ export interface PanelDrawerHistory {
   replace: (arg1?: any, arg2?: any) => any;
 }
 export interface PanelDialog {
+  abortController: any;
   component: any;
   isLoading: boolean;
   on: PanelDialogOn;
@@ -527,6 +531,7 @@ export interface PanelDialog {
   query: PanelDialogQuery;
   referrer: any;
   timestamp: any;
+  id: any;
   legacy: boolean;
   ref: any;
   key: (...args: any[]) => any;
@@ -540,6 +545,7 @@ export interface PanelDialog {
   emit: (arg1?: any, arg2?: any) => any;
   hasEventListener: (arg1?: any) => any;
   listeners: (...args: any[]) => any;
+  get: (arg1?: any, arg2?: any) => Promise<any>;
   load: (arg1?: any, arg2?: any) => Promise<any>;
   open: (arg1?: any, arg2?: any) => Promise<any>;
   post: (arg1?: any, arg2?: any) => Promise<any>;
@@ -549,6 +555,8 @@ export interface PanelDialog {
   cancel: (...args: any[]) => Promise<any>;
   close: (...args: any[]) => Promise<any>;
   focus: (arg1?: any) => any;
+  goTo: (arg1?: any) => any;
+  history: PanelDialogHistory;
   input: (arg1?: any) => any;
   isOpen: boolean;
   submit: (arg1?: any, arg2?: any) => Promise<any>;
@@ -562,6 +570,21 @@ export interface PanelDialog {
 export type PanelDialogOn = Record<string, any>;
 export type PanelDialogProps = Record<string, any>;
 export type PanelDialogQuery = Record<string, any>;
+export interface PanelDialogHistory {
+  add: (arg1?: any, arg2?: any) => any;
+  at: (arg1?: any) => any;
+  clear: (...args: any[]) => any;
+  get: (arg1?: any) => any;
+  goto: (arg1?: any) => any;
+  has: (arg1?: any) => any;
+  index: (arg1?: any) => any;
+  isEmpty: (...args: any[]) => any;
+  last: (...args: any[]) => any;
+  milestones: any[];
+  remove: (arg1?: any) => any;
+  removeLast: (...args: any[]) => any;
+  replace: (arg1?: any, arg2?: any) => any;
+}
 export interface PanelPlugins {
   resolveComponentExtension: (arg1?: any, arg2?: any, arg3?: any) => any;
   resolveComponentMixins: (arg1?: any) => any;
@@ -587,6 +610,7 @@ export interface PanelConfig {
   api: PanelConfigApi;
   debug: boolean;
   kirbytext: boolean;
+  theme: string;
   translation: string;
   upload: number;
 }
