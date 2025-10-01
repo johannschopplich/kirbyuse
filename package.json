@@ -1,7 +1,7 @@
 {
   "name": "kirbyuse",
   "type": "module",
-  "version": "0.12.1",
+  "version": "1.0.0",
   "packageManager": "pnpm@10.17.1",
   "description": "Collection of Vue Composition utilities for Kirby CMS",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
