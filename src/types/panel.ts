@@ -1,5 +1,10 @@
 import type { ComponentPublicInstance, VueConstructor } from "vue";
 
+export type PanelApp = InstanceType<VueConstructor> & {
+  $library: PanelLibrary;
+  $helper: PanelHelpers;
+};
+
 export interface Panel {
   create: (arg1?: any) => any;
   context: string;
@@ -54,7 +59,7 @@ export interface Panel {
   searches: PanelSearches;
   urls: PanelUrls;
   api: PanelApi;
-  app: InstanceType<VueConstructor>;
+  app: PanelApp;
   plugin: (...args: any[]) => any;
 }
 export interface PanelActivation {
@@ -116,7 +121,7 @@ export interface PanelSearcher {
   query: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
 }
 export interface PanelTheme {
-  setting: any;
+  setting: string;
   system: string;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
@@ -358,9 +363,14 @@ export interface PanelViewProps {
     component: string;
     key: string;
     props: {
+      class: string;
       disabled: boolean;
+      icon: string;
+      link: string;
       responsive: boolean;
       size: string;
+      target: string;
+      title: string;
       type: string;
       variant: string;
     };
@@ -825,4 +835,121 @@ export interface PanelApiUsers {
   search: (arg1?: any, arg2?: any) => Promise<any>;
   update: (arg1?: any, arg2?: any) => Promise<any>;
   url: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelLibrary {
+  autosize: (arg1?: any, arg2?: any) => any;
+  colors: PanelLibraryColors;
+  dayjs: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelLibraryColors {
+  convert: (arg1?: any, arg2?: any) => any;
+  parse: (arg1?: any) => any;
+  parseAs: (arg1?: any, arg2?: any) => any;
+  toString: (arg1?: any, arg2?: any, arg3?: any) => any;
+}
+export interface PanelHelpers {
+  array: PanelHelpersArray;
+  clipboard: PanelHelpersClipboard;
+  clone: (arg1?: any) => any;
+  color: (arg1?: any) => any;
+  embed: PanelHelpersEmbed;
+  focus: (arg1?: any, arg2?: any) => any;
+  isComponent: () => any;
+  isUploadEvent: (arg1?: any) => any;
+  debounce: (arg1?: any, arg2?: any, arg3?: any, arg4?: any) => any;
+  field: PanelHelpersField;
+  file: PanelHelpersFile;
+  keyboard: PanelHelpersKeyboard;
+  link: PanelHelpersLink;
+  object: PanelHelpersObject;
+  page: PanelHelpersPage;
+  pad: (arg1?: any, arg2?: any) => any;
+  ratio: (arg1?: any, arg2?: any, arg3?: any) => any;
+  slug: (arg1?: any, arg2?: any, arg3?: any, arg4?: any) => any;
+  sort: (arg1?: any) => any;
+  string: PanelHelpersString;
+  throttle: (arg1?: any, arg2?: any, arg3?: any, arg4?: any) => any;
+  upload: (arg1?: any, arg2?: any) => Promise<any>;
+  url: PanelHelpersUrl;
+  uuid: (...args: any[]) => any;
+}
+export interface PanelHelpersArray {
+  fromObject: (arg1?: any) => any;
+  search: (arg1?: any, arg2?: any, arg3?: any) => any;
+  sortBy: (arg1?: any, arg2?: any) => any;
+  split: (arg1?: any, arg2?: any) => any;
+  wrap: (arg1?: any) => any;
+}
+export interface PanelHelpersClipboard {
+  read: (arg1?: any, arg2?: any) => any;
+  write: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelHelpersEmbed {
+  youtube: (arg1?: any, arg2?: any) => any;
+  vimeo: (arg1?: any, arg2?: any) => any;
+  video: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelHelpersField {
+  defaultValue: (arg1?: any) => any;
+  form: (arg1?: any) => any;
+  isVisible: (arg1?: any, arg2?: any) => any;
+  subfields: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelHelpersFile {
+  extension: (arg1?: any) => any;
+  name: (arg1?: any) => any;
+  niceSize: (arg1?: any, arg2?: any, arg3?: any, arg4?: any, arg5?: any) => any;
+}
+export interface PanelHelpersKeyboard {
+  metaKey: (...args: any[]) => any;
+}
+export interface PanelHelpersLink {
+  detect: (arg1?: any, arg2?: any) => any;
+  getFileUUID: (arg1?: any) => any;
+  getPageUUID: (arg1?: any) => any;
+  isFileUUID: (arg1?: any) => any;
+  isPageUUID: (arg1?: any) => any;
+  preview: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
+  types: (arg1?: any) => any;
+}
+export interface PanelHelpersObject {
+  clone: (arg1?: any) => any;
+  filter: (arg1?: any, arg2?: any) => any;
+  isEmpty: (arg1?: any) => any;
+  isObject: (arg1?: any) => any;
+  length: (arg1?: any) => any;
+  merge: (arg1?: any, arg2?: any) => any;
+  same: (arg1?: any, arg2?: any) => any;
+  toLowerKeys: (arg1?: any) => any;
+}
+export interface PanelHelpersPage {
+  status: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelHelpersString {
+  camelToKebab: (arg1?: any) => any;
+  escapeHTML: (arg1?: any) => any;
+  hasEmoji: (arg1?: any) => any;
+  isEmpty: (arg1?: any) => any;
+  lcfirst: (arg1?: any) => any;
+  ltrim: (arg1?: any, arg2?: any) => any;
+  pad: (arg1?: any, arg2?: any) => any;
+  random: (arg1?: any) => any;
+  rtrim: (arg1?: any, arg2?: any) => any;
+  slug: (arg1?: any, arg2?: any, arg3?: any, arg4?: any) => any;
+  stripHTML: (arg1?: any) => any;
+  template: (arg1?: any, arg2?: any) => any;
+  ucfirst: (arg1?: any) => any;
+  ucwords: (arg1?: any) => any;
+  unescapeHTML: (arg1?: any) => any;
+  uuid: (...args: any[]) => any;
+}
+export interface PanelHelpersUrl {
+  base: (...args: any[]) => any;
+  buildQuery: (arg1?: any, arg2?: any) => any;
+  buildUrl: (arg1?: any, arg2?: any, arg3?: any) => any;
+  isAbsolute: (arg1?: any) => any;
+  isSameOrigin: (arg1?: any) => any;
+  isUrl: (arg1?: any, arg2?: any) => any;
+  makeAbsolute: (arg1?: any, arg2?: any) => any;
+  toObject: (arg1?: any, arg2?: any) => any;
 }
