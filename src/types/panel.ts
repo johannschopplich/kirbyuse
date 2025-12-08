@@ -1,5 +1,9 @@
 import type { ComponentPublicInstance, VueConstructor } from "vue";
 
+export type PanelApp = InstanceType<VueConstructor> & {
+  $library: PanelLibrary;
+};
+
 export interface Panel {
   create: (arg1?: any) => any;
   context: string;
@@ -54,7 +58,7 @@ export interface Panel {
   searches: PanelSearches;
   urls: PanelUrls;
   api: PanelApi;
-  app: InstanceType<VueConstructor>;
+  app: PanelApp;
   plugin: (...args: any[]) => any;
 }
 export interface PanelActivation {
@@ -116,7 +120,7 @@ export interface PanelSearcher {
   query: (arg1?: any, arg2?: any, arg3?: any) => Promise<any>;
 }
 export interface PanelTheme {
-  setting: any;
+  setting: string;
   system: string;
   key: (...args: any[]) => any;
   defaults: (...args: any[]) => any;
@@ -358,9 +362,14 @@ export interface PanelViewProps {
     component: string;
     key: string;
     props: {
+      class: string;
       disabled: boolean;
+      icon: string;
+      link: string;
       responsive: boolean;
       size: string;
+      target: string;
+      title: string;
       type: string;
       variant: string;
     };
@@ -825,4 +834,15 @@ export interface PanelApiUsers {
   search: (arg1?: any, arg2?: any) => Promise<any>;
   update: (arg1?: any, arg2?: any) => Promise<any>;
   url: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelLibrary {
+  autosize: (arg1?: any, arg2?: any) => any;
+  colors: PanelLibraryColors;
+  dayjs: (arg1?: any, arg2?: any) => any;
+}
+export interface PanelLibraryColors {
+  convert: (arg1?: any, arg2?: any) => any;
+  parse: (arg1?: any) => any;
+  parseAs: (arg1?: any, arg2?: any) => any;
+  toString: (arg1?: any, arg2?: any, arg3?: any) => any;
 }

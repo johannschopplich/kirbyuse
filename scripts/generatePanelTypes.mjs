@@ -1,8 +1,9 @@
 const CODE_INDENT = "  ";
-const observedObjects = new WeakSet();
+let observedObjects = new WeakSet();
 
 if (typeof window !== "undefined" && window.panel) {
-  const tsInterface = generateTypeScriptInterface(
+  observedObjects = new WeakSet();
+  const panelInterface = generateTypeScriptInterface(
     {
       ...window.panel,
       // Removed after Panel initialization, but added again for type generation
@@ -10,63 +11,16 @@ if (typeof window !== "undefined" && window.panel) {
     },
     "Panel",
     {
-      typeResolver: (
-        key,
-        value,
-        { level, interfaceName, currentKeyInterfaceName },
-      ) => {
-        let typeValue;
-        let generatedInterfaces;
+      typeResolver: panelTypeResolver,
+    },
+  );
 
-        // Handle top-level definitions
-        if (level === 0 && key === "app") {
-          // Use correct Vue type and generate only the store types
-          typeValue = "InstanceType<VueConstructor>";
-          // Make language rules generic by overwriting the type
-        } else if (level === 0 && key === "languages") {
-          typeValue = `
-{
-  code: string;
-  default: boolean;
-  direction: string;
-  name: string;
-  rules: Record<string, string>;
-}[]`.trimStart();
-        }
-        // Handle Panel components
-        else if (currentKeyInterfaceName === "PanelPluginsComponents") {
-          typeValue = "Record<string, ComponentPublicInstance>";
-        }
-        // Overwrite view props, since they are specific to each view
-        else if (
-          (interfaceName === "PanelViewProps" && key === "tabs") ||
-          (interfaceName === "PanelViewPropsTab" && key === "columns")
-        ) {
-          typeValue = "Record<string, any>[]";
-        }
-        // Overwrite model content, since it's a dynamic object
-        else if (
-          currentKeyInterfaceName === "PanelPluginsTextareaButtons" ||
-          currentKeyInterfaceName === "PanelPluginsWriterMarks" ||
-          currentKeyInterfaceName === "PanelViewPropsVersionsLatest" ||
-          currentKeyInterfaceName === "PanelViewPropsVersionsChanges"
-        ) {
-          typeValue = "Record<string, any>";
-        }
-        // Simplify interfaces for string-based enums
-        else if (
-          currentKeyInterfaceName === "PanelLanguageRules" ||
-          currentKeyInterfaceName === "PanelTranslationData" ||
-          currentKeyInterfaceName === "PanelPluginsIcons" ||
-          currentKeyInterfaceName === "PanelSystemLocales" ||
-          currentKeyInterfaceName === "PanelSystemSlugs" ||
-          currentKeyInterfaceName === "PanelSystemAscii"
-        ) {
-          typeValue = "Record<string, string>";
-        }
-
-        return { typeValue, generatedInterfaces };
-      },
+  observedObjects = new WeakSet();
+  const libraryInterface = generateTypeScriptInterface(
+    window.panel.app.$library,
+    "PanelLibrary",
+    {
+      typeResolver: panelTypeResolver,
     },
   );
 
@@ -74,8 +28,70 @@ if (typeof window !== "undefined" && window.panel) {
     `
 import type { ComponentPublicInstance, VueConstructor } from "vue";
 
-${tsInterface}`.trimStart(),
+export type PanelApp = InstanceType<VueConstructor> & {
+  $library: PanelLibrary;
+};
+
+${panelInterface.trim()}
+${libraryInterface.trim()}
+`.trim(),
   );
+}
+
+function panelTypeResolver(
+  key,
+  value,
+  { level, interfaceName, currentKeyInterfaceName },
+) {
+  let typeValue;
+  let generatedInterfaces;
+
+  // Handle top-level definitions
+  if (level === 0 && key === "app") {
+    typeValue = "PanelApp";
+  } else if (level === 0 && key === "languages") {
+    typeValue = `
+{
+  code: string;
+  default: boolean;
+  direction: string;
+  name: string;
+  rules: Record<string, string>;
+}[]`.trimStart();
+  }
+  // Handle Panel components
+  else if (currentKeyInterfaceName === "PanelPluginsComponents") {
+    typeValue = "Record<string, ComponentPublicInstance>";
+  }
+  // Overwrite view props, since they are specific to each view
+  else if (
+    (interfaceName === "PanelViewProps" && key === "tabs") ||
+    (interfaceName === "PanelViewPropsTab" && key === "columns")
+  ) {
+    typeValue = "Record<string, any>[]";
+  }
+  // Overwrite model content, since it's a dynamic object
+  else if (
+    currentKeyInterfaceName === "PanelPluginsTextareaButtons" ||
+    currentKeyInterfaceName === "PanelPluginsWriterMarks" ||
+    currentKeyInterfaceName === "PanelViewPropsVersionsLatest" ||
+    currentKeyInterfaceName === "PanelViewPropsVersionsChanges"
+  ) {
+    typeValue = "Record<string, any>";
+  }
+  // Simplify interfaces for string-based enums
+  else if (
+    currentKeyInterfaceName === "PanelLanguageRules" ||
+    currentKeyInterfaceName === "PanelTranslationData" ||
+    currentKeyInterfaceName === "PanelPluginsIcons" ||
+    currentKeyInterfaceName === "PanelSystemLocales" ||
+    currentKeyInterfaceName === "PanelSystemSlugs" ||
+    currentKeyInterfaceName === "PanelSystemAscii"
+  ) {
+    typeValue = "Record<string, string>";
+  }
+
+  return { typeValue, generatedInterfaces };
 }
 
 function generateTypeScriptInterface(
@@ -100,8 +116,8 @@ function generateTypeScriptInterface(
   for (const key in obj) {
     if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
 
-    // Ignore deprecated Panel aliases
-    if (level === 0 && key.startsWith("$")) {
+    // Ignore deprecated Panel aliases only for the main Panel interface
+    if (interfaceName === "Panel" && level === 0 && key.startsWith("$")) {
       continue;
     }
 
