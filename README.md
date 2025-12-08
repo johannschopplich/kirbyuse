@@ -236,6 +236,38 @@ const content = comptued(() => store.getters["content/values"]());
 > [!TIP]
 > Use the `useContent` composable instead for common use cases, such as getting the current content, content changes, and updating content.
 
+### useHelpers
+
+Returns the $helpers object with type hints.
+
+This composable is a simple shortcut to `window.panel.app.$helpers`, see [the lab docs](https://lab.getkirby.com/public/lab/internals/helpers/).
+
+**Example:**
+
+```ts
+import { useHelpers } from "kirbyuse";
+
+const helpers = useHelpers();
+// Access a helper
+helpers.link.detect('https://getkirby.com');
+```
+
+### useLibrary
+
+Returns the $library object with type hints.
+
+This composable is a simple shortcut to `window.panel.app.$library` : [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+
+**Example:**
+
+```ts
+import { useLibrary } from "kirbyuse";
+
+const library = useLibrary();
+// Access a library component
+library.dayjs() // now
+```
+
 ## Examples
 
 ### Panel Section
