@@ -67,7 +67,7 @@ export default {
 
 ### Augmenting the `window.panel` Object
 
-Instead of the explicit `usePanel` import, you can also augment the `window.panel` object directly. In this case, you have to import the `kirbyup` package **once** in your main entry file:
+Instead of the explicit `usePanel` import, you can also augment the `window.panel` object directly. In this case, you have to import the `kirbyuse` package **once** in your main entry file:
 
 ```js
 import "kirbyuse";
@@ -92,7 +92,6 @@ The import will provide global type augmentations for the `window.panel` object.
 | [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                           |
 | [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                           |
 | [`useSection`](#usesection) | Load section data                         | `{ load }`                                                        |
-| [`useStore`](#usestore)     | Access Vuex store (Kirby 4 only)          | `PanelAppStore`                                                   |
 | [`useHelpers`](#usehelpers) | Access internal Fiber helpers             | `PanelHelpers`                                                    |
 | [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                    |
 
@@ -128,21 +127,42 @@ console.log(app.$root);
 
 ### `useBlock`
 
-Provides block methods for custom block components, including field access and updates.
+Provides utilities for building custom block components, including access to field configuration and block update methods.
 
 **Example:**
 
-```ts
-import { computed, ref, useApi, useBlock, usePanel, watch } from "kirbyuse";
+```vue
+<script setup>
+import { computed, useBlock } from "kirbyuse";
 
-// Will inherit props from extended default block
-const props = defineProps({});
-const emit = defineEmits([]);
-const { field } = useBlock(props, emit);
+// Props and emits are inherited from Kirby's default block component
+const props = defineProps({
+  // Block props provided by Kirby
+  content: Object,
+  endpoints: Object,
+  fieldset: Object,
+  id: String,
+  name: String,
+});
+const emit = defineEmits(["update"]);
 
-const source = computed(() => props.content?.source?.[0]);
+// Initialize block utilities
+const { field, open, update } = useBlock(props, emit);
+
+// Access field configuration (e.g., get the `marks` option from a `caption` field)
 const captionMarks = computed(() => field("caption", { marks: true }).marks);
+
+// Access block content
+const source = computed(() => props.content?.source?.[0]);
+
+// Update block content
+function updateCaption(newCaption) {
+  update({ caption: newCaption });
+}
+</script>
 ```
+
+The `field` function retrieves field configuration from the block's fieldset, with optional default values. The `update` function merges new values into the block's content.
 
 ### `useContent`
 
@@ -227,24 +247,32 @@ panel.notification.success("Success!");
 
 ### `useSection`
 
-Provides methods for loading section data. See the [section example](#panel-section) for a usage example.
-
-### `useStore`
-
-Returns the Vuex store of the Panel app (Kirby 4 only, will not work in Kirby 5).
+Provides the `load` method for fetching section data from the backend. This is essential for custom sections that need to retrieve their configuration and data.
 
 **Example:**
 
 ```ts
-import { useStore } from "kirbyuse";
+import { ref, useSection } from "kirbyuse";
+import { section } from "kirbyuse/props";
 
-const store = useStore();
-// Access store
-const content = comptued(() => store.getters["content/values"]());
+const props = defineProps({ ...section });
+
+const { load } = useSection();
+
+// Fetch section data (typically in an IIFE since async setup isn't supported in Vue 2)
+(async () => {
+  const response = await load({
+    parent: props.parent,
+    name: props.name,
+  });
+
+  // Access section properties from the response
+  console.log(response.label);
+})();
 ```
 
-> [!TIP]
-> Use the `useContent` composable instead for common use cases, such as getting the current content, content changes, and updating content.
+> [!NOTE]
+> The `load` method requires `parent` and `name` props. Use the `section` props helper from `kirbyuse/props` to ensure these are defined.
 
 ### `useHelpers`
 
@@ -274,22 +302,40 @@ const library = useLibrary();
 library.dayjs(); // now
 ```
 
+## Props Helpers
+
+This package provides pre-defined prop definitions for common Kirby Panel component types. Import them from `kirbyuse/props`:
+
+### `section`
+
+Props required for custom Panel sections. Use with `defineProps` to inherit the necessary props for section components:
+
+```ts
+import { section } from "kirbyuse/props";
+
+const propsDefinition = {
+  ...section,
+};
+
+export default {
+  inheritAttrs: false,
+};
+
+// In <script setup>
+const props = defineProps(propsDefinition);
+```
+
+These props include `parent` and `name`, which are required for loading section data with `useSection`.
+
 ## Examples
 
 ### Panel Section
 
 ```vue
 <script setup>
-import { computed, ref, useContent, usePanel, useStore, watch } from "kirbyuse";
+import { ref, useContent, usePanel, watch } from "kirbyuse";
 
 const label = ref("");
-
-// For Kirby 4, use the Vuex store to access the content
-const store = useStore();
-const currentContent = computed(() => store.getters["content/values"]());
-
-// In Kirby 5, the Vuex store has been removed. Use the
-// `useContent` composable and its computed getter instead:
 const { currentContent, contentChanges } = useContent();
 
 watch(currentContent, (newContent) => {
@@ -305,9 +351,7 @@ function handleClick() {
 <template>
   <k-section :label="label">
     <k-text>
-      <h1 @click="handleClick()">
-        My Section
-      </h1>
+      <h1 @click="handleClick()">My Section</h1>
     </k-text>
   </k-section>
 </template>
