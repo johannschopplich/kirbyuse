@@ -238,9 +238,9 @@ const content = comptued(() => store.getters["content/values"]());
 
 ### useHelpers
 
-Returns the $helpers object with type hints.
+Returns the internal Fiber helpers.
 
-This composable is a simple shortcut to `window.panel.app.$helpers`, see [the lab docs](https://lab.getkirby.com/public/lab/internals/helpers/).
+This composable is a simple shortcut to `window.panel.app.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 
@@ -249,14 +249,14 @@ import { useHelpers } from "kirbyuse";
 
 const helpers = useHelpers();
 // Access a helper
-helpers.link.detect('https://getkirby.com');
+helpers.link.detect("https://getkirby.com");
 ```
 
 ### useLibrary
 
-Returns the $library object with type hints.
+Returns the internal Kirby Panel libraries (dayjs, colors and autosize).
 
-This composable is a simple shortcut to `window.panel.app.$library` : [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+This composable is a simple shortcut to `window.panel.app.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
 
 **Example:**
 
@@ -265,7 +265,7 @@ import { useLibrary } from "kirbyuse";
 
 const library = useLibrary();
 // Access a library component
-library.dayjs() // now
+library.dayjs(); // now
 ```
 
 ## Examples
