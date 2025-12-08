@@ -24,16 +24,27 @@ if (typeof window !== "undefined" && window.panel) {
     },
   );
 
+  observedObjects = new WeakSet();
+  const helperInterfaces = generateTypeScriptInterface(
+    window.panel.app.$helper,
+    "PanelHelpers",
+    {
+      typeResolver: panelTypeResolver,
+    },
+  );
+
   console.log(
     `
 import type { ComponentPublicInstance, VueConstructor } from "vue";
 
 export type PanelApp = InstanceType<VueConstructor> & {
   $library: PanelLibrary;
+  $helper: PanelHelpers;
 };
 
 ${panelInterface.trim()}
 ${libraryInterface.trim()}
+${helperInterfaces.trim()}
 `.trim(),
   );
 }
