@@ -80,11 +80,27 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ## API
 
-### useApi
+### Composables Overview
 
-Returns Kirby's Panel API for making HTTP requests to the backend.
+| Composable                  | Description                               | Returns                                                           |
+| --------------------------- | ----------------------------------------- | ----------------------------------------------------------------- |
+| [`useApi`](#useapi)         | Access Kirby's Panel API                  | `PanelApi`                                                        |
+| [`useApp`](#useapp)         | Access the main Panel Vue instance        | `PanelApp`                                                        |
+| [`useBlock`](#useblock)     | Block methods for custom block components | `{ field, open, update }`                                         |
+| [`useContent`](#usecontent) | Reactive content getters and methods      | `{ content, currentContent, contentChanges, hasChanges, update }` |
+| [`useDialog`](#usedialog)   | Open different types of dialogs           | `{ openTextDialog, openFieldsDialog }`                            |
+| [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                           |
+| [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                           |
+| [`useSection`](#usesection) | Load section data                         | `{ load }`                                                        |
+| [`useStore`](#usestore)     | Access Vuex store (Kirby 4 only)          | `PanelAppStore`                                                   |
+| [`useHelpers`](#usehelpers) | Access internal Fiber helpers             | `PanelHelpers`                                                    |
+| [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                    |
 
-This composable is a simple shortcut to `window.panel.api`.
+---
+
+### `useApi`
+
+Returns Kirby's Panel API for making HTTP requests to the backend. This composable is a simple shortcut to `window.panel.api`.
 
 **Example:**
 
@@ -96,11 +112,9 @@ const api = useApi();
 await api.get("pages/my-page");
 ```
 
-### useApp
+### `useApp`
 
-Returns the main Panel Vue instance.
-
-This composable is a simple shortcut to `window.panel.app`.
+Returns the main Panel Vue instance. This composable is a simple shortcut to `window.panel.app`.
 
 **Example:**
 
@@ -112,7 +126,7 @@ const app = useApp();
 console.log(app.$root);
 ```
 
-### useBlock
+### `useBlock`
 
 Provides block methods for custom block components, including field access and updates.
 
@@ -130,7 +144,7 @@ const source = computed(() => props.content?.source?.[0]);
 const captionMarks = computed(() => field("caption", { marks: true }).marks);
 ```
 
-### useContent
+### `useContent`
 
 Provides reactive getters and methods to work with content of the current view.
 
@@ -153,7 +167,7 @@ watch(currentContent, (newContent) => {
 update({ excerpt: "Hello, Kirby!" });
 ```
 
-### useDialog
+### `useDialog`
 
 Provides methods to open different types of dialogs.
 
@@ -178,7 +192,7 @@ const result = await openFieldsDialog({ fields });
 console.log(result); // -> { email: "..." }
 ```
 
-### useI18n
+### `useI18n`
 
 Returns translation utility functions.
 
@@ -197,11 +211,9 @@ t("Hello"); // -> "Hello"
 t({ en: "Hello", de: "Hallo" }); // -> Returns value based on current Panel language
 ```
 
-### usePanel
+### `usePanel`
 
-Returns the reactive Kirby Panel object with type hints.
-
-This composable is a simple shortcut to `window.panel`.
+Returns the reactive Kirby Panel object with type hints. This composable is a simple shortcut to `window.panel`.
 
 **Example:**
 
@@ -213,13 +225,11 @@ const panel = usePanel();
 panel.notification.success("Success!");
 ```
 
-### useSection
+### `useSection`
 
-Provides methods for loading section data.
+Provides methods for loading section data. See the [section example](#panel-section) for a usage example.
 
-See the [section example](#panel-section) for a usage example.
-
-### useStore
+### `useStore`
 
 Returns the Vuex store of the Panel app (Kirby 4 only, will not work in Kirby 5).
 
@@ -236,11 +246,9 @@ const content = comptued(() => store.getters["content/values"]());
 > [!TIP]
 > Use the `useContent` composable instead for common use cases, such as getting the current content, content changes, and updating content.
 
-### useHelpers
+### `useHelpers`
 
-Returns the internal Fiber helpers.
-
-This composable is a simple shortcut to `window.panel.app.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
+Returns the internal Fiber helpers. This composable is a simple shortcut to `window.panel.app.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 
@@ -252,11 +260,9 @@ const helpers = useHelpers();
 helpers.link.detect("https://getkirby.com");
 ```
 
-### useLibrary
+### `useLibrary`
 
-Returns the internal Kirby Panel libraries (dayjs, colors and autosize).
-
-This composable is a simple shortcut to `window.panel.app.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+Returns the internal Kirby Panel libraries (dayjs, colors and autosize). This composable is a simple shortcut to `window.panel.app.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
 
 **Example:**
 
@@ -299,7 +305,9 @@ function handleClick() {
 <template>
   <k-section :label="label">
     <k-text>
-      <h1 @click="handleClick()">My Section</h1>
+      <h1 @click="handleClick()">
+        My Section
+      </h1>
     </k-text>
   </k-section>
 </template>
@@ -400,7 +408,6 @@ The following open source plugins are written with the Vue Composition API:
 
 - [Kirby Minimap](https://github.com/johannschopplich/kirby-minimap)
 - [Kirby Content Translator](https://github.com/kirby-tools/kirby-content-translator)
-- [Kirby Deploy Trigger](https://github.com/johannschopplich/kirby-deploy-trigger)
 - [Kirby SERP Preview](https://github.com/johannschopplich/kirby-serp-preview)
 
 ## License
