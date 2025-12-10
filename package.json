@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "kirby-types": "^1.2.0",
-    "vue": "^2.7.16"
+    "vue": "^3.5.25"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.3",
