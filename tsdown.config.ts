@@ -6,6 +6,7 @@ export default defineConfig({
     composables: "src/composables/index.ts",
     props: "src/props/index.ts",
   },
+  external: ["vue"],
   dts: true,
   platform: "neutral",
 });
