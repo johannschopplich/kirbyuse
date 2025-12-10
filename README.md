@@ -2,15 +2,15 @@
 
 A collection of Vue Composition utilities and type hints to improve the DX for writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
-> [!NOTE]
-> When Kirby migrates to Vue 3, this package will adapt accordingly.
+> [!IMPORTANT]
+> `kirbyuse` 2.x targets Kirby 6+ and the Vue 3-based Panel runtime. Keep using `kirbyuse` 1.x if you still need to support Kirby 4 or 5.
 
 ## Features
 
 - 🧃 IntelliSense support for Kirby's global `window.panel` object
 - 🍿 Helpers like `usePanel` to write future-proof Kirby plugins
-- 🚀 Aliases for Composition API functions like `ref` and `computed`
-- 📇 Ready for Kirby 4 & Kirby 5
+- 🚀 Composition API exports without relying on global variables
+- 📇 Ready for the Kirby 6 Panel import-map setup
 
 ## Setup
 
@@ -24,6 +24,34 @@ npm i -D kirbyuse
 # yarn
 yarn add -D kirbyuse
 ```
+
+### Register the import map
+
+Kirby 6 renders the Panel as native ESM and resolves bare specifiers through the `<script type="importmap">` block you saw in the template. Make sure your plugin adds a `kirbyuse` entry exactly once during bootstrap so that browser modules can resolve `import { ref } from "kirbyuse"`:
+
+```php
+<?php
+
+use Kirby\Cms\App as Kirby;
+
+Kirby::plugin('vendor/plugin', [
+  'panel' => [
+    'extend' => function (Kirby $kirby, array &$assets): void {
+      $assets['import-maps'] = array_merge(
+        $assets['import-maps'] ?? [],
+        [
+          'kirbyuse' => url('media/plugins/vendor/plugin/kirbyuse/index.js'),
+        ]
+      );
+    },
+  ],
+]);
+```
+
+The referenced file can point to whatever build artifact you ship with your plugin (for example a copy of `node_modules/kirbyuse/dist/index.mjs`). Once the import map is registered, every Panel script can simply `import { usePanel, ref } from "kirbyuse";` without touching the global scope.
+
+> [!TIP]
+> Kirby 6 already exposes `vue` and internal Panel utilities through its own import map. Registering `kirbyuse` only wires in this package so you can keep authoring ergonomics consistent across plugins.
 
 ## Kirby Panel Type Augmentation
 
@@ -168,9 +196,6 @@ The `field` function retrieves field configuration from the block's fieldset, wi
 
 Provides reactive getters and methods to work with content of the current view.
 
-> [!TIP]
-> Compatible with both Kirby 4 and 5. The returned getters and methods are shimmed for Kirby 4 in a Kirby 4 environment.
-
 **Example:**
 
 ```ts
@@ -259,7 +284,7 @@ const props = defineProps({ ...section });
 
 const { load } = useSection();
 
-// Fetch section data (typically in an IIFE since async setup isn't supported in Vue 2)
+// Fetch section data immediately
 (async () => {
   const response = await load({
     parent: props.parent,
@@ -361,27 +386,21 @@ function handleClick() {
 <summary>👉 How to load section data</summary>
 
 ```vue
-<script>
-import { ref, useSection, watch } from "kirbyuse";
+<script setup>
+import { ref, useSection } from "kirbyuse";
 import { section } from "kirbyuse/props";
 
-// Define the component props
-const propsDefinition = {
-  ...section,
-};
-
-export default {
+defineOptions({
   inheritAttrs: false,
-};
-</script>
+});
 
-<script setup>
-const props = defineProps(propsDefinition);
+const props = defineProps({
+  ...section,
+});
 
 const label = ref("");
 
-// Async components are not supported in Vue 2, so we use
-// a self-invoking async function as `created` replacement
+// Fetch section data immediately
 (async () => {
   const { load } = useSection();
   const response = await load({
@@ -406,45 +425,13 @@ const label = ref("");
 
 ## Background
 
-Kirby CMS uses Vue 2 and provides the `Vue` constructor via the UMD build in the global scope. The main Kirby Panel instance is accessible at `window.panel.app`.
+Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by import maps. There is no global `Vue` constructor anymore – every Panel plugin is expected to `import { ref } from "vue";` (or, more conveniently, from `kirbyuse`).
 
-Before Vue reached EOL, the Composition API was backported in Vue 2.7. In ESM builds, these APIs are provided as named exports:
+`kirbyuse` exists to keep the authoring experience close to Kirby 5 projects while embracing the new architecture:
 
-```js
-import Vue, { ref } from "vue";
-
-Vue.ref; // `undefined`, use named export instead
-```
-
-Since Kirby uses the UMD build, these APIs are not available. Instead, in the **UMD build**, these APIs are exposed as properties on the global Vue object:
-
-```js
-import Vue from "vue";
-
-Vue.ref; // `function`
-```
-
-When writing Vue components for Kirby with the Composition API, you have to import the Vue constructor from the global scope and use the Composition API from there:
-
-```js
-import Vue from "vue";
-
-const label = Vue.ref("");
-```
-
-This approach gets tedious quickly, especially when you have to write a lot of components. It also makes it harder to upgrade to Vue 3 in the future.
-
-This is where this package comes in. It provides aliases to the Composition API that are compatible with the UMD build of Vue. Additionally, some helpers are provided to make working with Kirby easier:
-
-```js
-// Inside `<script setup>`
-import { computed, ref, usePanel } from "kirbyuse";
-
-const label = ref("");
-
-const panel = usePanel();
-panel.notification.success("Composition API is awesome!");
-```
+1. All Composition API helpers are re-exported from Vue 3 so you can keep using `import { ref, computed } from "kirbyuse"`.
+2. Panel-specific composables (`usePanel`, `useSection`, …) continue to wrap the `window.panel` runtime so you get IntelliSense.
+3. The package is compiled as ESM, which makes it trivial to ship inside the Panel import map without additional bundling.
 
 ## Composition API in Panel Plugins
 

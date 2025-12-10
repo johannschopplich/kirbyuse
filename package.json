@@ -48,7 +48,7 @@
     "test:types": "tsc --noEmit"
   },
   "dependencies": {
-    "vue": "^2.7.16"
+    "vue": "^3.5.25"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.6.1",
