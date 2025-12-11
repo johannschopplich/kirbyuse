@@ -1,9 +1,12 @@
 # kirbyuse
 
+[![CI](https://github.com/toon-format/toon/actions/workflows/ci.yml/badge.svg)](https://github.com/toon-format/toon/actions)
+[![npm version](https://img.shields.io/npm/v/@toon-format/toon.svg)](https://www.npmjs.com/package/@toon-format/toon)
+
 A collection of Vue Composition utilities and type hints to improve the DX for writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
-> [!NOTE]
-> When Kirby migrates to Vue 3, this package will adapt accordingly.
+> [!IMPORTANT]
+> The current version targets Kirby 4 and Kirby 5. Check out the [v2 branch](https://github.com/johannschopplich/kirbyuse/tree/feat/kirby-6) for Kirby 6 support.
 
 ## Features
 
