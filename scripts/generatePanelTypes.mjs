@@ -35,9 +35,9 @@ if (typeof window !== "undefined" && window.panel) {
 
   console.log(
     `
-import type { ComponentPublicInstance, VueConstructor } from "vue";
+import type { ComponentPublicInstance } from "vue";
 
-export type PanelApp = InstanceType<VueConstructor> & {
+export type PanelApp = ComponentPublicInstance & {
   $library: PanelLibrary;
   $helper: PanelHelpers;
 };
