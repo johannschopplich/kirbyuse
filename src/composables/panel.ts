@@ -1,4 +1,4 @@
-import type { Panel } from "../types/panel";
+import type { Panel } from "kirby-types";
 
 /**
  * Returns the reactive Kirby Panel object.

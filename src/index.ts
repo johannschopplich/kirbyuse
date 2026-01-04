@@ -1,5 +1,5 @@
+import type { Panel } from "kirby-types";
 import type * as Vue from "vue";
-import type { Panel } from "./types/panel";
 import { globalVue } from "./vue";
 
 declare global {

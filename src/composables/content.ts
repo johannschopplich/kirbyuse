@@ -1,4 +1,4 @@
-import type { PanelContent } from "../types/panel";
+import type { PanelContent } from "kirby-types";
 import { computed } from "..";
 import { isKirby5 } from "./compatibility";
 import { usePanel } from "./panel";
