@@ -8,9 +8,12 @@ importers:
 
   .:
     dependencies:
+      dayjs:
+        specifier: ^1.0.0
+        version: 1.11.19
       kirby-types:
-        specifier: ^1.1.1
-        version: 1.1.1(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(vue@2.7.16)
+        specifier: ^1.2.0
+        version: 1.2.0(dayjs@1.11.19)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(vue@2.7.16)
       vue:
         specifier: ^2.7.16
         version: 2.7.16
@@ -596,6 +599,9 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
+  dayjs@1.11.19:
+    resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
+
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
@@ -1037,16 +1043,19 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  kirby-types@1.1.1:
-    resolution: {integrity: sha512-Ea227rOBifp5TQOG0te1gB5GoNQDTE1lTaQZsJcjr9HuvX6rzzpHfwy+xOb9SuVz1ZE5u8jChBrYftbDc9QhOA==}
+  kirby-types@1.2.0:
+    resolution: {integrity: sha512-kLJLg6DG/pEggRInOMfygAn1eH6Y6kb3fBVgQh+ZN1+m+2ckqtgoCoUeiBBPWAVgVJHcrTZLAK9U3MPQuaW/dg==}
     peerDependencies:
-      prosemirror-commands: ^1.0.0
-      prosemirror-inputrules: ^1.0.0
-      prosemirror-model: ^1.0.0
-      prosemirror-schema-list: ^1.0.0
-      prosemirror-state: ^1.0.0
+      dayjs: ^1.0.0
+      prosemirror-commands: ^1.7.1
+      prosemirror-inputrules: ^1.5.1
+      prosemirror-model: ^1.25.4
+      prosemirror-schema-list: ^1.5.1
+      prosemirror-state: ^1.4.4
       vue: ^2.7.0
     peerDependenciesMeta:
+      dayjs:
+        optional: true
       prosemirror-commands:
         optional: true
       prosemirror-inputrules:
@@ -2201,6 +2210,8 @@ snapshots:
 
   csstype@3.2.3: {}
 
+  dayjs@1.11.19: {}
+
   debug@4.4.3:
     dependencies:
       ms: 2.1.3
@@ -2655,8 +2666,9 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  kirby-types@1.1.1(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(vue@2.7.16):
+  kirby-types@1.2.0(dayjs@1.11.19)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(vue@2.7.16):
     optionalDependencies:
+      dayjs: 1.11.19
       prosemirror-commands: 1.7.1
       prosemirror-inputrules: 1.5.1
       prosemirror-model: 1.25.4

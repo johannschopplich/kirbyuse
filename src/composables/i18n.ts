@@ -22,7 +22,7 @@ export function useI18n() {
 
   function t(value?: string | Record<string, string>) {
     if (!value || typeof value === "string") return value;
-    return value[panel.translation.code!] ?? Object.values(value)[0];
+    return value[panel.translation.code] ?? Object.values(value)[0];
   }
 
   return {
