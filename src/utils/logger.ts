@@ -1,4 +1,4 @@
-const LOG_LEVELS = {
+export const LOG_LEVELS = {
   error: 0,
   warn: 1,
   log: 2,
@@ -6,22 +6,33 @@ const LOG_LEVELS = {
   success: 3,
 } as const;
 
-type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];
-type LogType = keyof typeof LOG_LEVELS;
-type ColorMap = Record<LogLevel, string>;
-type TypeColorMap = Record<LogType, string>;
+export type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];
+export type LogType = keyof typeof LOG_LEVELS;
 
-interface LogEvent {
+export interface LogEvent {
   level: LogLevel;
   type: LogType;
   tag: string;
   args: any[];
 }
 
-export function createLogger(tag: string) {
+export type LogMethod = (...args: any[]) => void;
+
+export interface Logger {
+  error: LogMethod;
+  warn: LogMethod;
+  log: LogMethod;
+  info: LogMethod;
+  success: LogMethod;
+}
+
+type ColorMap = Record<LogLevel, string>;
+type TypeColorMap = Record<LogType, string>;
+
+export function createLogger(tag: string): Logger {
   const reporter = new BrowserReporter();
 
-  return new Proxy({} as Record<LogType, (...args: any[]) => void>, {
+  return new Proxy({} as Logger, {
     get(target, prop) {
       return (...args: any[]) => {
         reporter.log({
