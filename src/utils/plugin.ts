@@ -1,4 +1,4 @@
-interface PluginAsset {
+export interface PluginAsset {
   filename: string;
   url: string;
 }
