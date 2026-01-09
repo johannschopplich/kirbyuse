@@ -89,7 +89,7 @@
     "prosemirror-model": "^1.25.4",
     "prosemirror-schema-list": "^1.5.1",
     "prosemirror-state": "^1.4.4",
-    "tsdown": "^0.19.0-beta.2",
+    "tsdown": "^0.19.0-beta.5",
     "typescript": "^5.9.3"
   }
 }
