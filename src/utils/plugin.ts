@@ -34,17 +34,17 @@ export function resolvePluginAsset(filename: string) {
   return asset;
 }
 
-export async function loadPluginModule(filename: string) {
+export async function loadPluginModule<T = any>(filename: string): Promise<T> {
   if (!filename.endsWith(".js")) {
     filename += ".js";
   }
 
   if (moduleCache.has(filename)) {
-    return moduleCache.get(filename);
+    return moduleCache.get(filename) as T;
   }
 
   const asset = resolvePluginAsset(filename);
   const mod = await import(/* @vite-ignore */ asset.url);
   moduleCache.set(filename, mod);
-  return mod;
+  return mod as T;
 }
