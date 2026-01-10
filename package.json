@@ -2,7 +2,7 @@
   "name": "kirbyuse",
   "type": "module",
   "version": "1.2.3",
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.28.0",
   "description": "Collection of Vue Composition utilities for Kirby CMS",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
   "license": "MIT",
@@ -49,11 +49,12 @@
   },
   "peerDependencies": {
     "dayjs": "^1.0.0",
-    "prosemirror-commands": "^1.7.0",
-    "prosemirror-inputrules": "^1.5.0",
-    "prosemirror-model": "^1.25.0",
-    "prosemirror-schema-list": "^1.5.0",
-    "prosemirror-state": "^1.4.0"
+    "prosemirror-commands": "^1.7.1",
+    "prosemirror-inputrules": "^1.5.1",
+    "prosemirror-model": "^1.25.4",
+    "prosemirror-schema-list": "^1.5.1",
+    "prosemirror-state": "^1.4.4",
+    "prosemirror-view": "^1.41.4"
   },
   "peerDependenciesMeta": {
     "dayjs": {
@@ -73,10 +74,13 @@
     },
     "prosemirror-state": {
       "optional": true
+    },
+    "prosemirror-view": {
+      "optional": true
     }
   },
   "dependencies": {
-    "kirby-types": "^1.2.0",
+    "kirby-types": "^1.3.0",
     "vue": "^2.7.16"
   },
   "devDependencies": {
@@ -89,7 +93,7 @@
     "prosemirror-model": "^1.25.4",
     "prosemirror-schema-list": "^1.5.1",
     "prosemirror-state": "^1.4.4",
-    "tsdown": "^0.19.0-beta.5",
+    "tsdown": "^0.19.0",
     "typescript": "^5.9.3"
   }
 }
