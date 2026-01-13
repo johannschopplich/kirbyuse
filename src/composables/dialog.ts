@@ -53,11 +53,11 @@ export function useDialog() {
    *   }
    * }
    *
-   * const result = await openFieldsDialog({ fields })
+   * const result = await openFieldsDialog<{ email: string }>({ fields })
    * console.log(result) // -> { email: "..." }
    * ```
    */
-  function openFieldsDialog(props: {
+  function openFieldsDialog<T = Record<string, any>>(props: {
     /** @default "medium" */
     size?: string;
     submitButton?: string | Record<string, any>;
@@ -73,11 +73,11 @@ export function useDialog() {
     /**
      * An object with all values for the fields
      */
-    value?: Record<string, any>;
+    value?: Partial<T>;
   }) {
-    let result: any;
+    let result: T | undefined;
 
-    return new Promise<any>((resolve) => {
+    return new Promise<T | undefined>((resolve) => {
       const panel = usePanel();
 
       panel.dialog.open({
