@@ -187,8 +187,8 @@ export function useDialog() {
               resolve(result);
             }, 25);
           },
-          submit: (event: any) => {
-            result = event;
+          submit: (event: unknown) => {
+            result = event as T;
             panel.dialog.close();
           },
         },

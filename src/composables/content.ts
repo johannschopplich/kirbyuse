@@ -48,7 +48,7 @@ export function useContent() {
    * In Kirby 5, the native `window.panel.content.update()` method immediately saves the changes to the backend storage. This can be prevented by passing `false` as the second argument.
    * In Kirby 4, content changes are only stored in the Vuex store and do not need to be saved explicitly.
    */
-  const update = async (values?: Record<string, any>, save = true) => {
+  const update = async (values?: Record<string, unknown>, save = true) => {
     if (!_isKirby5 && values) {
       for (const [key, value] of Object.entries(values)) {
         store.dispatch("content/update", [key, value]);

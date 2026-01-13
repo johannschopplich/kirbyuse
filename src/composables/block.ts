@@ -1,8 +1,22 @@
+import type { KirbyFieldProps, KirbyFieldsetProps } from "kirby-types";
+
+/**
+ * Props passed to block components by Kirby's block field.
+ */
+export interface BlockComponentProps {
+  /** Block content data */
+  content: Record<string, unknown>;
+  /** Fieldset definition with tabs and fields */
+  fieldset: KirbyFieldsetProps;
+  /** Allow additional block-specific props */
+  [key: string]: unknown;
+}
+
 /**
  * Provides block methods exposed by the default block component (Options API), which all custom blocks are extending.
  * Since Options API methods are not avaiable in Composition API, we need to extract them into a composable.
  *
- * @see https://github.com/getkirby/kirby/blob/f9f00b16a22fe9dbbbddc2bfd4719ca3437cbee9/panel/src/components/Forms/Blocks/Types/Default.vue#L37
+ * @see https://github.com/getkirby/kirby/blob/main/panel/src/components/Forms/Blocks/Types/Default.vue
  *
  * @example
  * ```vue
@@ -17,28 +31,26 @@
  * ```
  */
 export function useBlock(
-  props: Record<string, any>,
-  emit?: (...args: any[]) => void,
+  props: BlockComponentProps,
+  emit?: (...args: unknown[]) => void,
 ) {
-  const field = (name: string, fallback = null) => {
-    let field = null;
+  const field = (name: string, fallback?: KirbyFieldProps) => {
+    let result: KirbyFieldProps | undefined;
 
-    for (const tab of Object.values(
-      (props.fieldset.tabs ?? {}) as Record<string, any>,
-    )) {
-      if (tab.fields[name]) {
-        field = tab.fields[name];
+    for (const tab of Object.values(props.fieldset.tabs ?? {})) {
+      if (tab.fields?.[name]) {
+        result = tab.fields[name];
       }
     }
 
-    return field ?? fallback;
+    return result ?? fallback;
   };
 
   const open = () => {
     emit?.("open");
   };
 
-  const update = (content: Record<string, any>) => {
+  const update = (content: Record<string, unknown>) => {
     emit?.("update", {
       ...props.content,
       ...content,
