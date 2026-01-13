@@ -138,14 +138,12 @@ export function useDialog() {
         component: "k-text-dialog",
         props: { text },
         on: {
-          close: () => {
-            setTimeout(() => {
-              resolve(result);
-            }, 25);
-          },
           submit: () => {
             result = true;
             panel.dialog.close();
+          },
+          closed: () => {
+            resolve(result);
           },
         },
       });
@@ -182,14 +180,12 @@ export function useDialog() {
         component: "k-form-dialog",
         props,
         on: {
-          close: () => {
-            setTimeout(() => {
-              resolve(result);
-            }, 25);
-          },
           submit: (event: unknown) => {
             result = event as T;
             panel.dialog.close();
+          },
+          closed: () => {
+            resolve(result);
           },
         },
       });
