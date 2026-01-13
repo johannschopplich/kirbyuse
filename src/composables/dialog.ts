@@ -66,13 +66,11 @@ export interface DialogButtonProps {
 
 /**
  * Field definition for dialog fields.
- *
- * @remarks
- * Dialog fields are input definitions, not fully
- * resolved field props. Only `type` is required.
  */
 export type DialogFieldProps = Partial<Omit<KirbyFieldProps, "type">> & {
   type: string;
+  /** Allow additional field-type-specific properties */
+  [key: string]: unknown;
 };
 
 /**
