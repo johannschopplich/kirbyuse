@@ -1,4 +1,5 @@
 import type { KirbyFieldProps } from "kirby-types";
+import { isKirby5 } from "./compatibility";
 import { usePanel } from "./panel";
 
 /**
@@ -117,6 +118,8 @@ export interface FieldsDialogProps<T = Record<string, any>> {
  * Provides methods to open different types of dialogs.
  */
 export function useDialog() {
+  const _isKirby5 = isKirby5();
+
   /**
    * Returns a promise that resolves when the dialog is closed.
    *
@@ -142,9 +145,18 @@ export function useDialog() {
             result = true;
             panel.dialog.close();
           },
-          closed: () => {
-            resolve(result);
-          },
+          // TODO: Remove compatibility check in Kirby 6
+          ...(_isKirby5
+            ? {
+                closed: () => {
+                  resolve(result);
+                },
+              }
+            : {
+                close: () => {
+                  setTimeout(() => resolve(result), 25);
+                },
+              }),
         },
       });
     });
@@ -184,9 +196,18 @@ export function useDialog() {
             result = event as T;
             panel.dialog.close();
           },
-          closed: () => {
-            resolve(result);
-          },
+          // TODO: Remove compatibility check in Kirby 6
+          ...(_isKirby5
+            ? {
+                closed: () => {
+                  resolve(result);
+                },
+              }
+            : {
+                close: () => {
+                  setTimeout(() => resolve(result), 0);
+                },
+              }),
         },
       });
     });
