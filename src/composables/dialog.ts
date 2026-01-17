@@ -79,7 +79,7 @@ export type DialogFieldProps = Partial<Omit<KirbyFieldProps, "type">> & {
  *
  * @see https://github.com/getkirby/kirby/blob/main/panel/src/components/Dialogs/FormDialog.vue
  */
-export interface FieldsDialogProps<T = Record<string, any>> {
+export interface FieldsDialogProps<T = Record<string, any>, R = T> {
   /**
    * Dialog width.
    * @default "medium"
@@ -112,6 +112,49 @@ export interface FieldsDialogProps<T = Record<string, any>> {
    * Initial values for the fields.
    */
   value?: Partial<T>;
+  /**
+   * Custom submit handler. Controls dialog closing behavior.
+   * - Return `false` to keep the dialog open (e.g., validation failed)
+   * - Return any other value to close the dialog and resolve with that value
+   * - Throw to keep the dialog open
+   *
+   * @example
+   * ```ts
+   * // Validate before closing (e.g., check slug uniqueness)
+   * const data = await openFieldsDialog<{ slug: string }>({
+   *   fields,
+   *   onSubmit: async (value) => {
+   *     const response = await panel.api.post("/site/search", {
+   *       query: `slug:${value.slug}`,
+   *       limit: 1
+   *     })
+   *     if (response.data?.length > 0) {
+   *       panel.notification.error("This slug is already taken")
+   *       return false // Keep dialog open
+   *     }
+   *     return value // Close dialog, resolve with form values
+   *   },
+   * })
+   *
+   * // Transform data before resolving
+   * const page = await openFieldsDialog<{ title: string }, { id: string }>({
+   *   fields,
+   *   onSubmit: async (value) => {
+   *     const response = await panel.api.post(`/pages/${parentId}/children`, {
+   *       slug: value.slug,
+   *       template: "default",
+   *       content: { title: value.title }
+   *     })
+   *     if (!response?.id) {
+   *       panel.notification.error("Failed to create page")
+   *       return false // Keep dialog open
+   *     }
+   *     return { id: response.id } // Close dialog, resolve with created resource
+   *   },
+   * })
+   * ```
+   */
+  onSubmit?: (value: T) => R | false | Promise<R | false>;
 }
 
 /**
@@ -180,20 +223,36 @@ export function useDialog() {
    * console.log(result) // -> { email: "..." }
    * ```
    */
-  function openFieldsDialog<T = Record<string, any>>(
-    props: FieldsDialogProps<T>,
+  function openFieldsDialog<T = Record<string, any>, R = T>(
+    props: FieldsDialogProps<T, R>,
   ) {
-    let result: T | undefined;
+    let result: R | T | undefined;
+    const { onSubmit, ...dialogProps } = props;
 
-    return new Promise<T | undefined>((resolve) => {
+    return new Promise<R | T | undefined>((resolve) => {
       const panel = usePanel();
 
       panel.dialog.open({
         component: "k-form-dialog",
-        props,
+        props: dialogProps,
         on: {
-          submit: (event: unknown) => {
-            result = event as T;
+          submit: async (event: unknown) => {
+            const value = event as T;
+
+            if (onSubmit) {
+              try {
+                const submitResult = await onSubmit(value);
+                if (submitResult === false) {
+                  return; // Keep dialog open
+                }
+                result = submitResult as R;
+              } catch {
+                return; // Keep dialog open on error
+              }
+            } else {
+              result = value as unknown as R;
+            }
+
             panel.dialog.close();
           },
           // TODO: Remove compatibility check in Kirby 6
