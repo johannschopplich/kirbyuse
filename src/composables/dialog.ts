@@ -224,8 +224,16 @@ export function useDialog() {
    * ```
    */
   function openFieldsDialog<T = Record<string, any>, R = T>(
+    props: Omit<FieldsDialogProps<T, R>, "onSubmit"> & {
+      onSubmit: (value: T) => R | false | Promise<R | false>;
+    },
+  ): Promise<R | undefined>;
+  function openFieldsDialog<T = Record<string, any>>(
+    props: Omit<FieldsDialogProps<T, T>, "onSubmit">,
+  ): Promise<T | undefined>;
+  function openFieldsDialog<T = Record<string, any>, R = T>(
     props: FieldsDialogProps<T, R>,
-  ) {
+  ): Promise<R | T | undefined> {
     let result: R | T | undefined;
     const { onSubmit, ...dialogProps } = props;
 
