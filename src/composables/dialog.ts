@@ -223,15 +223,15 @@ export function useDialog() {
    * console.log(result) // -> { email: "..." }
    * ```
    */
-  function openFieldsDialog<T = Record<string, any>, R = T>(
+  function openFieldsDialog<T extends Record<string, any>, R>(
     props: Omit<FieldsDialogProps<T, R>, "onSubmit"> & {
       onSubmit: (value: T) => R | false | Promise<R | false>;
     },
   ): Promise<R | undefined>;
-  function openFieldsDialog<T = Record<string, any>>(
+  function openFieldsDialog<T extends Record<string, any>>(
     props: Omit<FieldsDialogProps<T, T>, "onSubmit">,
   ): Promise<T | undefined>;
-  function openFieldsDialog<T = Record<string, any>, R = T>(
+  function openFieldsDialog<T extends Record<string, any>, R = T>(
     props: FieldsDialogProps<T, R>,
   ): Promise<R | T | undefined> {
     let result: R | T | undefined;
