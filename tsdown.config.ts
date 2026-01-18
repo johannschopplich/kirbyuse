@@ -7,5 +7,5 @@ export default defineConfig({
     props: "src/props/index.ts",
   },
   dts: true,
-  platform: "browser",
+  platform: "neutral",
 });
