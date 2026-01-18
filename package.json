@@ -84,10 +84,10 @@
     "vue": "^2.7.16"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.7.3",
-    "bumpp": "^10.3.2",
+    "@antfu/eslint-config": "^7.0.1",
+    "bumpp": "^10.4.0",
     "eslint": "^9.39.2",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "prosemirror-commands": "^1.7.1",
     "prosemirror-inputrules": "^1.5.1",
     "prosemirror-model": "^1.25.4",
