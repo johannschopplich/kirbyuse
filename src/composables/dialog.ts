@@ -197,6 +197,7 @@ export function useDialog() {
               }
             : {
                 close: () => {
+                  // eslint-disable-next-line e18e/prefer-timer-args
                   setTimeout(() => resolve(result), 25);
                 },
               }),
@@ -272,6 +273,7 @@ export function useDialog() {
               }
             : {
                 close: () => {
+                  // eslint-disable-next-line e18e/prefer-timer-args
                   setTimeout(() => resolve(result), 0);
                 },
               }),
