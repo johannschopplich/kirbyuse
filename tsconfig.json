@@ -10,5 +10,6 @@
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["dist", "node_modules"]
 }
