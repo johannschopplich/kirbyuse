@@ -27,34 +27,6 @@ npm i -D kirbyuse
 yarn add -D kirbyuse
 ```
 
-### Register the import map
-
-Kirby 6 renders the Panel as native ESM and resolves bare specifiers through the `<script type="importmap">` block you saw in the template. Make sure your plugin adds a `kirbyuse` entry exactly once during bootstrap so that browser modules can resolve `import { usePanel } from "kirbyuse"`:
-
-```php
-<?php
-
-use Kirby\Cms\App as Kirby;
-
-Kirby::plugin('vendor/plugin', [
-  'panel' => [
-    'extend' => function (Kirby $kirby, array &$assets): void {
-      $assets['import-maps'] = array_merge(
-        $assets['import-maps'] ?? [],
-        [
-          'kirbyuse' => url('media/plugins/vendor/plugin/kirbyuse/index.js'),
-        ]
-      );
-    },
-  ],
-]);
-```
-
-The referenced file can point to whatever build artifact you ship with your plugin (for example a copy of `node_modules/kirbyuse/dist/index.mjs`). Once the import map is registered, every Panel script can resolve `import { usePanel } from "kirbyuse"` without touching the global scope.
-
-> [!TIP]
-> Kirby 6 already exposes `vue` through its own import map, so `import { ref, computed } from "vue"` works out of the box in any Panel plugin. Use `kirbyuse` for the Kirby-specific composables (`usePanel`, `useApi`, `useDialog`, …) and `vue` for the Composition API itself.
-
 ## Kirby Panel Type Augmentation
 
 > [!NOTE]
@@ -68,7 +40,7 @@ Type augmentations are generated based on the Kirby Panel JavaScript build. Espe
 
 Depending on the component type, you can choose how to import the type hints:
 
-### Panel Access with `usePanel`
+### Panel Access With `usePanel`
 
 In order to benefit from type completions, you can import the `usePanel` function from this package. This function returns a typed `window.panel` object. This works both in the Options API and the Composition API.
 
@@ -432,7 +404,7 @@ const label = ref("");
 
 ## Background
 
-Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by import maps. There is no global `Vue` constructor anymore – every Panel plugin imports Vue's Composition API directly from `"vue"`, and the import map ensures all plugins share the Panel's Vue runtime.
+Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by import maps. There is no global `Vue` constructor anymore – every Panel plugin imports Vue's Composition API directly from `"vue"` (`import { ref, computed } from "vue"` works out of the box), and the import map ensures all plugins share the Panel's Vue runtime.
 
 `kirbyuse` exists to layer Kirby-specific ergonomics on top of that:
 
