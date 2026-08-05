@@ -2,7 +2,7 @@ import { computed } from "vue";
 import { usePanel } from "./panel";
 
 /**
- * Reactive getters and methods to work with content of the current view.
+ * Provides reactive getters and methods to work with content of the current view.
  */
 export function useContent() {
   const panel = usePanel();
@@ -31,13 +31,10 @@ export function useContent() {
   };
 
   return {
-    // Properties
     content,
-    // Reactive getters
     currentContent,
     contentChanges,
     hasChanges,
-    // Methods
     update,
   };
 }

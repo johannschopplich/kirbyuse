@@ -2,16 +2,11 @@ import type { KirbyFieldProps } from "kirby-types";
 import { usePanel } from "./panel";
 
 /**
- * Dialog size options.
- *
  * @see https://github.com/getkirby/kirby/blob/main/panel/src/mixins/dialog.js
  */
 export type DialogSize = "small" | "default" | "medium" | "large" | "huge";
 
 /**
- * Button theme options.
- *
- * Includes semantic themes, color themes, and special themes.
  * Any theme can be suffixed with `-icon` to only color the icon.
  *
  * @see https://github.com/getkirby/kirby/blob/main/panel/src/styles/utilities/theme.css
@@ -43,39 +38,26 @@ export type ButtonTheme =
   | "code"
   | "empty"
   | "none"
-  // Icon-only variants
   | `${string}-icon`;
 
 /**
- * Button configuration for dialog buttons.
- *
  * @see https://github.com/getkirby/kirby/blob/main/panel/src/components/Navigation/Button.vue
  */
 export interface DialogButtonProps {
-  /** Button text */
   text?: string;
-  /** Icon identifier */
   icon?: string;
-  /** Button color theme */
   theme?: ButtonTheme;
-  /** Whether the button is disabled */
   disabled?: boolean;
-  /** Button variant */
   variant?: "filled" | "dimmed";
 }
 
-/**
- * Field definition for dialog fields.
- */
 export type DialogFieldProps = Partial<Omit<KirbyFieldProps, "type">> & {
   type: string;
-  /** Allow additional field-type-specific properties */
+  /** Additional field-type-specific properties. */
   [key: string]: unknown;
 };
 
 /**
- * Props for opening a fields dialog.
- *
  * @see https://github.com/getkirby/kirby/blob/main/panel/src/components/Dialogs/FormDialog.vue
  */
 export interface FieldsDialogProps<T = Record<string, any>, R = T> {
@@ -91,9 +73,6 @@ export interface FieldsDialogProps<T = Record<string, any>, R = T> {
    * - An object with button props
    */
   submitButton?: false | string | DialogButtonProps;
-  /**
-   * Cancel button configuration.
-   */
   cancelButton?: false | string | DialogButtonProps;
   /**
    * Optional text shown above the fields.
@@ -239,11 +218,11 @@ export function useDialog() {
               try {
                 const submitResult = await onSubmit(value);
                 if (submitResult === false) {
-                  return; // Keep dialog open
+                  return; // Keep dialog open.
                 }
                 result = submitResult as R;
               } catch {
-                return; // Keep dialog open on error
+                return; // Keep dialog open on error.
               }
             } else {
               result = value as unknown as R;

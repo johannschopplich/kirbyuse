@@ -62,13 +62,9 @@ class BrowserReporter {
   log(logEvent: LogEvent) {
     const consoleLogFn = resolveLogFn(logEvent.level);
 
-    // Type
     const type = logEvent.type === "log" ? "" : logEvent.type;
-
-    // Tag
     const tag = logEvent.tag || "";
 
-    // Styles
     const color =
       this.typeColorMap[logEvent.type as keyof typeof this.typeColorMap] ||
       this.levelColorMap[logEvent.level as keyof typeof this.levelColorMap] ||
@@ -83,12 +79,11 @@ padding: 2px 0.5em;
 
     const badge = `%c${[tag, type].filter(Boolean).join(":")}`;
 
-    // Log to the console
     if (typeof logEvent.args[0] === "string") {
       consoleLogFn(
         `${badge}%c ${logEvent.args[0]}`,
         style,
-        // Empty string as style resets to default console style
+        // Empty string as style resets to default console style.
         "",
         ...logEvent.args.slice(1),
       );

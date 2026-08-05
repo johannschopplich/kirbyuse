@@ -4,17 +4,16 @@ import type { KirbyFieldProps, KirbyFieldsetProps } from "kirby-types";
  * Props passed to block components by Kirby's block field.
  */
 export interface BlockComponentProps {
-  /** Block content data */
   content: Record<string, unknown>;
-  /** Fieldset definition with tabs and fields */
+  /** Fieldset definition, nesting its fields under tabs. */
   fieldset: KirbyFieldsetProps;
-  /** Allow additional block-specific props */
+  /** Additional block-specific props. */
   [key: string]: unknown;
 }
 
 /**
  * Provides block methods exposed by the default block component (Options API), which all custom blocks are extending.
- * Since Options API methods are not avaiable in Composition API, we need to extract them into a composable.
+ * Since Options API methods are not available in Composition API, we need to extract them into a composable.
  *
  * @see https://github.com/getkirby/kirby/blob/main/panel/src/components/Forms/Blocks/Types/Default.vue
  *

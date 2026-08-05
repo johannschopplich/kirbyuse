@@ -1,8 +1,5 @@
 import { useApi } from "./api";
 
-/**
- * Provides section methods for loading section data.
- */
 export function useSection() {
   const api = useApi();
 
