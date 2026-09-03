@@ -1,7 +1,7 @@
 # kirbyuse
 
-[![CI](https://github.com/toon-format/toon/actions/workflows/ci.yml/badge.svg)](https://github.com/toon-format/toon/actions)
-[![npm version](https://img.shields.io/npm/v/@toon-format/toon.svg)](https://www.npmjs.com/package/@toon-format/toon)
+[![CI](https://github.com/johannschopplich/kirbyuse/actions/workflows/ci.yml/badge.svg)](https://github.com/johannschopplich/kirbyuse/actions)
+[![npm version](https://img.shields.io/npm/v/kirbyuse.svg)](https://www.npmjs.com/package/kirbyuse)
 
 A collection of Vue Composition utilities and type hints to improve the DX for writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
