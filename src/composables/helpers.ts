@@ -6,8 +6,8 @@ import { useApp } from "./app";
  * @see https://lab.getkirby.com/public/lab/internals/helpers/
  *
  * @remarks
- * This composable is a simple shortcut to `window.panel.app.$helper`.
+ * This composable is a simple shortcut to `window.panel.app.config.globalProperties.$helper`.
  */
 export function useHelpers() {
-  return useApp().$helper;
+  return useApp().config.globalProperties.$helper;
 }

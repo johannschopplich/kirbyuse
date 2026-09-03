@@ -6,14 +6,13 @@
 A collection of Vue Composition utilities and type hints to improve the DX for writing Kirby Panel plugins. It is intended for the Composition API, but also works with the Options API.
 
 > [!IMPORTANT]
-> The current version targets Kirby 4 and Kirby 5. Check out the [v2 branch](https://github.com/johannschopplich/kirbyuse/tree/feat/kirby-6) for Kirby 6 support.
+> `kirbyuse` 2.x targets Kirby 6+ and the Vue 3-based Panel runtime. Keep using `kirbyuse` 1.x if you still need to support Kirby 4 or 5.
 
 ## Features
 
 - 🧃 IntelliSense support for Kirby's global `window.panel` object
 - 🍿 Helpers like `usePanel` to write future-proof Kirby plugins
-- 🚀 Aliases for Composition API functions like `ref` and `computed`
-- 📇 Ready for Kirby 4 & Kirby 5
+- 📇 Ready for the Kirby 6 Panel import-map setup
 
 ## Setup
 
@@ -116,7 +115,7 @@ await api.get("pages/my-page");
 
 ### `useApp`
 
-Returns the main Panel Vue instance. This composable is a simple shortcut to `window.panel.app`.
+Returns the Panel's Vue application, the result of `createApp()`. This composable is a simple shortcut to `window.panel.app`.
 
 **Example:**
 
@@ -124,8 +123,9 @@ Returns the main Panel Vue instance. This composable is a simple shortcut to `wi
 import { useApp } from "kirbyuse";
 
 const app = useApp();
-// Access Vue instance methods and properties
-console.log(app.$root);
+// Register a component or reach the global properties
+app.component("k-my-component", MyComponent);
+console.log(app.config.globalProperties.$helper);
 ```
 
 ### `useBlock`
@@ -136,7 +136,8 @@ Provides utilities for building custom block components, including access to fie
 
 ```vue
 <script setup>
-import { computed, useBlock } from "kirbyuse";
+import { useBlock } from "kirbyuse";
+import { computed } from "vue";
 
 // Props and emits are inherited from Kirby's default block component
 const props = defineProps({
@@ -171,13 +172,11 @@ The `field` function retrieves field configuration from the block's fieldset, wi
 
 Provides reactive getters and methods to work with content of the current view.
 
-> [!TIP]
-> Compatible with both Kirby 4 and 5. The returned getters and methods are shimmed for Kirby 4 in a Kirby 4 environment.
-
 **Example:**
 
 ```ts
 import { useContent } from "kirbyuse";
+import { watch } from "vue";
 
 const { currentContent, contentChanges, hasChanges, update } = useContent();
 
@@ -255,14 +254,15 @@ Provides the `load` method for fetching section data from the backend. This is e
 **Example:**
 
 ```ts
-import { ref, useSection } from "kirbyuse";
+import { useSection } from "kirbyuse";
 import { section } from "kirbyuse/props";
+import { ref } from "vue";
 
 const props = defineProps({ ...section });
 
 const { load } = useSection();
 
-// Fetch section data (typically in an IIFE since async setup isn't supported in Vue 2)
+// Fetch section data immediately
 (async () => {
   const response = await load({
     parent: props.parent,
@@ -279,7 +279,7 @@ const { load } = useSection();
 
 ### `useHelpers`
 
-Returns the internal Fiber helpers. This composable is a simple shortcut to `window.panel.app.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
+Returns the internal Fiber helpers. This composable is a simple shortcut to `window.panel.app.config.globalProperties.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 
@@ -293,7 +293,7 @@ helpers.link.detect("https://getkirby.com");
 
 ### `useLibrary`
 
-Returns the internal Kirby Panel libraries (dayjs, colors and autosize). This composable is a simple shortcut to `window.panel.app.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+Returns the internal Kirby Panel libraries (dayjs, colors and autosize). This composable is a simple shortcut to `window.panel.app.config.globalProperties.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
 
 **Example:**
 
@@ -316,16 +316,9 @@ Props required for custom Panel sections. Use with `defineProps` to inherit the 
 ```ts
 import { section } from "kirbyuse/props";
 
-const propsDefinition = {
-  ...section,
-};
+defineOptions({ inheritAttrs: false });
 
-export default {
-  inheritAttrs: false,
-};
-
-// In <script setup>
-const props = defineProps(propsDefinition);
+const props = defineProps({ ...section });
 ```
 
 These props include `parent` and `name`, which are required for loading section data with `useSection`.
@@ -348,7 +341,8 @@ The individual field props such as `label`, `disabled` or `required` are exporte
 
 ```vue
 <script setup>
-import { ref, useContent, usePanel, watch } from "kirbyuse";
+import { useContent, usePanel } from "kirbyuse";
+import { ref, watch } from "vue";
 
 const label = ref("");
 const { currentContent, contentChanges } = useContent();
@@ -376,27 +370,22 @@ function handleClick() {
 <summary>👉 How to load section data</summary>
 
 ```vue
-<script>
-import { ref, useSection, watch } from "kirbyuse";
-import { section } from "kirbyuse/props";
-
-// Define the component props
-const propsDefinition = {
-  ...section,
-};
-
-export default {
-  inheritAttrs: false,
-};
-</script>
-
 <script setup>
-const props = defineProps(propsDefinition);
+import { useSection } from "kirbyuse";
+import { section } from "kirbyuse/props";
+import { ref } from "vue";
+
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps({
+  ...section,
+});
 
 const label = ref("");
 
-// Async components are not supported in Vue 2, so we use
-// a self-invoking async function as `created` replacement
+// Fetch section data immediately
 (async () => {
   const { load } = useSection();
   const response = await load({
@@ -421,45 +410,13 @@ const label = ref("");
 
 ## Background
 
-Kirby CMS uses Vue 2 and provides the `Vue` constructor via the UMD build in the global scope. The main Kirby Panel instance is accessible at `window.panel.app`.
+Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by import maps. There is no global `Vue` constructor anymore – every Panel plugin imports Vue's Composition API directly from `"vue"` (`import { ref, computed } from "vue"` works out of the box), and the import map ensures all plugins share the Panel's Vue runtime.
 
-Before Vue reached EOL, the Composition API was backported in Vue 2.7. In ESM builds, these APIs are provided as named exports:
+`kirbyuse` exists to layer Kirby-specific ergonomics on top of that:
 
-```js
-import Vue, { ref } from "vue";
-
-Vue.ref; // `undefined`, use named export instead
-```
-
-Since Kirby uses the UMD build, these APIs are not available. Instead, in the **UMD build**, these APIs are exposed as properties on the global Vue object:
-
-```js
-import Vue from "vue";
-
-Vue.ref; // `function`
-```
-
-When writing Vue components for Kirby with the Composition API, you have to import the Vue constructor from the global scope and use the Composition API from there:
-
-```js
-import Vue from "vue";
-
-const label = Vue.ref("");
-```
-
-This approach gets tedious quickly, especially when you have to write a lot of components. It also makes it harder to upgrade to Vue 3 in the future.
-
-This is where this package comes in. It provides aliases to the Composition API that are compatible with the UMD build of Vue. Additionally, some helpers are provided to make working with Kirby easier:
-
-```js
-// Inside `<script setup>`
-import { computed, ref, usePanel } from "kirbyuse";
-
-const label = ref("");
-
-const panel = usePanel();
-panel.notification.success("Composition API is awesome!");
-```
+1. Panel composables (`usePanel`, `useSection`, `useDialog`, …) wrap the `window.panel` runtime so you get IntelliSense and a stable API surface.
+2. Type augmentations for `window.panel` are loaded as a side effect of importing the package.
+3. The package is shipped as ESM with `vue` declared external, so it slots into the Panel import map without bundling Vue twice.
 
 ## Composition API in Panel Plugins
 

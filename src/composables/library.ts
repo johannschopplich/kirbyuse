@@ -7,8 +7,8 @@ import { useApp } from "./app";
  * @see https://lab.getkirby.com/public/lab/internals/library.dayjs
  *
  * @remarks
- * This composable is a simple shortcut to `window.panel.app.$library`.
+ * This composable is a simple shortcut to `window.panel.app.config.globalProperties.$library`.
  */
 export function useLibrary() {
-  return useApp().$library;
+  return useApp().config.globalProperties.$library;
 }
