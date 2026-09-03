@@ -1,22 +1,22 @@
 name: Release
 
+permissions:
+  id-token: write
+  contents: write
+
 on:
   push:
     tags:
       - "v*"
 
-permissions:
-  id-token: write
-  contents: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24
@@ -28,20 +28,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install
-        run: pnpm install
-
-      - name: Build
-        run: pnpm run build
+      - run: pnpm install
+      - run: pnpm run build
 
       - name: Publish to npm (stable)
         if: ${{ !contains(github.ref_name, '-') }}
         run: npm install -g npm@latest && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Publish to npm (prerelease)
         if: ${{ contains(github.ref_name, '-') }}
         run: npm install -g npm@latest && npm publish --access public --tag next
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
