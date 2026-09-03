@@ -5,12 +5,11 @@ import { usePanel } from "./panel";
 import { useStore } from "./store";
 
 /**
- * Reactive getters and methods to work with content of the current view.
+ * Provides reactive getters and methods to work with content of the current view.
  *
  * @remarks
  * This composable follows the Kirby 5 content API while staying compatible with Kirby 4 (falling back to the Vuex store of Kirby 4).
  */
-
 export function useContent() {
   const panel = usePanel();
   const store = useStore();
