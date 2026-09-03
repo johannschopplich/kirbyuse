@@ -63,13 +63,10 @@ export function useContent() {
   };
 
   return {
-    // Properties
     content,
-    // Reactive getters
     currentContent,
     contentChanges,
     hasChanges,
-    // Methods
     update,
   };
 }

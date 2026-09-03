@@ -41,7 +41,7 @@ Type augmentations are generated based on the Kirby Panel JavaScript build. Espe
 
 Depending on the component type, you can choose how to import the type hints:
 
-### Panel Access with `usePanel`
+### Panel Access With `usePanel`
 
 In order to benefit from type completions, you can import the `usePanel` function from this package. This function returns a typed `window.panel` object. This works both in the Options API and the Composition API.
 
