@@ -330,6 +330,18 @@ const props = defineProps(propsDefinition);
 
 These props include `parent` and `name`, which are required for loading section data with `useSection`.
 
+### `field`
+
+Props Kirby passes to a custom field component, matching the Panel's `Field.vue`:
+
+```ts
+import { field } from "kirbyuse/props";
+
+const props = defineProps({ ...field });
+```
+
+The individual field props such as `label`, `disabled` or `required` are exported as well, so a component can pick only what it needs.
+
 ## Examples
 
 ### Panel Section

@@ -4,6 +4,7 @@ export * from "./autocomplete";
 export * from "./autofocus";
 export * from "./before";
 export * from "./disabled";
+export * from "./field";
 export * from "./font";
 export * from "./help";
 export * from "./icon";
