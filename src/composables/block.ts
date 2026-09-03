@@ -20,7 +20,7 @@ export interface BlockComponentProps {
  * @example
  * ```vue
  * <script setup>
- * import { computed, ref, useApi, usePanel, watch } from "kirbyuse";
+ * import { useBlock } from "kirbyuse";
  *
  * // Will inherit props from extended default block
  * const props = defineProps({});
