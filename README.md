@@ -115,7 +115,7 @@ await api.get("pages/my-page");
 
 ### `useApp`
 
-Returns the main Panel Vue instance. This composable is a simple shortcut to `window.panel.app`.
+Returns the Panel's Vue application, the result of `createApp()`. This composable is a simple shortcut to `window.panel.app`.
 
 **Example:**
 
@@ -123,8 +123,9 @@ Returns the main Panel Vue instance. This composable is a simple shortcut to `wi
 import { useApp } from "kirbyuse";
 
 const app = useApp();
-// Access Vue instance methods and properties
-console.log(app.$root);
+// Register a component or reach the global properties
+app.component("k-my-component", MyComponent);
+console.log(app.config.globalProperties.$helper);
 ```
 
 ### `useBlock`
@@ -278,7 +279,7 @@ const { load } = useSection();
 
 ### `useHelpers`
 
-Returns the internal Fiber helpers. This composable is a simple shortcut to `window.panel.app.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
+Returns the internal Fiber helpers. This composable is a simple shortcut to `window.panel.app.config.globalProperties.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 
@@ -292,7 +293,7 @@ helpers.link.detect("https://getkirby.com");
 
 ### `useLibrary`
 
-Returns the internal Kirby Panel libraries (dayjs, colors and autosize). This composable is a simple shortcut to `window.panel.app.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+Returns the internal Kirby Panel libraries (dayjs, colors and autosize). This composable is a simple shortcut to `window.panel.app.config.globalProperties.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
 
 **Example:**
 
@@ -315,19 +316,24 @@ Props required for custom Panel sections. Use with `defineProps` to inherit the 
 ```ts
 import { section } from "kirbyuse/props";
 
-const propsDefinition = {
-  ...section,
-};
+defineOptions({ inheritAttrs: false });
 
-export default {
-  inheritAttrs: false,
-};
-
-// In <script setup>
-const props = defineProps(propsDefinition);
+const props = defineProps({ ...section });
 ```
 
 These props include `parent` and `name`, which are required for loading section data with `useSection`.
+
+### `field`
+
+Props Kirby passes to a custom field component, matching the Panel's `Field.vue`:
+
+```ts
+import { field } from "kirbyuse/props";
+
+const props = defineProps({ ...field });
+```
+
+The individual field props such as `label`, `disabled` or `required` are exported as well, so a component can pick only what it needs.
 
 ## Examples
 
