@@ -41,6 +41,16 @@ export function useContent() {
       });
 
   /**
+   * Whether the editor may change the current view's content: the model
+   * grants `update` and, in Kirby 5, no other user holds the lock.
+   */
+  const isEditable = computed<boolean>(
+    () =>
+      panel.view.props.permissions?.update !== false &&
+      (!_isKirby5 || !panel.content.isLocked()),
+  );
+
+  /**
    * Updates the form values of the current view.
    *
    * @remarks
@@ -66,6 +76,7 @@ export function useContent() {
     currentContent,
     contentChanges,
     hasChanges,
+    isEditable,
     update,
   };
 }
