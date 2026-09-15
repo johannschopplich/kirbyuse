@@ -84,18 +84,18 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ### Composables Overview
 
-| Composable                  | Description                               | Returns                                                           |
-| --------------------------- | ----------------------------------------- | ----------------------------------------------------------------- |
-| [`useApi`](#useapi)         | Access Kirby's Panel API                  | `PanelApi`                                                        |
-| [`useApp`](#useapp)         | Access the main Panel Vue instance        | `PanelApp`                                                        |
-| [`useBlock`](#useblock)     | Block methods for custom block components | `{ field, open, update }`                                         |
-| [`useContent`](#usecontent) | Reactive content getters and methods      | `{ content, currentContent, contentChanges, hasChanges, update }` |
-| [`useDialog`](#usedialog)   | Open different types of dialogs           | `{ openTextDialog, openFieldsDialog }`                            |
-| [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                           |
-| [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                           |
-| [`useSection`](#usesection) | Load section data                         | `{ load }`                                                        |
-| [`useHelpers`](#usehelpers) | Access internal Fiber helpers             | `PanelHelpers`                                                    |
-| [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                    |
+| Composable                  | Description                               | Returns                                                                       |
+| --------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------- |
+| [`useApi`](#useapi)         | Access Kirby's Panel API                  | `PanelApi`                                                                    |
+| [`useApp`](#useapp)         | Access the main Panel Vue instance        | `PanelApp`                                                                    |
+| [`useBlock`](#useblock)     | Block methods for custom block components | `{ field, open, update }`                                                     |
+| [`useContent`](#usecontent) | Reactive content getters and methods      | `{ content, currentContent, contentChanges, hasChanges, isEditable, update }` |
+| [`useDialog`](#usedialog)   | Open different types of dialogs           | `{ openTextDialog, openFieldsDialog }`                                        |
+| [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                                       |
+| [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                                       |
+| [`useSection`](#usesection) | Load section data                         | `{ load }`                                                                    |
+| [`useHelpers`](#usehelpers) | Access internal Fiber helpers             | `PanelHelpers`                                                                |
+| [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                                |
 
 ---
 
@@ -178,15 +178,19 @@ Provides reactive getters and methods to work with content of the current view.
 import { useContent } from "kirbyuse";
 import { watch } from "vue";
 
-const { currentContent, contentChanges, hasChanges, update } = useContent();
+const { currentContent, contentChanges, hasChanges, isEditable, update } =
+  useContent();
 
 // Watch for content changes
 watch(currentContent, (newContent) => {
   console.log("Content changed:", newContent);
 });
 
-// Update content of the current view
-update({ excerpt: "Hello, Kirby!" });
+// Update content of the current view, unless the model denies `update` or,
+// in Kirby 5, another user holds the lock
+if (isEditable.value) {
+  update({ excerpt: "Hello, Kirby!" });
+}
 ```
 
 ### `useDialog`
