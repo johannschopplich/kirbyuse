@@ -17,6 +17,7 @@ export const field = {
   ...required,
   counter: [Boolean, Object],
   endpoints: Object,
+  hasDiff: Boolean,
   input: {
     type: [String, Number, Boolean],
     default: null,
