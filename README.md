@@ -186,8 +186,8 @@ watch(currentContent, (newContent) => {
   console.log("Content changed:", newContent);
 });
 
-// Update content of the current view, unless the model denies `update` or,
-// in Kirby 5, another user holds the lock
+// Update content of the current view, unless the model denies `update` or
+// another user holds the lock
 if (isEditable.value) {
   update({ excerpt: "Hello, Kirby!" });
 }
