@@ -29,13 +29,19 @@ export function useContent() {
    *
    * @remarks
    * Kirby's native `window.panel.content.update()` method immediately saves the changes to the backend storage. This can be prevented by passing `false` as the second argument.
+   * Resolves to `false` if Kirby did not save the changes, because another user holds the lock or a newer save replaced this one.
    */
-  const update = async (values?: Record<string, any>, save = true) => {
+  const update = async (
+    values?: Record<string, any>,
+    save = true,
+  ): Promise<boolean> => {
     const viewContent = content.merge(values);
 
-    if (save) {
-      await content.save(viewContent);
-    }
+    if (!save) return true;
+
+    // `kirby-types` still types the save as `Promise<void>`.
+    const isSaved: unknown = await content.save(viewContent);
+    return isSaved !== false;
   };
 
   return {
