@@ -56,8 +56,12 @@ export function useContent() {
    * @remarks
    * In Kirby 5, the native `window.panel.content.update()` method immediately saves the changes to the backend storage. This can be prevented by passing `false` as the second argument.
    * In Kirby 4, content changes are only stored in the Vuex store and do not need to be saved explicitly.
+   * Resolves to `false` if Kirby did not save the changes, because another user holds the lock or a newer save replaced this one. Kirby reports that from 5.6 on; before, a save resolves to `undefined`.
    */
-  const update = async (values?: Record<string, unknown>, save = true) => {
+  const update = async (
+    values?: Record<string, unknown>,
+    save = true,
+  ): Promise<boolean | undefined> => {
     if (!_isKirby5 && values) {
       for (const [key, value] of Object.entries(values)) {
         store.dispatch("content/update", [key, value]);
@@ -66,9 +70,10 @@ export function useContent() {
 
     const viewContent = content.merge(values);
 
-    if (save) {
-      await content.save(viewContent);
-    }
+    if (!save) return true;
+
+    const isSaved: unknown = await content.save(viewContent);
+    return typeof isSaved === "boolean" ? isSaved : undefined;
   };
 
   return {
