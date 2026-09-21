@@ -80,7 +80,7 @@
     }
   },
   "dependencies": {
-    "kirby-types": "^1.4.7",
+    "kirby-types": "^1.6.2",
     "vue": "^2.7.16"
   },
   "devDependencies": {

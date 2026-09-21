@@ -72,7 +72,7 @@ export function useContent() {
 
     if (!save) return true;
 
-    const isSaved: unknown = await content.save(viewContent);
+    const isSaved = await content.save(viewContent);
     return typeof isSaved === "boolean" ? isSaved : undefined;
   };
 
