@@ -39,9 +39,7 @@ export function useContent() {
 
     if (!save) return true;
 
-    // `kirby-types` still types the save as `Promise<void>`.
-    const isSaved: unknown = await content.save(viewContent);
-    return isSaved !== false;
+    return content.save(viewContent);
   };
 
   return {
