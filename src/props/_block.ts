@@ -24,7 +24,7 @@ export const block = {
   disabled: Boolean,
   /**
    * API endpoints
-   * @value { field, model, section }
+   * @value { field, model }
    */
   endpoints: {
     default: () => ({}),

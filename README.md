@@ -93,7 +93,6 @@ The import will provide global type augmentations for the `window.panel` object.
 | [`useDialog`](#usedialog)   | Open different types of dialogs           | `{ openTextDialog, openFieldsDialog }`                                        |
 | [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                                       |
 | [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                                       |
-| [`useSection`](#usesection) | Load section data                         | `{ load }`                                                                    |
 | [`useHelpers`](#usehelpers) | Access internal Fiber helpers             | `PanelHelpers`                                                                |
 | [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                                |
 
@@ -223,7 +222,7 @@ console.log(result); // -> { email: "..." }
 Returns translation utility functions.
 
 > [!NOTE]
-> In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects, such as those returned by a section's `label` property.
+> In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects keyed by language code.
 
 **Example:**
 
@@ -250,36 +249,6 @@ const panel = usePanel();
 // Access panel services
 panel.notification.success("Success!");
 ```
-
-### `useSection`
-
-Provides the `load` method for fetching section data from the backend. This is essential for custom sections that need to retrieve their configuration and data.
-
-**Example:**
-
-```ts
-import { useSection } from "kirbyuse";
-import { section } from "kirbyuse/props";
-import { ref } from "vue";
-
-const props = defineProps({ ...section });
-
-const { load } = useSection();
-
-// Fetch section data immediately
-(async () => {
-  const response = await load({
-    parent: props.parent,
-    name: props.name,
-  });
-
-  // Access section properties from the response
-  console.log(response.label);
-})();
-```
-
-> [!NOTE]
-> The `load` method requires `parent` and `name` props. Use the `section` props helper from `kirbyuse/props` to ensure these are defined.
 
 ### `useHelpers`
 
@@ -313,20 +282,6 @@ library.dayjs(); // now
 
 This package provides pre-defined prop definitions for common Kirby Panel component types. Import them from `kirbyuse/props`:
 
-### `section`
-
-Props required for custom Panel sections. Use with `defineProps` to inherit the necessary props for section components:
-
-```ts
-import { section } from "kirbyuse/props";
-
-defineOptions({ inheritAttrs: false });
-
-const props = defineProps({ ...section });
-```
-
-These props include `parent` and `name`, which are required for loading section data with `useSection`.
-
 ### `field`
 
 Props Kirby passes to a custom field component, matching the Panel's `Field.vue`:
@@ -341,15 +296,16 @@ The individual field props such as `label`, `disabled` or `required` are exporte
 
 ## Examples
 
-### Panel Section
+### Panel Field
 
 ```vue
 <script setup>
 import { useContent, usePanel } from "kirbyuse";
-import { ref, watch } from "vue";
+import { field } from "kirbyuse/props";
+import { watch } from "vue";
 
-const label = ref("");
-const { currentContent, contentChanges } = useContent();
+const props = defineProps({ ...field });
+const { currentContent } = useContent();
 
 watch(currentContent, (newContent) => {
   console.log("Content has changed:", newContent);
@@ -362,55 +318,13 @@ function handleClick() {
 </script>
 
 <template>
-  <k-section :label="label">
+  <k-field v-bind="props">
     <k-text>
-      <h1 @click="handleClick()">My Section</h1>
+      <h1 @click="handleClick()">My Field</h1>
     </k-text>
-  </k-section>
+  </k-field>
 </template>
 ```
-
-<details>
-<summary>👉 How to load section data</summary>
-
-```vue
-<script setup>
-import { useSection } from "kirbyuse";
-import { section } from "kirbyuse/props";
-import { ref } from "vue";
-
-defineOptions({
-  inheritAttrs: false,
-});
-
-const props = defineProps({
-  ...section,
-});
-
-const label = ref("");
-
-// Fetch section data immediately
-(async () => {
-  const { load } = useSection();
-  const response = await load({
-    parent: props.parent,
-    name: props.name,
-  });
-
-  label.value = response.label || "My Section";
-})();
-</script>
-
-<template>
-  <k-section :label="label">
-    <k-text>
-      <h1>My Section</h1>
-    </k-text>
-  </k-section>
-</template>
-```
-
-</details>
 
 ## Background
 
@@ -418,7 +332,7 @@ Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by impor
 
 `kirbyuse` exists to layer Kirby-specific ergonomics on top of that:
 
-1. Panel composables (`usePanel`, `useSection`, `useDialog`, …) wrap the `window.panel` runtime so you get IntelliSense and a stable API surface.
+1. Panel composables (`usePanel`, `useContent`, `useDialog`, …) wrap the `window.panel` runtime so you get IntelliSense and a stable API surface.
 2. Type augmentations for `window.panel` are loaded as a side effect of importing the package.
 3. The package is shipped as ESM with `vue` declared external, so it slots into the Panel import map without bundling Vue twice.
 
