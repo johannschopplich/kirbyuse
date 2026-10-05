@@ -333,7 +333,7 @@ Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by impor
 `kirbyuse` exists to layer Kirby-specific ergonomics on top of that:
 
 1. Panel composables (`usePanel`, `useContent`, `useDialog`, …) wrap the `window.panel` runtime so you get IntelliSense and a stable API surface.
-2. Type augmentations for `window.panel` are loaded as a side effect of importing the package.
+2. Importing the package types `window.panel` and the Panel's global properties (`this.$panel`, `this.$t`, …) through `kirby-types/panel-globals`.
 3. The package is shipped as ESM with `vue` declared external, so it slots into the Panel import map without bundling Vue twice.
 
 ## Composition API in Panel Plugins
