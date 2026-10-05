@@ -12,14 +12,11 @@ importers:
         specifier: ^1.0.0
         version: 1.11.20
       kirby-types:
-        specifier: ^1.4.7
-        version: 1.4.7(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@3.5.33(typescript@6.0.3))
+        specifier: ^2.0.0-beta.1
+        version: 2.0.0-beta.1(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@3.5.33(typescript@6.0.3))
       prosemirror-view:
         specifier: ^1.41.4
         version: 1.41.8
-      vue:
-        specifier: ^3.5.33
-        version: 3.5.33(typescript@6.0.3)
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^8.2.0
@@ -54,6 +51,9 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+      vue:
+        specifier: ^3.5.33
+        version: 3.5.33(typescript@6.0.3)
 
 packages:
 
@@ -1109,8 +1109,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  kirby-types@1.4.7:
-    resolution: {integrity: sha512-QRGXOYo6r/b1kescrJq0p4PS+V+l1nQ6mIBzQeHCbatqaV1goQY1Zt1yW+Gw5Bf1eC+MzmC28MIw8Etj1phqjQ==}
+  kirby-types@2.0.0-beta.1:
+    resolution: {integrity: sha512-oFOwRyrjrA+eBsNwnh5NJ5EbVb551I9XxVtAacrN8XLSGJyfvXWJOXAb7VFbjTM2W8TsiETiKPaRWYb4B8vl3w==}
     peerDependencies:
       dayjs: ^1.11.13
       prosemirror-commands: ^1.7.1
@@ -1119,7 +1119,7 @@ packages:
       prosemirror-schema-list: ^1.5.1
       prosemirror-state: ^1.4.4
       prosemirror-view: ^1.41.4
-      vue: ^2.7.16
+      vue: ^3.5.0
     peerDependenciesMeta:
       dayjs:
         optional: true
@@ -2755,7 +2755,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  kirby-types@1.4.7(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@3.5.33(typescript@6.0.3)):
+  kirby-types@2.0.0-beta.1(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@3.5.33(typescript@6.0.3)):
     optionalDependencies:
       dayjs: 1.11.20
       prosemirror-commands: 1.7.1
