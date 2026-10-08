@@ -19,8 +19,12 @@ export const block = {
     type: Object,
   },
   /**
+   * If `true`, the field is no longer editable and will not be saved
+   */
+  disabled: Boolean,
+  /**
    * API endpoints
-   * @value { field, model, section }
+   * @value { field, model }
    */
   endpoints: {
     default: () => ({}),
