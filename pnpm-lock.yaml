@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.0
         version: 1.11.20
       kirby-types:
-        specifier: ^1.7.0
-        version: 1.7.0(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@2.7.16)
+        specifier: ^1.8.1
+        version: 1.8.1(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@2.7.16)
       prosemirror-view:
         specifier: ^1.41.4
         version: 1.41.8
@@ -1076,8 +1076,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  kirby-types@1.7.0:
-    resolution: {integrity: sha512-S3JfrYt3yEodXQovad/Zqwbg1X9wg5rsqXc5Aqe3ck7vp1lLH6iqlySnwoX8gpS6dCKsqW/75beuNcC/Ymw7PA==}
+  kirby-types@1.8.1:
+    resolution: {integrity: sha512-+ugQcfSEuDl33ievol/sdrvtqO3b137R2klfcyzprRsWjxgvEbbDUWqIxhSFjjXL4bV4LBkx7PPhFn8xWQIJ9A==}
     peerDependencies:
       dayjs: ^1.11.13
       prosemirror-commands: ^1.7.1
@@ -2674,7 +2674,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  kirby-types@1.7.0(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@2.7.16):
+  kirby-types@1.8.1(dayjs@1.11.20)(prosemirror-commands@1.7.1)(prosemirror-inputrules@1.5.1)(prosemirror-model@1.25.4)(prosemirror-schema-list@1.5.1)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(vue@2.7.16):
     optionalDependencies:
       dayjs: 1.11.20
       prosemirror-commands: 1.7.1
