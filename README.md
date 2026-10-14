@@ -292,6 +292,16 @@ const props = defineProps({ ...field });
 
 The individual field props such as `label`, `disabled` or `required` are exported as well, so a component can pick only what it needs.
 
+## Plugin Assets
+
+For assets that should load on demand, register them once and resolve them by file name:
+
+| Helper                         | Purpose                                                                 |
+| ------------------------------ | ----------------------------------------------------------------------- |
+| `registerPluginAssets(assets)` | Registers `{ filename, url }` pairs, usually from a PHP-side asset list |
+| `resolvePluginAsset(filename)` | Returns the registered asset                                            |
+| `loadPluginModule(filename)`   | Imports a registered JavaScript module, cached                          |
+
 ## Examples
 
 ### Panel Field
