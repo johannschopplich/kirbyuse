@@ -93,7 +93,7 @@ The import will provide global type augmentations for the `window.panel` object.
 | [`useDialog`](#usedialog)   | Open different types of dialogs           | `{ openTextDialog, openFieldsDialog }`                                        |
 | [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                                       |
 | [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                                       |
-| [`useHelpers`](#usehelpers) | Access internal Fiber helpers             | `PanelHelpers`                                                                |
+| [`useHelpers`](#usehelpers) | Access internal Panel helpers             | `PanelHelpers`                                                                |
 | [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                                |
 
 ---
@@ -252,7 +252,7 @@ panel.notification.success("Success!");
 
 ### `useHelpers`
 
-Returns the internal Fiber helpers. This composable is a simple shortcut to `window.panel.app.config.globalProperties.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
+Returns the internal Panel helpers. This composable is a simple shortcut to `window.panel.app.config.globalProperties.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 

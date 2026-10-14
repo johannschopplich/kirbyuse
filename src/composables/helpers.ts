@@ -1,7 +1,7 @@
 import { useApp } from "./app";
 
 /**
- * Returns the internal Fiber helpers.
+ * Returns the internal Panel helpers.
  *
  * @see https://lab.getkirby.com/public/lab/internals/helpers/
  *
