@@ -49,7 +49,7 @@ import { usePanel } from "kirbyuse";
 
 const panel = usePanel();
 panel.notification.success("Kirby is awesome!");
-//                 ^? (property) PanelNotification.success: (arg1: any) => any
+//                 ^? (property) PanelNotification.success: (success?: string | PanelNotificationOptions) => PanelNotificationDefaults
 ```
 
 If you are writing a Vue component in the Options API, you can use the `panel` instance in methods like `created`:
@@ -73,7 +73,7 @@ Instead of the explicit `usePanel` import, you can also augment the `window.pane
 import "kirbyuse";
 
 window.panel.notification.success("Kirby is awesome!");
-//                        ^? (property) PanelNotification.success: (arg1: any) => any
+//                        ^? (property) PanelNotification.success: (success?: string | PanelNotificationOptions) => PanelNotificationDefaults
 ```
 
 The import will provide global type augmentations for the `window.panel` object. Every time you access the `panel` object, you get IntelliSense support for all available methods and services.
