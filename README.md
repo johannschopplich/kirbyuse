@@ -36,8 +36,6 @@ yarn add -D kirbyuse
 
 Kirby's `window.panel` global object provides the main Panel instance, including all methods and props. This package augments the `window.panel` object to provide type hints out of the box.
 
-Type augmentations are generated based on the Kirby Panel JavaScript build. Especially types of function arguments and return types cannot be inferred. But for working with the Panel API, this should be sufficient.
-
 Depending on the component type, you can choose how to import the type hints:
 
 ### Panel Access With `usePanel`
