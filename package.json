@@ -13,10 +13,10 @@
   },
   "bugs": "https://github.com/johannschopplich/kirbyuse/issues",
   "keywords": [
-    "composition-api",
-    "getkirby",
-    "kirby-cms",
     "kirby",
+    "kirby-cms",
+    "getkirby",
+    "kirby-panel",
     "vue"
   ],
   "sideEffects": false,
