@@ -1,4 +1,6 @@
 minimumReleaseAgeExcludePrune: true
 
+minimumReleaseAgeExclude:
+  - kirby-types@2.0.0-beta.3
 trustPolicy: no-downgrade
 shellEmulator: true
