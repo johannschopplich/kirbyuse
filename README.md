@@ -425,35 +425,17 @@ const label = ref("");
 
 ## Background
 
-Kirby CMS uses Vue 2 and provides the `Vue` constructor via the UMD build in the global scope. The main Kirby Panel instance is accessible at `window.panel.app`.
+The Kirby Panel runs Vue 2.7 as the global `window.Vue`, which Panel plugins can't import as a module. The Composition API hangs off that constructor: Kirby 4 loads Vue's UMD build, which attaches it, and Kirby 5 copies the named exports onto `window.Vue` itself. The main Kirby Panel instance is accessible at `window.panel.app`.
 
-Before Vue reached EOL, the Composition API was backported in Vue 2.7. In ESM builds, these APIs are provided as named exports:
+Importing the Composition API from `"vue"` bundles a second copy of Vue into the plugin, unless the build maps `vue` to `window.Vue` – as [kirbyup 3](https://v3.kirbyup.getkirby.com) does. Refs and lifecycle hooks from a second copy don't reach the Panel's components.
 
-```js
-import Vue, { ref } from "vue";
-
-Vue.ref; // `undefined`, use named export instead
-```
-
-Since Kirby uses the UMD build, these APIs are not available. Instead, in the **UMD build**, these APIs are exposed as properties on the global Vue object:
+The global works, but gets tedious across many components:
 
 ```js
-import Vue from "vue";
-
-Vue.ref; // `function`
+const label = window.Vue.ref("");
 ```
 
-When writing Vue components for Kirby with the Composition API, you have to import the Vue constructor from the global scope and use the Composition API from there:
-
-```js
-import Vue from "vue";
-
-const label = Vue.ref("");
-```
-
-This approach gets tedious quickly, especially when you have to write a lot of components. It also makes it harder to upgrade to Vue 3 in the future.
-
-This is where this package comes in. It provides aliases to the Composition API that are compatible with the UMD build of Vue. Additionally, some helpers are provided to make working with Kirby easier:
+kirbyuse reads the Composition API from `window.Vue` and re-exports it with types. Additionally, some helpers are provided to make working with Kirby easier:
 
 ```js
 // Inside `<script setup>`
