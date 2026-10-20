@@ -1,7 +1,7 @@
 import type { VueConstructor } from "vue";
 import type * as VueNamespace from "vue";
 
-export type VueGlobal = VueConstructor & Omit<typeof VueNamespace, "default">;
+export type VueGlobal = VueConstructor & Omit<typeof VueNamespace, "default" | "h">;
 
 declare global {
   interface Window {

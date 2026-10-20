@@ -15,7 +15,6 @@ export const {
   effectScope,
   getCurrentInstance,
   getCurrentScope,
-  h,
   inject,
   isProxy,
   isReactive,
