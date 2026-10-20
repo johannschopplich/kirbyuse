@@ -336,7 +336,7 @@ function handleClick() {
 
 ## Background
 
-Kirby 6 replaced the Vue 2 UMD bundle with a native Vue 3 setup powered by import maps. There is no global `Vue` constructor anymore – every Panel plugin imports Vue's Composition API directly from `"vue"` (`import { ref, computed } from "vue"` works out of the box), and the import map ensures all plugins share the Panel's Vue runtime.
+Kirby 6 runs a native Vue 3 setup powered by import maps. There is no global `Vue` constructor anymore – every Panel plugin imports Vue's Composition API directly from `"vue"` (`import { ref, computed } from "vue"` works out of the box), and the import map ensures all plugins share the Panel's Vue runtime.
 
 `kirbyuse` exists to layer Kirby-specific ergonomics on top of that:
 
