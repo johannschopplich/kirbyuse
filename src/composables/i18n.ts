@@ -4,7 +4,7 @@ import { usePanel } from "./panel";
  * Returns translation utility functions.
  *
  * @remarks
- * In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects, such as those returned by a section's `label` property.
+ * In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects keyed by language code.
  *
  * @example
  * ```ts

@@ -18,6 +18,5 @@ export * from "./options";
 export * from "./pattern";
 export * from "./placeholder";
 export * from "./required";
-export * from "./section";
 export * from "./spellcheck";
 export * from "./type";
