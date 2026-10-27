@@ -1,4 +1,5 @@
 import type { KirbyFieldProps } from "kirby-types";
+import { hasInjectionContext } from "vue";
 import { usePanel } from "./panel";
 
 /**
@@ -139,6 +140,9 @@ export interface FieldsDialogProps<T = Record<string, any>, R = T> {
  * Provides methods to open different types of dialogs.
  */
 export function useDialog() {
+  // Outside a component, the opener resolves the Panel late: Kirby swaps its plugin stub for the real Panel after plugins load.
+  const setupPanel = hasInjectionContext() ? usePanel() : undefined;
+
   /**
    * Returns a promise that resolves when the dialog is closed.
    *
@@ -154,7 +158,7 @@ export function useDialog() {
     let result = false;
 
     return new Promise<boolean>((resolve) => {
-      const panel = usePanel();
+      const panel = setupPanel ?? usePanel();
 
       panel.dialog.open({
         component: "k-text-dialog",
@@ -205,7 +209,7 @@ export function useDialog() {
     const { onSubmit, ...dialogProps } = props;
 
     return new Promise<R | T | undefined>((resolve) => {
-      const panel = usePanel();
+      const panel = setupPanel ?? usePanel();
 
       panel.dialog.open({
         component: "k-form-dialog",

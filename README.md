@@ -40,7 +40,7 @@ Depending on the component type, you can choose how to import the type hints:
 
 ### Panel Access With `usePanel`
 
-In order to benefit from type completions, you can import the `usePanel` function from this package. This function returns a typed `window.panel` object. This works both in the Options API and the Composition API.
+In order to benefit from type completions, you can import the `usePanel` function from this package. This function returns the typed Panel object. This works both in the Options API and the Composition API.
 
 For example, the `notification` service is available on the `panel` object. With each method call, you get IntelliSense support in your editor:
 
@@ -76,7 +76,7 @@ window.panel.notification.success("Kirby is awesome!");
 //                        ^? (property) PanelNotification.success: (success?: string | PanelNotificationOptions) => PanelNotificationDefaults
 ```
 
-The import will provide global type augmentations for the `window.panel` object. Every time you access the `panel` object, you get IntelliSense support for all available methods and services.
+The import will provide global type augmentations for the `window.panel` object. Every time you access the `panel` object, you get IntelliSense support for all available methods and services. Code that reads `window.panel` directly skips a [mocked Panel](#mocking-the-panel).
 
 ## API
 
@@ -98,7 +98,7 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ### `useApi`
 
-Returns Kirby's Panel API for making HTTP requests to the backend. This composable is a simple shortcut to `window.panel.api`.
+Returns Kirby's Panel API for making HTTP requests to the backend.
 
 **Example:**
 
@@ -112,7 +112,7 @@ await api.get("pages/my-page");
 
 ### `useApp`
 
-Returns the Panel's Vue application, the result of `createApp()`. This composable is a simple shortcut to `window.panel.app`.
+Returns the Panel's Vue application, the result of `createApp()`.
 
 **Example:**
 
@@ -220,7 +220,7 @@ console.log(result); // -> { email: "..." }
 Returns translation utility functions.
 
 > [!NOTE]
-> In most cases, use `window.panel.t` for Kirby's built-in translation function. This composable is useful for custom translation objects keyed by language code.
+> In most cases, use `usePanel().t` for Kirby's built-in translation function. This composable is useful for custom translation objects keyed by language code.
 
 **Example:**
 
@@ -236,7 +236,7 @@ t({ en: "Hello", de: "Hallo" }); // -> Returns value based on current Panel lang
 
 ### `usePanel`
 
-Returns the reactive Kirby Panel object with type hints. This composable is a simple shortcut to `window.panel`.
+Returns the reactive Kirby Panel object with type hints: `window.panel` inside the Panel, or the Panel a docs site or test sets up (see [Mocking the Panel](#mocking-the-panel)).
 
 **Example:**
 
@@ -250,7 +250,7 @@ panel.notification.success("Success!");
 
 ### `useHelpers`
 
-Returns the internal Panel helpers. This composable is a simple shortcut to `window.panel.app.config.globalProperties.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
+Returns the internal Panel helpers. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 
@@ -264,7 +264,7 @@ helpers.link.detect("https://getkirby.com");
 
 ### `useLibrary`
 
-Returns the internal Kirby Panel libraries (dayjs, colors and autosize). This composable is a simple shortcut to `window.panel.app.config.globalProperties.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+Returns the internal Kirby Panel libraries (dayjs, colors and autosize). See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
 
 **Example:**
 
@@ -301,6 +301,28 @@ For assets that should load on demand, register them once and resolve them by fi
 | `registerPluginAssets(assets)` | Registers `{ filename, url }` pairs, usually from a PHP-side asset list |
 | `resolvePluginAsset(filename)` | Returns the registered asset                                            |
 | `loadPluginModule(filename)`   | Imports a registered JavaScript module, cached                          |
+
+## Mocking the Panel
+
+Outside Kirby – in a docs site rendering a plugin's components, or in a test – `usePanel()` and every composable built on it can return a Panel of your own. It resolves the Panel the way Pinia resolves its store with `setActivePinia()`:
+
+1. A Panel provided with `providePanel()` by an ancestor component.
+2. The Panel set with `setActivePanel()`, everywhere: event handlers, code after an `await`, module code, and server-side rendering.
+3. `window.panel`.
+
+```ts
+import { providePanel, setActivePanel } from "kirbyuse";
+
+// Once, e.g. in a Nuxt plugin or a test setup file.
+setActivePanel(mockPanel);
+
+// In a component's `setup()`, for its descendants only.
+providePanel(scenePanel);
+```
+
+A provided Panel reaches only code that runs in a component's `setup()` or lifecycle hooks. Call `usePanel()` in `setup()` and keep the result, and never read `window.panel` directly.
+
+During server-side rendering, every request shares the active Panel, so set one no request writes to.
 
 ## Examples
 
@@ -340,7 +362,7 @@ Kirby 6 runs a native Vue 3 setup powered by import maps. There is no global `Vu
 
 `kirbyuse` exists to layer Kirby-specific ergonomics on top of that:
 
-1. Panel composables (`usePanel`, `useContent`, `useDialog`, …) wrap the `window.panel` runtime so you get IntelliSense and a stable API surface.
+1. Panel composables (`usePanel`, `useContent`, `useDialog`, …) wrap the Panel runtime so you get IntelliSense and a stable API surface.
 2. Importing the package types `window.panel` and the Panel's global properties (`this.$panel`, `this.$t`, …) through `kirby-types/panel-globals`.
 3. The package is shipped as ESM with `vue` declared external, so it slots into the Panel import map without bundling Vue twice.
 
