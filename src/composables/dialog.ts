@@ -1,4 +1,4 @@
-import type { KirbyFieldProps } from "kirby-types";
+import type { HtmlString, KirbyFieldProps } from "kirby-types";
 import { hasInjectionContext } from "vue";
 import { usePanel } from "./panel";
 
@@ -78,7 +78,7 @@ export interface FieldsDialogProps<T = Record<string, any>, R = T> {
   /**
    * Optional text shown above the fields.
    */
-  text?: string;
+  text?: string | HtmlString;
   /**
    * Empty state message if no fields are defined.
    */
@@ -154,7 +154,7 @@ export function useDialog() {
    * console.log(result) // -> true or false
    * ```
    */
-  function openTextDialog(text: string) {
+  function openTextDialog(text: string | HtmlString) {
     let result = false;
 
     return new Promise<boolean>((resolve) => {
