@@ -40,7 +40,7 @@ Depending on the component type, you can choose how to import the type hints:
 
 ### Panel Access With `usePanel`
 
-In order to benefit from type completions, you can import the `usePanel` function from this package. This function returns the typed Panel object. This works both in the Options API and the Composition API.
+In order to benefit from type completions, you can import the `usePanel` function from this package. It returns a typed `window.panel` object, or the [mocked Panel](#mocking-the-panel) a docs site or test sets up. This works both in the Options API and the Composition API.
 
 For example, the `notification` service is available on the `panel` object. With each method call, you get IntelliSense support in your editor:
 
@@ -98,7 +98,7 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ### `useApi`
 
-Returns Kirby's Panel API for making HTTP requests to the backend.
+Returns Kirby's Panel API for making HTTP requests to the backend, a shortcut to `usePanel().api`.
 
 **Example:**
 
@@ -112,7 +112,7 @@ await api.get("pages/my-page");
 
 ### `useApp`
 
-Returns the Panel's Vue application, the result of `createApp()`.
+Returns the Panel's Vue application, the result of `createApp()` and a shortcut to `usePanel().app`.
 
 **Example:**
 
@@ -250,7 +250,7 @@ panel.notification.success("Success!");
 
 ### `useHelpers`
 
-Returns the internal Panel helpers. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
+Returns the internal Panel helpers, a shortcut to `usePanel().app.config.globalProperties.$helper`. See the [Lab documentation](https://lab.getkirby.com/public/lab/internals/helpers/) for details.
 
 **Example:**
 
@@ -264,7 +264,7 @@ helpers.link.detect("https://getkirby.com");
 
 ### `useLibrary`
 
-Returns the internal Kirby Panel libraries (dayjs, colors and autosize). See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
+Returns the internal Kirby Panel libraries (dayjs, colors and autosize), a shortcut to `usePanel().app.config.globalProperties.$library`. See the Lab documentation for [colors](https://lab.getkirby.com/public/lab/internals/library.colors) and [dayjs](https://lab.getkirby.com/public/lab/internals/library.dayjs).
 
 **Example:**
 
