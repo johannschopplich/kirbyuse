@@ -342,6 +342,20 @@ await fieldsets.get();
 fieldsets.clear();
 ```
 
+## Global State
+
+`createGlobalState`, adapted from [VueUse](https://vueuse.org/shared/createglobalstate/), runs a state factory once and shares its state with every component, across Vue instances. The factory runs in its own detached effect scope, so its watchers and computeds outlive every component that uses the state – even the one that calls `createGlobalState`.
+
+```ts
+import { createGlobalState } from "kirbyuse";
+import { ref } from "vue";
+
+export const useTranslationState = createGlobalState(() => {
+  const isTranslating = ref(false);
+  return { isTranslating };
+});
+```
+
 ## Mocking the Panel
 
 Outside Kirby – in a docs site rendering a plugin's components, or in a test – `usePanel()` and every composable built on it can return a Panel of your own. It resolves the Panel the way Pinia resolves its store with `setActivePinia()`:
