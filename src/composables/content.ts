@@ -16,10 +16,6 @@ export function useContent() {
   const hasChanges = computed<boolean>(() => panel.content.hasDiff());
   const content = panel.content;
 
-  /**
-   * Whether the editor may change the current view's content: the model
-   * grants `update` and no other user holds the lock.
-   */
   const isEditable = computed<boolean>(
     () => panel.view.props.permissions?.update !== false && !content.isLocked(),
   );
