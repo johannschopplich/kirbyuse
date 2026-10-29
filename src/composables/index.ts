@@ -3,6 +3,7 @@ export * from "./app";
 export * from "./block";
 export * from "./content";
 export * from "./dialog";
+export * from "./events";
 export * from "./helpers";
 export * from "./i18n";
 export * from "./library";

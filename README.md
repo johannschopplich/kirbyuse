@@ -82,17 +82,18 @@ The import will provide global type augmentations for the `window.panel` object.
 
 ### Composables Overview
 
-| Composable                  | Description                               | Returns                                                                       |
-| --------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------- |
-| [`useApi`](#useapi)         | Access Kirby's Panel API                  | `PanelApi`                                                                    |
-| [`useApp`](#useapp)         | Access the main Panel Vue instance        | `PanelApp`                                                                    |
-| [`useBlock`](#useblock)     | Block methods for custom block components | `{ field, open, update }`                                                     |
-| [`useContent`](#usecontent) | Reactive content getters and methods      | `{ content, currentContent, contentChanges, hasChanges, isEditable, update }` |
-| [`useDialog`](#usedialog)   | Open different types of dialogs           | `{ openTextDialog, openFieldsDialog }`                                        |
-| [`useI18n`](#usei18n)       | Translation utility functions             | `{ t }`                                                                       |
-| [`usePanel`](#usepanel)     | Access the reactive Kirby Panel object    | `Panel`                                                                       |
-| [`useHelpers`](#usehelpers) | Access internal Panel helpers             | `PanelHelpers`                                                                |
-| [`useLibrary`](#uselibrary) | Access internal Kirby Panel libraries     | `PanelLibrary`                                                                |
+| Composable                        | Description                                      | Returns                                                                       |
+| --------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------- |
+| [`useApi`](#useapi)               | Access Kirby's Panel API                         | `PanelApi`                                                                    |
+| [`useApp`](#useapp)               | Access the main Panel Vue instance               | `PanelApp`                                                                    |
+| [`useBlock`](#useblock)           | Block methods for custom block components        | `{ field, open, update }`                                                     |
+| [`useContent`](#usecontent)       | Reactive content getters and methods             | `{ content, currentContent, contentChanges, hasChanges, isEditable, update }` |
+| [`useDialog`](#usedialog)         | Open different types of dialogs                  | `{ openTextDialog, openFieldsDialog }`                                        |
+| [`useI18n`](#usei18n)             | Translation utility functions                    | `{ t }`                                                                       |
+| [`usePanel`](#usepanel)           | Access the reactive Kirby Panel object           | `Panel`                                                                       |
+| [`usePanelEvent`](#usepanelevent) | Listen to a Panel event for the scope's lifetime | `void`                                                                        |
+| [`useHelpers`](#usehelpers)       | Access internal Panel helpers                    | `PanelHelpers`                                                                |
+| [`useLibrary`](#uselibrary)       | Access internal Kirby Panel libraries            | `PanelLibrary`                                                                |
 
 ---
 
@@ -255,6 +256,20 @@ import { usePanel } from "kirbyuse";
 const panel = usePanel();
 // Access panel services
 panel.notification.success("Success!");
+```
+
+### `usePanelEvent`
+
+Listens to a Panel event until the component unmounts or the effect scope stops.
+
+**Example:**
+
+```ts
+import { usePanelEvent } from "kirbyuse";
+
+usePanelEvent("view.save", () => {
+  console.log("Saved");
+});
 ```
 
 ### `useHelpers`
