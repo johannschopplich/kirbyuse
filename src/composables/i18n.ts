@@ -29,3 +29,16 @@ export function useI18n() {
     t,
   };
 }
+
+/**
+ * Converts a Kirby translation code like `pt_BR` or `sr@latin`, which `Intl` rejects, to a BCP 47 locale.
+ *
+ * @example
+ * ```ts
+ * const locale = toIntlLocale(usePanel().translation.code)
+ * new Intl.DateTimeFormat(locale).format(date)
+ * ```
+ */
+export function toIntlLocale(translationCode: string): string {
+  return translationCode.replace("_", "-").replace("@latin", "-Latn");
+}

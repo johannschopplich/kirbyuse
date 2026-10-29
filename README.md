@@ -234,6 +234,15 @@ t("Hello"); // -> "Hello"
 t({ en: "Hello", de: "Hallo" }); // -> Returns value based on current Panel language
 ```
 
+`Intl` rejects Kirby's translation codes such as `pt_BR` or `sr@latin`. `toIntlLocale` converts them to BCP 47 locales:
+
+```ts
+import { toIntlLocale, usePanel } from "kirbyuse";
+
+const locale = toIntlLocale(usePanel().translation.code); // "pt_BR" -> "pt-BR"
+new Intl.DateTimeFormat(locale).format(new Date());
+```
+
 ### `usePanel`
 
 Returns the reactive Kirby Panel object with type hints: `window.panel` inside the Panel, or the Panel a docs site or test sets up (see [Mocking the Panel](#mocking-the-panel)).
