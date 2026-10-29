@@ -311,6 +311,22 @@ For assets that should load on demand, register them once and resolve them by fi
 | `resolvePluginAsset(filename)` | Returns the registered asset                                            |
 | `loadPluginModule(filename)`   | Imports a registered JavaScript module, cached                          |
 
+## Shared Requests
+
+`createSharedRequest` fetches a value once for every component that asks: concurrent calls share one request, later calls get the cached value, and a failed request is retried on the next call.
+
+```ts
+import { createSharedRequest, usePanel } from "kirbyuse";
+
+const fieldsets = createSharedRequest(() =>
+  usePanel().api.get("my-plugin/fieldsets"),
+);
+
+await fieldsets.get();
+// Fetch again on the next `get()`, e.g. after a license activation
+fieldsets.clear();
+```
+
 ## Mocking the Panel
 
 Outside Kirby – in a docs site rendering a plugin's components, or in a test – `usePanel()` and every composable built on it can return a Panel of your own. It resolves the Panel the way Pinia resolves its store with `setActivePinia()`:
