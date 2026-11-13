@@ -84,7 +84,7 @@ window.panel.notification.success("Kirby is awesome!");
 //                        ^? (property) PanelNotification.success: (success?: string | PanelNotificationOptions) => PanelNotificationDefaults
 ```
 
-The import will provide global type augmentations for the `window.panel` object. Every time you access the `panel` object, you get IntelliSense support for all available methods and services. Code that reads `window.panel` directly skips a [mocked Panel](#mock-the-panel-outside-kirby).
+The import also types the Panel's global properties, such as `this.$panel` and `this.$t`. Code that reads `window.panel` directly skips a [mocked Panel](#mock-the-panel-outside-kirby).
 
 ### Build a Panel Field
 
@@ -423,13 +423,7 @@ const props = defineProps({ ...block });
 
 ## How It Works
 
-Kirby 6 runs a native Vue 3 setup powered by import maps. There is no global `Vue` constructor – every Panel plugin imports Vue's Composition API directly from `"vue"` (`import { ref, computed } from "vue"` works out of the box), and the import map ensures all plugins share the Panel's Vue runtime.
-
-`kirbyuse` builds on that:
-
-1. Panel composables (`usePanel`, `useContent`, `useDialog`, …) wrap the Panel runtime so you get IntelliSense and a stable API surface.
-2. Importing the package types `window.panel` and the Panel's global properties (`this.$panel`, `this.$t`, …) through `kirby-types/panel-globals`.
-3. The package ships as ESM with `vue` declared external, so it slots into the Panel import map without bundling Vue twice.
+Kirby 6 loads Vue 3 through an import map: every Panel plugin imports from `"vue"` and shares the Panel's Vue runtime. `kirbyuse` ships as ESM with `vue` declared external, so it uses that runtime instead of bundling Vue twice.
 
 ## License
 
