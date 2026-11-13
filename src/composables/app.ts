@@ -1,7 +1,7 @@
 import { usePanel } from "./panel";
 
 /**
- * Returns the main Panel Vue instance.
+ * Returns the Panel's Vue application.
  */
 export function useApp() {
   return usePanel().app;
