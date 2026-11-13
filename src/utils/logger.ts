@@ -57,8 +57,6 @@ class BrowserReporter {
     success: "#2ecc71", // Green
   };
 
-  constructor() {}
-
   log(logEvent: LogEvent) {
     const consoleLogFn = resolveLogFn(logEvent.level);
 
