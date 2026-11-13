@@ -41,4 +41,19 @@ describe("createSharedRequest", () => {
 
     expect(await request.get()).toBe(2);
   });
+
+  it("keeps the request started after clear when the cleared one rejects", async () => {
+    let fetchCount = 0;
+    const request = createSharedRequest(async () => {
+      if (++fetchCount === 1) throw new Error("Offline");
+      return fetchCount;
+    });
+
+    const cleared = request.get();
+    request.clear();
+    request.get();
+    await expect(cleared).rejects.toThrow("Offline");
+
+    expect(await request.get()).toBe(2);
+  });
 });

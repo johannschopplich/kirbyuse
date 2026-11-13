@@ -22,10 +22,13 @@ export function createSharedRequest<T>(
 
   return {
     get() {
-      request ??= fetcher().catch((error) => {
-        request = undefined;
-        throw error;
-      });
+      if (!request) {
+        const pending = fetcher().catch((error) => {
+          if (request === pending) request = undefined;
+          throw error;
+        });
+        request = pending;
+      }
       return request;
     },
     clear() {
