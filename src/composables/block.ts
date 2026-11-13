@@ -4,12 +4,14 @@ import type { KirbyFieldProps, KirbyFieldsetProps } from "kirby-types";
  * Props passed to block components by Kirby's block field.
  */
 export interface BlockComponentProps {
-  content: Record<string, unknown>;
+  content?: Record<string, any> | unknown[];
   /** Fieldset definition, nesting its fields under tabs. */
-  fieldset: KirbyFieldsetProps;
-  /** Additional block-specific props. */
+  fieldset?: Partial<KirbyFieldsetProps>;
   [key: string]: unknown;
 }
+
+// kirby-types: `KirbyFieldsetTab.fields` lacks the props of each field's own type, like a writer's `marks`.
+type BlockField = KirbyFieldProps & Record<string, any>;
 
 /**
  * Provides block methods exposed by the default block component (Options API), which all custom blocks are extending.
@@ -24,33 +26,35 @@ export interface BlockComponentProps {
  *
  * // Will inherit props from extended default block
  * const props = defineProps({});
- * const emit = defineEmits([]);
+ * const emit = defineEmits(["open", "update"]);
  *
  * const { field, open, update } = useBlock(props, emit);
  * ```
  */
 export function useBlock(
   props: BlockComponentProps,
-  emit?: (...args: unknown[]) => void,
+  emit: (event: any, ...args: any[]) => void,
 ) {
-  const field = (name: string, fallback?: KirbyFieldProps) => {
-    let result: KirbyFieldProps | undefined;
+  function field(name: string): BlockField | undefined;
+  function field<T>(name: string, fallback: T): BlockField | T;
+  function field(name: string, fallback?: unknown) {
+    let result: BlockField | undefined;
 
-    for (const tab of Object.values(props.fieldset.tabs ?? {})) {
+    for (const tab of Object.values(props.fieldset?.tabs ?? {})) {
       if (tab.fields?.[name]) {
         result = tab.fields[name];
       }
     }
 
     return result ?? fallback;
-  };
+  }
 
   const open = () => {
-    emit?.("open");
+    emit("open");
   };
 
   const update = (content: Record<string, unknown>) => {
-    emit?.("update", {
+    emit("update", {
       ...props.content,
       ...content,
     });
