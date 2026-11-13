@@ -321,7 +321,7 @@ console.log(result); // -> { email: "..." }, or undefined if cancelled
 - `empty` – Message shown when no fields are defined.
 - `size` – Dialog width: `"small"`, `"default"`, `"medium"`, `"large"`, or `"huge"`. Default: `"medium"`.
 - `submitButton`, `cancelButton` – `false` hides the button, a string sets its text, an object sets its `text`, `icon`, `theme`, `disabled`, and `variant`.
-- `onSubmit` – Called with the values on submit. Returning `false` or throwing keeps the dialog open; any other return value closes it and becomes the result. A thrown error is not reported, so notify the editor inside the handler.
+- `onSubmit` – Called with the values on submit. Returning `false` or throwing keeps the dialog open; any other return value closes it and becomes the result. A thrown error is logged to the console only, so notify the editor inside the handler.
 
 ### `useI18n`
 

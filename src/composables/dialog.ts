@@ -225,7 +225,8 @@ export function useDialog() {
                   return; // Keep dialog open.
                 }
                 result = submitResult as R;
-              } catch {
+              } catch (error) {
+                console.error(error);
                 return; // Keep dialog open on error.
               }
             } else {
