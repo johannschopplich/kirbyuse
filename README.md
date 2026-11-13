@@ -176,7 +176,7 @@ setActivePanel(mockPanel);
 providePanel(scenePanel);
 ```
 
-Type a mock as `Panel` from [kirby-types](https://github.com/johannschopplich/kirby-types). `kirbyuse` does not re-export the type, so add `kirby-types` to your own dev dependencies.
+Type a mock as `Panel`, which `kirbyuse` re-exports from [kirby-types](https://github.com/johannschopplich/kirby-types).
 
 A provided Panel reaches only code that runs in a component's `setup()` or lifecycle hooks. Call `usePanel()` in `setup()` and keep the result, and never read `window.panel` directly.
 

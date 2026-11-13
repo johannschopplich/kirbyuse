@@ -1,4 +1,4 @@
-import type { Panel } from "kirby-types";
+import type { Panel } from "../src";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createSSRApp, defineComponent, h } from "vue";
 import { renderToString } from "vue/server-renderer";
