@@ -22,6 +22,7 @@ export const field = {
     type: [String, Number, Boolean],
     default: null,
   },
+  link: String,
   translate: Boolean,
   type: String,
 };
