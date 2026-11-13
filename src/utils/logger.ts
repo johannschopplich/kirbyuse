@@ -95,6 +95,7 @@ padding: 2px 0.5em;
 
 function resolveLogFn(level: number) {
   if (level < 1) return console.error;
+  if (level < 2) return console.warn;
   // eslint-disable-next-line no-console
   return console.log;
 }
