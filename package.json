@@ -25,10 +25,6 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./composables": {
-      "types": "./dist/composables.d.ts",
-      "default": "./dist/composables.js"
-    },
     "./props": {
       "types": "./dist/props.d.ts",
       "default": "./dist/props.js"
