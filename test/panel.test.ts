@@ -24,6 +24,12 @@ describe("usePanel", () => {
     expect(usePanel()).toBe(panel);
   });
 
+  it("throws a hint to set a Panel when none is found", () => {
+    vi.stubGlobal("window", undefined);
+
+    expect(() => usePanel()).toThrow("setActivePanel()");
+  });
+
   it("returns the active panel over window.panel", () => {
     vi.stubGlobal("window", { panel: { title: "window" } });
     setActivePanel(activePanel);

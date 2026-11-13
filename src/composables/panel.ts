@@ -26,9 +26,16 @@ export function providePanel(panel: Panel): void {
  * A provided Panel reaches only code that runs in a component's `setup()` or lifecycle hooks, so call `usePanel()` in `setup()` and keep the result.
  */
 export function usePanel(): Panel {
-  return (
+  const panel =
     (hasInjectionContext() && inject(panelKey, undefined)) ||
     activePanelStore[panelKey] ||
-    globalThis.window?.panel
-  );
+    globalThis.window?.panel;
+
+  if (!panel) {
+    throw new Error(
+      "No Kirby Panel found. Outside the Panel, set one with `setActivePanel()`.",
+    );
+  }
+
+  return panel;
 }
