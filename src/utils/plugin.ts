@@ -6,7 +6,7 @@ export interface PluginAsset {
 const registeredAssets: PluginAsset[] = [];
 const moduleCache = new Map();
 
-export async function registerPluginAssets(assets: PluginAsset[]) {
+export function registerPluginAssets(assets: PluginAsset[]) {
   if (!Array.isArray(assets)) {
     throw new TypeError(`Expected an array, got ${typeof assets}`);
   }
