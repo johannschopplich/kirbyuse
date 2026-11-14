@@ -1,4 +1,4 @@
-import type { KirbyFieldProps, KirbyFieldsetProps } from "kirby-types";
+import type { KirbyFieldsetProps, KirbyFieldsetTab } from "kirby-types";
 
 /**
  * Props passed to block components by Kirby's block field.
@@ -10,8 +10,7 @@ export interface BlockComponentProps {
   [key: string]: unknown;
 }
 
-// kirby-types: `KirbyFieldsetTab.fields` lacks the props of each field's own type, like a writer's `marks`.
-type BlockField = KirbyFieldProps & Record<string, any>;
+type BlockField = KirbyFieldsetTab["fields"][string];
 
 /**
  * Provides block methods exposed by the default block component (Options API), which all custom blocks are extending.
