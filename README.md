@@ -186,18 +186,18 @@ During server-side rendering, every request shares the active Panel, so set one 
 
 Import the composables from `kirbyuse`. Import the prop definitions, such as [`field`](#field) and [`block`](#block), from `kirbyuse/props`.
 
-| Composable                        | Description                                      | Returns                                                                       |
-| --------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------- |
-| [`useApi`](#useapi)               | Access Kirby's Panel API                         | `PanelApi`                                                                    |
-| [`useApp`](#useapp)               | Access the Panel's Vue application               | `PanelApp`                                                                    |
-| [`useBlock`](#useblock)           | Block methods for custom block components        | `{ field, open, update }`                                                     |
-| [`useContent`](#usecontent)       | Reactive content getters and methods             | `{ content, currentContent, contentChanges, hasChanges, isEditable, update }` |
-| [`useDialog`](#usedialog)         | Open different types of dialogs                  | `{ openTextDialog, openFieldsDialog }`                                        |
-| [`useI18n`](#usei18n)             | Translation utility functions                    | `{ t }`                                                                       |
-| [`usePanel`](#usepanel)           | Access the reactive Kirby Panel object           | `Panel`                                                                       |
-| [`usePanelEvent`](#usepanelevent) | Listen to a Panel event for the scope's lifetime | `void`                                                                        |
-| [`useHelpers`](#usehelpers)       | Access internal Panel helpers                    | `PanelHelpers`                                                                |
-| [`useLibrary`](#uselibrary)       | Access internal Kirby Panel libraries            | `PanelLibrary`                                                                |
+| Composable                        | Description                                      | Returns                                                                                  |
+| --------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| [`useApi`](#useapi)               | Access Kirby's Panel API                         | `PanelApi`                                                                               |
+| [`useApp`](#useapp)               | Access the Panel's Vue application               | `PanelApp`                                                                               |
+| [`useBlock`](#useblock)           | Block methods for custom block components        | `{ field, open, update }`                                                                |
+| [`useContent`](#usecontent)       | Reactive content getters and methods             | `{ content, currentContent, contentChanges, hasChanges, isEditable, modelPath, update }` |
+| [`useDialog`](#usedialog)         | Open different types of dialogs                  | `{ openTextDialog, openFieldsDialog }`                                                   |
+| [`useI18n`](#usei18n)             | Translation utility functions                    | `{ t }`                                                                                  |
+| [`usePanel`](#usepanel)           | Access the reactive Kirby Panel object           | `Panel`                                                                                  |
+| [`usePanelEvent`](#usepanelevent) | Listen to a Panel event for the scope's lifetime | `void`                                                                                   |
+| [`useHelpers`](#usehelpers)       | Access internal Panel helpers                    | `PanelHelpers`                                                                           |
+| [`useLibrary`](#uselibrary)       | Access internal Kirby Panel libraries            | `PanelLibrary`                                                                           |
 
 ### `useApi`
 
@@ -288,6 +288,7 @@ if (isEditable.value) {
 - `contentChanges` – The changed fields only.
 - `hasChanges` – Whether any field has changed.
 - `isEditable` – `false` when the model denies `update` or another user holds the lock.
+- `modelPath` – The Panel path of the model the view edits, such as `pages/blog+post`, and `undefined` in a view without a model. Unlike `panel.view.path`, it stays the model's in Kirby's preview view.
 - `update(values, save)` – Merges `values` into the content of the view and saves them as unpublished changes right away. Pass `false` as `save` to merge without saving. Resolves `false` when Kirby did not save.
 
 ### `useDialog`

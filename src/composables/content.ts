@@ -16,6 +16,15 @@ export function useContent() {
   const hasChanges = computed<boolean>(() => panel.content.hasDiff());
   const content = panel.content;
 
+  /**
+   * Panel path of the model the current view edits, such as `pages/blog+post`;
+   * `undefined` in a view without a model. Unlike `panel.view.path`, it stays
+   * the model's in Kirby's preview view.
+   */
+  const modelPath = computed<string | undefined>(() =>
+    content.env().api?.replace(/^\//, ""),
+  );
+
   const isEditable = computed<boolean>(
     () => panel.view.props.permissions?.update !== false && !content.isLocked(),
   );
@@ -44,6 +53,7 @@ export function useContent() {
     contentChanges,
     hasChanges,
     isEditable,
+    modelPath,
     update,
   };
 }
