@@ -78,7 +78,7 @@
     }
   },
   "dependencies": {
-    "kirby-types": "^2.0.0-beta.9"
+    "kirby-types": "^2.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^10.0.0",
