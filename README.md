@@ -15,17 +15,17 @@ A collection of Vue Composition utilities and type hints to improve the DX for w
 
 ```bash
 # pnpm
-pnpm add -D kirbyuse@next
+pnpm add -D kirbyuse
 
 # npm
-npm i -D kirbyuse@next
+npm i -D kirbyuse
 
 # yarn
-yarn add -D kirbyuse@next
+yarn add -D kirbyuse
 ```
 
 > [!IMPORTANT]
-> `kirbyuse` 2.x targets Kirby 6+ and the Vue 3-based Panel runtime. Keep using `kirbyuse` 1.x if you still need to support Kirby 4 or 5. Until its stable release, 2.x is published under the `next` tag, and a bare `kirbyuse` installs 1.x.
+> `kirbyuse` 2.x targets Kirby 6+ and the Vue 3-based Panel runtime. Install `kirbyuse@1` if you still need to support Kirby 4 or 5.
 
 `vue` 3.5 or later is a required peer dependency. For the optional `dayjs` and `prosemirror-*` peers, see [Optional Dependencies](https://github.com/johannschopplich/kirby-types#optional-dependencies) in kirby-types.
 
