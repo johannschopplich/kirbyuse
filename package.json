@@ -2,7 +2,7 @@
   "name": "kirbyuse",
   "type": "module",
   "version": "1.4.2",
-  "packageManager": "pnpm@12.11.2",
+  "packageManager": "pnpm@12.23.0",
   "description": "Collection of Vue Composition utilities for Kirby CMS",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
   "license": "MIT",
@@ -84,16 +84,16 @@
     "vue": "^2.7.16"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.5.1",
+    "@antfu/eslint-config": "^10.0.0",
     "bumpp": "^12.3.0",
-    "eslint": "^10.12.0",
-    "prettier": "^3.9.10",
+    "eslint": "^10.15.0",
+    "prettier": "^3.10.1",
     "prosemirror-commands": "^1.7.2",
-    "prosemirror-inputrules": "^1.5.1",
-    "prosemirror-model": "^1.25.12",
-    "prosemirror-schema-list": "^1.5.1",
+    "prosemirror-inputrules": "^1.7.0",
+    "prosemirror-model": "^1.25.13",
+    "prosemirror-schema-list": "^1.6.1",
     "prosemirror-state": "^1.4.4",
-    "tsdown": "^0.23.1",
+    "tsdown": "^0.23.7",
     "typescript": "^6.0.3"
   }
 }
