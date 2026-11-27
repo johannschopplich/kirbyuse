@@ -92,7 +92,7 @@
     "prosemirror-state": "^1.4.4",
     "tsdown": "^0.23.7",
     "typescript": "^6.0.3",
-    "vitest": "^5.1.1",
+    "vitest": "^5.1.2",
     "vue": "^3.5.46"
   }
 }
